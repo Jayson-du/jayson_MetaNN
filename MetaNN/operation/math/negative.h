@@ -4,79 +4,77 @@
 #include <MetaNN/evaluate/eval_plan.h>
 #include <MetaNN/facilities/_.h>
 #include <MetaNN/operation/facilities/_.h>
+
 #include <cassert>
 #include <type_traits>
 
-namespace MetaNN::OpTags
-{
-    struct Negative;
+namespace MetaNN::OpTags {
+struct Negative;
 }
 
-namespace MetaNN
-{
-namespace OperNegative::NSCaseGen
-{
-    template <typename TInputHandle, typename TOutputHandle>
-    class EvalItem : public BaseEvalItem
-    {
-        using CategoryTag = CategoryTagFromHandle<TOutputHandle>;
-    public:
-        EvalItem(TInputHandle oriHandle, TOutputHandle outputHandle)
-            : BaseEvalItem(TypeID<EvalItem>(),
-                           {oriHandle.DataPtr()}, outputHandle.DataPtr())
-            , m_inputHandle(std::move(oriHandle))
-            , m_outputHandle(std::move(outputHandle))
-        {}
-        
-        const TInputHandle m_inputHandle;
-        TOutputHandle m_outputHandle;
-    };
+namespace MetaNN {
+namespace OperNegative::NSCaseGen {
+template <typename TInputHandle, typename TOutputHandle>
+class EvalItem : public BaseEvalItem {
+  using CategoryTag = CategoryTagFromHandle<TOutputHandle>;
 
-    template <typename TInputHandle, typename TOutputHandle>
-    class EvalGroup : public TrivialEvalGroup<EvalItem<TInputHandle, TOutputHandle>>
-    {
-        using EvalItemType = EvalItem<TInputHandle, TOutputHandle>;
-    protected:
-        virtual void EvalInternalLogic(EvalItemType& evalItem) final override
-        {
-            const auto& in = evalItem.m_inputHandle.Data();
+ public:
+  EvalItem(TInputHandle oriHandle, TOutputHandle outputHandle)
+      : BaseEvalItem(TypeID<EvalItem>(), {oriHandle.DataPtr()},
+                     outputHandle.DataPtr()),
+        m_inputHandle(std::move(oriHandle)),
+        m_outputHandle(std::move(outputHandle)) {}
 
-            using ResType = typename TOutputHandle::DataType;
-            using ElementType = typename ResType::ElementType;
-            ResType out(in.Shape());
+  const TInputHandle m_inputHandle;
+  TOutputHandle m_outputHandle;
+};
 
-            const size_t count = in.Shape().Count();
-            assert(count == out.Shape().Count());
+template <typename TInputHandle, typename TOutputHandle>
+class EvalGroup
+    : public TrivialEvalGroup<EvalItem<TInputHandle, TOutputHandle>> {
+  using EvalItemType = EvalItem<TInputHandle, TOutputHandle>;
 
-            auto low_in = LowerAccess(in);
-            const ElementType* mem_in = low_in.RawMemory();
+ protected:
+  virtual void EvalInternalLogic(EvalItemType& evalItem) final override {
+    const auto& in = evalItem.m_inputHandle.Data();
 
-            auto low_out = LowerAccess(out);
-            ElementType* mem_out = low_out.MutableRawMemory();
+    using ResType = typename TOutputHandle::DataType;
+    using ElementType = typename ResType::ElementType;
+    ResType out(in.Shape());
 
-            static_assert(std::is_same_v<DeviceTypeFromHandle<TOutputHandle>, DeviceTags::CPU>, "Currently only CPU is supported");
+    const size_t count = in.Shape().Count();
+    assert(count == out.Shape().Count());
 
-            for (size_t i = 0; i < count; ++i)
-            {
-                mem_out[i] = -mem_in[i];
-            }
-            evalItem.m_outputHandle.SetData(std::move(out));
-        }
-    };
-}
+    auto low_in = LowerAccess(in);
+    const ElementType* mem_in = low_in.RawMemory();
+
+    auto low_out = LowerAccess(out);
+    ElementType* mem_out = low_out.MutableRawMemory();
+
+    static_assert(
+        std::is_same_v<DeviceTypeFromHandle<TOutputHandle>, DeviceTags::CPU>,
+        "Currently only CPU is supported");
+
+    for (size_t i = 0; i < count; ++i) {
+      mem_out[i] = -mem_in[i];
+    }
+    evalItem.m_outputHandle.SetData(std::move(out));
+  }
+};
+}  // namespace OperNegative::NSCaseGen
 
 template <>
-struct OperSeq_<OpTags::Negative>
-{
-    using type = OperCalAlgoChain<TailCalculator<OperNegative::NSCaseGen::EvalItem, OperNegative::NSCaseGen::EvalGroup>>;
+struct OperSeq_<OpTags::Negative> {
+  using type =
+      OperCalAlgoChain<TailCalculator<OperNegative::NSCaseGen::EvalItem,
+                                      OperNegative::NSCaseGen::EvalGroup>>;
 };
 
 template <typename TP,
           std::enable_if_t<IsValidOper<OpTags::Negative, TP>>* = nullptr>
-auto operator- (TP&& p_m)
-{
-    using rawM = RemConstRef<TP>;
-    using ResType = Operation<OpTags::Negative, OperandContainer<rawM>>;
-    return ResType(std::forward<TP>(p_m));
+auto operator-(TP&& p_m) {
+  using rawM = RemConstRef<TP>;
+  using ResType = Operation<OpTags::Negative, OperandContainer<rawM>>;
+  return ResType(std::forward<TP>(p_m));
 }
-}
+}  // namespace MetaNN

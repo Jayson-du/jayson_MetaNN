@@ -1,0 +1,11 @@
+{
+  "files.associations": {
+    "*.excalidraw": "json",
+    "*.excalidrawlib": "json",
+    "*.def": "cpp",
+    "*.inc": "cpp",
+    "*.td": "tablegen",
+    "type_traits": "cpp",
+    "cstddef": "cpp"
+  }
+}

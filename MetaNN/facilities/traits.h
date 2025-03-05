@@ -4,12 +4,10 @@
 #include <iterator>
 #include <type_traits>
 
-namespace MetaNN
-{
+namespace MetaNN {
 template <typename T>
-struct Identity_
-{
-    using type = T;
+struct Identity_ {
+  using type = T;
 };
 
 // Or
@@ -35,24 +33,24 @@ constexpr static bool DependencyFalse = false;
 template <typename TBooleanCont, typename TFunCont>
 struct CompileTimeSwitch_;
 
-template <bool curBool, bool... TBools,
-          template<typename...> class TFunCont, typename curFunc, typename... TFuncs>
-struct CompileTimeSwitch_<std::integer_sequence<bool, curBool, TBools...>, TFunCont<curFunc, TFuncs...>>
-{
-    static_assert((sizeof...(TBools) == sizeof...(TFuncs)) ||
-                  (sizeof...(TBools) + 1 == sizeof...(TFuncs)));
-    using type = typename std::conditional_t<curBool,
-                                             Identity_<curFunc>,
-                                             CompileTimeSwitch_<std::integer_sequence<bool, TBools...>,
-                                                                TFunCont<TFuncs...>>>::type;
+template <bool curBool, bool... TBools, template <typename...> class TFunCont,
+          typename curFunc, typename... TFuncs>
+struct CompileTimeSwitch_<std::integer_sequence<bool, curBool, TBools...>,
+                          TFunCont<curFunc, TFuncs...>> {
+  static_assert((sizeof...(TBools) == sizeof...(TFuncs)) ||
+                (sizeof...(TBools) + 1 == sizeof...(TFuncs)));
+  using type = typename std::conditional_t<
+      curBool, Identity_<curFunc>,
+      CompileTimeSwitch_<std::integer_sequence<bool, TBools...>,
+                         TFunCont<TFuncs...>>>::type;
 };
 
-template <template<typename...> class TFunCont, typename curFunc>
-struct CompileTimeSwitch_<std::integer_sequence<bool>, TFunCont<curFunc>>
-{
-    using type = curFunc;
+template <template <typename...> class TFunCont, typename curFunc>
+struct CompileTimeSwitch_<std::integer_sequence<bool>, TFunCont<curFunc>> {
+  using type = curFunc;
 };
 
 template <typename TBooleanCont, typename TFunCont>
-using CompileTimeSwitch = typename CompileTimeSwitch_<TBooleanCont, TFunCont>::type;
-}
+using CompileTimeSwitch =
+    typename CompileTimeSwitch_<TBooleanCont, TFunCont>::type;
+}  // namespace MetaNN
