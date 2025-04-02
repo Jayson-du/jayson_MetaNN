@@ -8,6 +8,10 @@
 namespace MetaNN {
 template <typename TElem, typename TDevice>
 class ContinuousMemory {
+  // 1. std::is_same<RemConstRef<TElem>会去掉所有的cv限定和引用
+  // 2. TElem还是最原始的类型,
+  // 所以如果TElem使用RemConstRef后与TElem不是同一种类型,
+  // 则表示TElem是引用或者其他, 这里不能使用引用
   static_assert(std::is_same<RemConstRef<TElem>, TElem>::value);
   using ElementType = TElem;
 
