@@ -32,6 +32,7 @@ template <typename TCategory, typename TElem, typename TDevice>
 using PrincipalDataType =
     typename PrincipalDataType_<TElem, TDevice, TCategory::DimNum>::type;
 
+// 用于将具体的类型与标签关联
 template <typename T> struct DataCategory_ {
   template <typename R>
   static typename R::CategoryTag Test(typename R::CategoryTag *);

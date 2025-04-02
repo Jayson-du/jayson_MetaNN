@@ -33,6 +33,7 @@ auto OffsetAndVal(const TShape &shape, size_t &gap, TCurIndex curIdx,
 }
 } // namespace NSTensor
 
+// 所有数据类型的基础数据类型
 template <typename TElem, typename TDevice, size_t uDim> class Tensor {
   static_assert(std::is_same_v<RemConstRef<TElem>, TElem>);
   static_assert(uDim > 0);
