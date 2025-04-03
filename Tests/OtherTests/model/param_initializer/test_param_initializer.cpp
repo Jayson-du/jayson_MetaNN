@@ -16,8 +16,8 @@ void test_param_initializer1() {
   assert(fabs(check.GetFiller<Key2>() - 1.5) < 0.001);
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Model::ParamInitializer {
 void test_param_initializer() { test_param_initializer1(); }
-}  // namespace Test::Model::ParamInitializer
+} // namespace Test::Model::ParamInitializer

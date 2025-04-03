@@ -14,7 +14,7 @@ namespace MetaNN {
 namespace NSTensor {
 template <typename TShape, typename TCurIndex, typename TNextParam,
           typename... TRemainParam>
-auto OffsetAndVal(const TShape& shape, size_t& gap, TCurIndex curIdx,
+auto OffsetAndVal(const TShape &shape, size_t &gap, TCurIndex curIdx,
                   TNextParam nextParam, TRemainParam... remPara) {
   constexpr size_t uDimNum = TShape::DimNum;
   constexpr size_t indexPos = uDimNum - sizeof...(TRemainParam) - 1;
@@ -31,21 +31,20 @@ auto OffsetAndVal(const TShape& shape, size_t& gap, TCurIndex curIdx,
     return std::pair(pos, val);
   }
 }
-}  // namespace NSTensor
+} // namespace NSTensor
 
-template <typename TElem, typename TDevice, size_t uDim>
-class Tensor {
+template <typename TElem, typename TDevice, size_t uDim> class Tensor {
   static_assert(std::is_same_v<RemConstRef<TElem>, TElem>);
   static_assert(uDim > 0);
 
- public:
+public:
   using CategoryTag = CategoryTags::Tensor<uDim>;
   using ElementType = TElem;
   using DeviceType = TDevice;
 
   friend struct LowerAccessImpl<Tensor>;
 
- public:
+public:
   template <typename... TShapeParameter>
   explicit Tensor(TShapeParameter... shapes)
       : m_shape(shapes...), m_mem(m_shape.Count()) {}
@@ -54,9 +53,9 @@ class Tensor {
                   MetaNN::Shape<uDim> p_shape)
       : m_shape(std::move(p_shape)), m_mem(std::move(p_mem)) {}
 
-  const auto& Shape() const noexcept { return m_shape; }
+  const auto &Shape() const noexcept { return m_shape; }
 
-  bool operator==(const Tensor& val) const {
+  bool operator==(const Tensor &val) const {
     return (m_shape == val.m_shape) && (m_mem == val.m_mem);
   }
 
@@ -109,23 +108,22 @@ class Tensor {
 
   auto EvalRegister() const { return MakeConstEvalHandle(*this); }
 
- private:
+private:
   MetaNN::Shape<uDim> m_shape;
   ContinuousMemory<ElementType, DeviceType> m_mem;
 };
 
-template <typename TElem, typename TDevice>
-class Tensor<TElem, TDevice, 0> {
+template <typename TElem, typename TDevice> class Tensor<TElem, TDevice, 0> {
   static_assert(std::is_same<RemConstRef<TElem>, TElem>::value);
 
- public:
+public:
   using CategoryTag = CategoryTags::Tensor<0>;
   using ElementType = TElem;
   using DeviceType = TDevice;
 
   friend struct LowerAccessImpl<Tensor>;
 
- public:
+public:
   explicit Tensor(ElementType elem = ElementType()) : m_mem(1) {
     SetValue(elem);
   }
@@ -137,7 +135,7 @@ class Tensor<TElem, TDevice, 0> {
     assert(m_mem.Size() >= 1);
   }
 
-  const auto& Shape() const noexcept {
+  const auto &Shape() const noexcept {
     const static MetaNN::Shape<0> shape;
     return shape;
   }
@@ -151,13 +149,13 @@ class Tensor<TElem, TDevice, 0> {
 
   auto Value() const noexcept { return (m_mem.RawMemory())[0]; }
 
-  bool operator==(const Tensor& val) const noexcept {
+  bool operator==(const Tensor &val) const noexcept {
     return (Value() == val.Value());
   }
 
   auto EvalRegister() const { return MakeConstEvalHandle(*this); }
 
- private:
+private:
   ContinuousMemory<ElementType, DeviceType> m_mem;
 };
 
@@ -165,13 +163,13 @@ template <typename TElement, typename TDevice, size_t uDIm>
 struct LowerAccessImpl<Tensor<TElement, TDevice, uDIm>> {
   LowerAccessImpl(Tensor<TElement, TDevice, uDIm> p) : m_data(std::move(p)) {}
 
-  TElement* MutableRawMemory() { return m_data.m_mem.RawMemory(); }
+  TElement *MutableRawMemory() { return m_data.m_mem.RawMemory(); }
 
-  const TElement* RawMemory() const { return m_data.m_mem.RawMemory(); }
+  const TElement *RawMemory() const { return m_data.m_mem.RawMemory(); }
 
   auto SharedMemory() { return m_data.m_mem; }
 
- private:
+private:
   Tensor<TElement, TDevice, uDIm> m_data;
 };
 
@@ -186,4 +184,4 @@ using Matrix = Tensor<TElem, TDevice, 2>;
 
 template <typename TElem, typename TDevice>
 using ThreeDArray = Tensor<TElem, TDevice, 3>;
-}  // namespace MetaNN
+} // namespace MetaNN

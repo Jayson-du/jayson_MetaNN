@@ -302,7 +302,7 @@ void test_substract_layer6() {
   layer.NeutralInvariant();
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Principal {
 void test_substract_layer() {
@@ -313,4 +313,4 @@ void test_substract_layer() {
   test_substract_layer5();
   test_substract_layer6();
 }
-}  // namespace Test::Layer::Principal
+} // namespace Test::Layer::Principal

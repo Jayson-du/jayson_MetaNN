@@ -6,7 +6,7 @@
 
 namespace MetaNN {
 class BaseEvalItemDispatcher {
- public:
+public:
   BaseEvalItemDispatcher(size_t evalItemID) : m_evalItemID(evalItemID) {}
   virtual ~BaseEvalItemDispatcher() = default;
   virtual void Add(std::unique_ptr<BaseEvalItem>) = 0;
@@ -15,13 +15,13 @@ class BaseEvalItemDispatcher {
 
   virtual std::unique_ptr<BaseEvalGroup> PickNextGroup() = 0;
 
- protected:
+protected:
   const size_t m_evalItemID;
 };
 
 template <typename TEvalGroup>
 class TrivialEvalItemDispatcher final : public BaseEvalItemDispatcher {
- public:
+public:
   TrivialEvalItemDispatcher(size_t evalItemID)
       : BaseEvalItemDispatcher(evalItemID) {}
 
@@ -35,7 +35,8 @@ class TrivialEvalItemDispatcher final : public BaseEvalItemDispatcher {
   }
 
   virtual std::unique_ptr<BaseEvalGroup> PickNextGroup() final override {
-    if (m_evalItems.empty()) return nullptr;
+    if (m_evalItems.empty())
+      return nullptr;
     std::unique_ptr<BaseEvalItem> curItem = std::move(m_evalItems.front());
     m_evalItems.pop_front();
     auto res = std::make_unique<TEvalGroup>();
@@ -43,7 +44,7 @@ class TrivialEvalItemDispatcher final : public BaseEvalItemDispatcher {
     return res;
   }
 
- private:
+private:
   std::list<std::unique_ptr<BaseEvalItem>> m_evalItems;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

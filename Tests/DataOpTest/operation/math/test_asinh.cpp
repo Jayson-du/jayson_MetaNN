@@ -63,7 +63,7 @@ void test_asinh_case3() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_asinh() {
@@ -71,7 +71,7 @@ void test_asinh() {
   test_asinh_case2();
   test_asinh_case3();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math
 
 namespace {
 void test_asinh_grad_case1() {
@@ -134,7 +134,7 @@ void test_asinh_grad_case3() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_asinh_grad() {
@@ -142,4 +142,4 @@ void test_asinh_grad() {
   test_asinh_grad_case2();
   test_asinh_grad_case3();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math

@@ -7,12 +7,11 @@
 #include <stack>
 
 namespace MetaNN {
-template <typename TInputs, typename TPolicies>
-class ReLULayer {
+template <typename TInputs, typename TPolicies> class ReLULayer {
   static_assert(IsPolicyContainer<TPolicies>);
   using CurLayerPolicy = PlainPolicy<TPolicies>;
 
- public:
+public:
   static constexpr bool IsFeedbackOutput =
       PolicySelect<GradPolicy, CurLayerPolicy>::IsFeedbackOutput;
   static constexpr bool IsUpdate = false;
@@ -25,14 +24,13 @@ class ReLULayer {
                                   Identity_<TInputs>>::type;
   static_assert(CheckInputMapAvailable_<InputMap, InputPortSet>::value);
 
- private:
+private:
   using TLayerInputFP = typename InputMap::template Find<LayerInput>;
 
- public:
+public:
   ReLULayer(std::string name) : m_name(std::move(name)) {}
 
-  template <typename TIn>
-  auto FeedForward(TIn&& p_in) {
+  template <typename TIn> auto FeedForward(TIn &&p_in) {
     auto val = LayerTraits::PickItemFromCont<InputMap, LayerInput>(
         std::forward<TIn>(p_in));
     auto res = ReLU(val);
@@ -45,8 +43,7 @@ class ReLULayer {
         std::move(res));
   }
 
-  template <typename TGrad>
-  auto FeedBackward(TGrad&& p_grad) {
+  template <typename TGrad> auto FeedBackward(TGrad &&p_grad) {
     if constexpr (!IsFeedbackOutput ||
                   RemConstRef<TGrad>::template IsValueEmpty<LayerOutput>) {
       if constexpr (IsFeedbackOutput) {
@@ -75,9 +72,9 @@ class ReLULayer {
     }
   }
 
- private:
+private:
   std::string m_name;
   LayerTraits::LayerInternalBuf<TLayerInputFP, IsFeedbackOutput> m_data;
   LayerTraits::ShapeChecker<TLayerInputFP, IsFeedbackOutput> m_inputShape;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

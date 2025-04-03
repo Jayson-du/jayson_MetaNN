@@ -59,11 +59,11 @@ void test_reshape_case2() {
 
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Tensor {
 void test_reshape() {
   test_reshape_case1();
   test_reshape_case2();
 }
-}  // namespace Test::Operation::Tensor
+} // namespace Test::Operation::Tensor

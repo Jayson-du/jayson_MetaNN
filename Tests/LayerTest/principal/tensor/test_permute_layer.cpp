@@ -214,7 +214,7 @@ void test_permute_layer6() {
   LayerNeutralInvariant(layer);
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Principal {
 void test_permute_layer() {
@@ -226,4 +226,4 @@ void test_permute_layer() {
   test_permute_layer5();
   test_permute_layer6();
 }
-}  // namespace Test::Layer::Principal
+} // namespace Test::Layer::Principal

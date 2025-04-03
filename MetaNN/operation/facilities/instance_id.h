@@ -3,11 +3,11 @@
 
 namespace MetaNN {
 class InstanceID {
- public:
+public:
   InstanceID() = delete;
   static size_t Get() { return m_counter.fetch_add(1); }
 
- private:
+private:
   inline static std::atomic<size_t> m_counter = 0;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

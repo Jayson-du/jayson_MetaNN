@@ -9,4 +9,4 @@ void test_others() {
   test_param_source_layer();
   test_value_source_layer();
 }
-}  // namespace Test::Layer::Principal
+} // namespace Test::Layer::Principal

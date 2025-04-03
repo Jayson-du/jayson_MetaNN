@@ -91,7 +91,7 @@ void test_weight_layer2() {
 
   GradCollector<CheckElement, CheckDevice> grad_collector;
   layer.GradCollect(grad_collector);
-  auto& gradCont = grad_collector.GetContainer<CategoryTags::Matrix>();
+  auto &gradCont = grad_collector.GetContainer<CategoryTags::Matrix>();
   assert(gradCont.size() == 1);
 
   auto handle1 = gradCont.begin()->second.Weight().EvalRegister();
@@ -159,7 +159,7 @@ void test_weight_layer3() {
 
   GradCollector<CheckElement, CheckDevice> grad_collector;
   layer.GradCollect(grad_collector);
-  auto& gradCont = grad_collector.GetContainer<CategoryTags::Matrix>();
+  auto &gradCont = grad_collector.GetContainer<CategoryTags::Matrix>();
   assert(gradCont.size() == 1);
 
   auto w1 = gradCont.begin()->second.Weight();
@@ -250,7 +250,7 @@ void test_weight_layer4() {
 
   GradCollector<CheckElement, CheckDevice> grad_collector;
   layer.GradCollect(grad_collector);
-  auto& gradCont = grad_collector.GetContainer<CategoryTags::Matrix>();
+  auto &gradCont = grad_collector.GetContainer<CategoryTags::Matrix>();
   assert(gradCont.size() == 1);
 
   auto w1 = gradCont.begin()->second.Weight();
@@ -291,7 +291,7 @@ void test_weight_layer5() {
   LayerInit(layer, initializer, loadBuffer);
   assert(loadBuffer.IsParamExist<CategoryTags::Matrix>("root/param"));
 
-  auto& val = *(loadBuffer.TryGet<CategoryTags::Matrix>("root/param"));
+  auto &val = *(loadBuffer.TryGet<CategoryTags::Matrix>("root/param"));
 
   float mean = 0;
   for (size_t i = 0; i < val.Shape()[0]; ++i) {
@@ -329,7 +329,7 @@ void test_weight_layer6() {
   LayerInit(layer, initializer, loadBuffer);
   assert(loadBuffer.IsParamExist<CategoryTags::Matrix>("root/param"));
 
-  auto& val = *(loadBuffer.TryGet<CategoryTags::Matrix>("root/param"));
+  auto &val = *(loadBuffer.TryGet<CategoryTags::Matrix>("root/param"));
 
   float mean = 0;
   for (size_t i = 0; i < val.Shape()[0]; ++i) {
@@ -352,7 +352,7 @@ void test_weight_layer6() {
 
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Composite {
 void test_weight_layer() {
@@ -363,4 +363,4 @@ void test_weight_layer() {
   test_weight_layer5();
   test_weight_layer6();
 }
-}  // namespace Test::Layer::Composite
+} // namespace Test::Layer::Composite

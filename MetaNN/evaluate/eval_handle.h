@@ -6,26 +6,25 @@
 #include <type_traits>
 
 namespace MetaNN {
-template <typename TData>
-class EvalHandle {
+template <typename TData> class EvalHandle {
   struct DataWithEvalInfo {
     TData m_data;
     bool m_eval = false;
   };
 
- public:
+public:
   using DataType = TData;
 
   bool IsEvaluated() const noexcept { return m_data->m_eval; }
 
-  const TData& Data() const {
+  const TData &Data() const {
     if (!IsEvaluated()) {
       throw std::runtime_error("Data is not evaluated.");
     }
     return m_data->m_data;
   }
 
-  const void* DataPtr() const { return m_data.get(); }
+  const void *DataPtr() const { return m_data.get(); }
 
   void SetData(TData p_data) {
     if (IsEvaluated()) {
@@ -35,101 +34,95 @@ class EvalHandle {
     m_data->m_eval = true;
   }
 
- private:
+private:
   std::shared_ptr<DataWithEvalInfo> m_data =
       std::make_shared<DataWithEvalInfo>();
 };
 
-template <typename TData>
-class ConstEvalHandle;
+template <typename TData> class ConstEvalHandle;
 
 template <typename TElem, typename TDevice, size_t uDim>
 class ConstEvalHandle<Tensor<TElem, TDevice, uDim>> {
- public:
+public:
   using DataType = Tensor<TElem, TDevice, uDim>;
 
   ConstEvalHandle(DataType data) : m_constData(std::move(data)) {
     auto low = LowerAccess(m_constData);
-    m_dataPtr = (void*)(low.RawMemory());
+    m_dataPtr = (void *)(low.RawMemory());
   }
 
-  const DataType& Data() const { return m_constData; }
+  const DataType &Data() const { return m_constData; }
 
-  const void* DataPtr() const { return m_dataPtr; }
+  const void *DataPtr() const { return m_dataPtr; }
 
- private:
+private:
   DataType m_constData;
-  void* m_dataPtr;
+  void *m_dataPtr;
 };
 
-template <typename TData>
-class ConstEvalHandle<EvalHandle<TData>> {
- public:
+template <typename TData> class ConstEvalHandle<EvalHandle<TData>> {
+public:
   using DataType = TData;
 
   ConstEvalHandle(EvalHandle<TData> data) : m_constData(std::move(data)) {}
 
-  const TData& Data() const { return m_constData.Data(); }
+  const TData &Data() const { return m_constData.Data(); }
 
-  const void* DataPtr() const { return m_constData.DataPtr(); }
+  const void *DataPtr() const { return m_constData.DataPtr(); }
 
- private:
+private:
   EvalHandle<TData> m_constData;
 };
 
-template <typename TData>
-auto MakeConstEvalHandle(const TData& data) {
+template <typename TData> auto MakeConstEvalHandle(const TData &data) {
   return ConstEvalHandle<TData>(data);
 }
 
 namespace NSEvalHandle {
-template <typename TData>
-class DynamicHandleDataBase {
- public:
+template <typename TData> class DynamicHandleDataBase {
+public:
   virtual ~DynamicHandleDataBase() = default;
-  virtual const TData& Data() const = 0;
-  virtual const void* DataPtr() const = 0;
+  virtual const TData &Data() const = 0;
+  virtual const void *DataPtr() const = 0;
 };
 
-template <typename TData>
-class DynamicHandleData;
+template <typename TData> class DynamicHandleData;
 
 template <typename TData>
 class DynamicHandleData<ConstEvalHandle<TData>>
     : public DynamicHandleDataBase<TData> {
- public:
+public:
   DynamicHandleData(ConstEvalHandle<TData> data)
       : DynamicHandleDataBase<TData>(), m_data(std::move(data)) {}
 
-  const TData& Data() const override { return m_data.Data(); }
+  const TData &Data() const override { return m_data.Data(); }
 
-  const void* DataPtr() const override { return m_data.DataPtr(); }
+  const void *DataPtr() const override { return m_data.DataPtr(); }
 
- private:
+private:
   ConstEvalHandle<TData> m_data;
 };
 
 template <typename TData>
 class DynamicHandleData<ConstEvalHandle<EvalHandle<TData>>>
     : public DynamicHandleDataBase<TData> {
- public:
+public:
   DynamicHandleData(ConstEvalHandle<EvalHandle<TData>> data)
       : DynamicHandleDataBase<TData>(), m_data(std::move(data)) {}
 
-  const TData& Data() const override { return m_data.Data(); }
+  const TData &Data() const override { return m_data.Data(); }
 
-  const void* DataPtr() const override { return m_data.DataPtr(); }
+  const void *DataPtr() const override { return m_data.DataPtr(); }
 
- private:
+private:
   ConstEvalHandle<EvalHandle<TData>> m_data;
 };
-}  // namespace NSEvalHandle
+} // namespace NSEvalHandle
 
-template <typename TData>
-class DynamicConstEvalHandle {
+template <typename TData> class DynamicConstEvalHandle {
   using TBaseData = NSEvalHandle::DynamicHandleDataBase<TData>;
 
- public:
+public:
   using DataType = TData;
   template <typename TRealHandle>
   DynamicConstEvalHandle(TRealHandle data)
@@ -138,11 +131,11 @@ class DynamicConstEvalHandle {
     assert(m_data);
   }
 
-  const TData& Data() const { return m_data->Data(); }
+  const TData &Data() const { return m_data->Data(); }
 
-  const void* DataPtr() const { return m_data->DataPtr(); }
+  const void *DataPtr() const { return m_data->DataPtr(); }
 
- private:
+private:
   std::shared_ptr<TBaseData> m_data;
 };
 
@@ -157,4 +150,4 @@ using ElementTypeFromHandle =
 template <typename THandle>
 using CategoryTagFromHandle =
     typename RemConstRef<decltype(std::declval<THandle>().Data())>::CategoryTag;
-}  // namespace MetaNN
+} // namespace MetaNN

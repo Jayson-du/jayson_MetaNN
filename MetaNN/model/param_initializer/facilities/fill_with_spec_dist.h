@@ -5,8 +5,8 @@
 namespace MetaNN {
 namespace NSInitializer {
 template <typename TElem, typename TDist, typename TEngine>
-void FillWithDist(Matrix<TElem, DeviceTags::CPU>& data, TDist& dist,
-                  TEngine& engine) {
+void FillWithDist(Matrix<TElem, DeviceTags::CPU> &data, TDist &dist,
+                  TEngine &engine) {
   if (!data.AvailableForWrite()) {
     throw std::runtime_error("Matrix is sharing weight, cannot fill-in.");
   }
@@ -19,5 +19,5 @@ void FillWithDist(Matrix<TElem, DeviceTags::CPU>& data, TDist& dist,
     r[i] = (TElem)(dist(engine));
   }
 }
-}  // namespace NSInitializer
-}  // namespace MetaNN
+} // namespace NSInitializer
+} // namespace MetaNN

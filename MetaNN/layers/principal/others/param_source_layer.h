@@ -6,18 +6,17 @@
 #include <MetaNN/policies/_.h>
 
 namespace MetaNN {
-template <typename TInputs, typename TPolicies>
-class ParamSourceLayer {
+template <typename TInputs, typename TPolicies> class ParamSourceLayer {
   static_assert(IsPolicyContainer<TPolicies>);
   using CurLayerPolicy = PlainPolicy<TPolicies>;
 
- public:
+public:
   using ParamType =
       typename PolicySelect<ParamPolicy, CurLayerPolicy>::ParamType;
   static_assert(!std::is_same_v<ParamType, NullParameter>,
                 "Use PParamTypeIs<> to set parameter type.");
 
- private:
+private:
   using ParamCategory = typename ParamType::CategoryTag;
   using ElementType = typename ParamType::ElementType;
   using DeviceType = typename ParamType::DeviceType;
@@ -25,19 +24,19 @@ class ParamSourceLayer {
       std::is_same_v<PrincipalDataType<ParamCategory, ElementType, DeviceType>,
                      ParamType>;
 
- public:
+public:
   static constexpr bool IsFeedbackOutput = false;
   static constexpr bool IsUpdate =
       IsPrincipal && PolicySelect<GradPolicy, CurLayerPolicy>::IsUpdate;
 
- public:
+public:
   using InputPortSet = LayerPortSet<>;
   using OutputPortSet = LayerPortSet<struct LayerOutput>;
   using InputMap = typename EmptyLayerInMap_<InputPortSet>::type;
 
- public:
+public:
   template <typename... TParams>
-  ParamSourceLayer(std::string name, TParams&&... p_params)
+  ParamSourceLayer(std::string name, TParams &&...p_params)
       : m_name(std::move(name)) {
     if constexpr (IsPrincipal) {
       m_dataShape =
@@ -48,7 +47,7 @@ class ParamSourceLayer {
   }
 
   template <typename TInitializer, typename TBuffer>
-  void Init(TInitializer& initializer, TBuffer& loadBuffer) {
+  void Init(TInitializer &initializer, TBuffer &loadBuffer) {
     if constexpr (IsPrincipal) {
       m_paramName = initializer.LayerName2ParamName(m_name);
       if (auto matPtr = loadBuffer.template TryGet<ParamCategory>(m_paramName);
@@ -67,7 +66,7 @@ class ParamSourceLayer {
         using InitializerName =
             typename PolicySelect<ParamPolicy, CurLayerPolicy>::Initializer;
         if constexpr (!std::is_same_v<InitializerName, NullParameter>) {
-          auto& cur_init = initializer.template GetFiller<InitializerName>();
+          auto &cur_init = initializer.template GetFiller<InitializerName>();
           cur_init.Fill(m_data);
         } else {
           throw std::runtime_error("Cannot get the initializer for layer: " +
@@ -78,8 +77,7 @@ class ParamSourceLayer {
     }
   }
 
-  template <typename TSave>
-  void SaveWeights(TSave& saver) const {
+  template <typename TSave> void SaveWeights(TSave &saver) const {
     if constexpr (IsPrincipal) {
       auto matPtr = saver.template TryGet<ParamCategory>(m_paramName);
       if (matPtr && (*matPtr != m_data)) {
@@ -89,8 +87,7 @@ class ParamSourceLayer {
     }
   }
 
-  template <typename TGradCollector>
-  void GradCollect(TGradCollector& col) {
+  template <typename TGradCollector> void GradCollect(TGradCollector &col) {
     if constexpr (IsUpdate) {
       LayerTraits::ParamGradCollect(m_paramName, m_data, m_paramGradStack, col);
     }
@@ -102,13 +99,12 @@ class ParamSourceLayer {
     }
   }
 
-  auto FeedForward(const VarTypeDict<>::Values<>&) {
+  auto FeedForward(const VarTypeDict<>::Values<> &) {
     return LayerOutputCont<ParamSourceLayer>().template Set<LayerOutput>(
         m_data);
   }
 
-  template <typename TGrad>
-  auto FeedBackward(TGrad&& p_grad) {
+  template <typename TGrad> auto FeedBackward(TGrad &&p_grad) {
     if constexpr (IsUpdate &&
                   (!RemConstRef<TGrad>::template IsValueEmpty<LayerOutput>)) {
       auto grad = std::forward<TGrad>(p_grad).template Get<LayerOutput>();
@@ -120,7 +116,7 @@ class ParamSourceLayer {
     return LayerInputCont<ParamSourceLayer>();
   }
 
- private:
+private:
   std::string m_name;
   std::string m_paramName;
   Shape<ParamCategory::DimNum> m_dataShape;
@@ -129,4 +125,4 @@ class ParamSourceLayer {
   using AimGradType = DynamicData<ElementType, DeviceType, ParamCategory>;
   LayerTraits::LayerInternalBuf<AimGradType, IsUpdate> m_paramGradStack;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

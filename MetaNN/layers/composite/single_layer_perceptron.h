@@ -10,8 +10,7 @@ struct DotSublayer;
 struct LinearSublayer;
 struct ActivateSublayer;
 
-template <typename TInputs, typename TPolicies>
-class SingleLayerPerceptron;
+template <typename TInputs, typename TPolicies> class SingleLayerPerceptron;
 
 namespace NSSingleLayerPerceptron {
 template <bool bBiasInvolved, template <typename, typename> class TActFunc>
@@ -26,9 +25,9 @@ struct TopoPicker_ {
 
   template <typename TSublayerCont, typename TWeightShape, typename TBiasShape,
             typename... TParams>
-  static auto ctor(const std::string& p_name, TSublayerCont&& sublayerCont,
-                   TWeightShape&& weightShape, TBiasShape&& biasShape,
-                   TParams&&... params) {
+  static auto ctor(const std::string &p_name, TSublayerCont &&sublayerCont,
+                   TWeightShape &&weightShape, TBiasShape &&biasShape,
+                   TParams &&...params) {
     return std::forward<TSublayerCont>(sublayerCont)
         .template Set<LinearSublayer>(p_name,
                                       std::forward<TWeightShape>(weightShape),
@@ -50,8 +49,8 @@ struct TopoPicker_<false, TActFunc> {
       OutConnect<ActivateSublayer, LayerOutput, LayerOutput>>;
 
   template <typename TSublayerCont, typename TWeightShape, typename... TParams>
-  static auto ctor(const std::string& p_name, TSublayerCont&& sublayerCont,
-                   TWeightShape&& weightShape, TParams&&... params) {
+  static auto ctor(const std::string &p_name, TSublayerCont &&sublayerCont,
+                   TWeightShape &&weightShape, TParams &&...params) {
     return std::forward<TSublayerCont>(sublayerCont)
         .template Set<WeightParamSublayer>(
             p_name + "/weight", std::forward<TWeightShape>(weightShape))
@@ -61,8 +60,7 @@ struct TopoPicker_<false, TActFunc> {
   }
 };
 
-template <typename TInput, typename TPolicies>
-struct KernelConstructor_ {
+template <typename TInput, typename TPolicies> struct KernelConstructor_ {
   using PlainPolicies = PlainPolicy<TPolicies>;
   using PolicySelectRes = PolicySelect<LayerStructurePolicy, PlainPolicies>;
   constexpr static bool biasInvolved = PolicySelectRes::BiasInvolved;
@@ -79,12 +77,12 @@ struct KernelConstructor_ {
                     TPolicies, typename TopoPickRes::type>;
 
   template <typename... TParams>
-  static auto ctor(const std::string& layerName, TParams&&... params) {
+  static auto ctor(const std::string &layerName, TParams &&...params) {
     return TopoPickRes::ctor(layerName, type::CreateSublayers(),
                              std::forward<TParams>(params)...);
   }
 };
-}  // namespace NSSingleLayerPerceptron
+} // namespace NSSingleLayerPerceptron
 
 template <typename TInput, typename TPolicies>
 class SingleLayerPerceptron
@@ -94,9 +92,9 @@ class SingleLayerPerceptron
       NSSingleLayerPerceptron::KernelConstructor_<TInput, TPolicies>;
   using TBase = typename TKernelCtor::type;
 
- public:
+public:
   template <typename... TParams>
-  SingleLayerPerceptron(const std::string& p_name, TParams&&... params)
+  SingleLayerPerceptron(const std::string &p_name, TParams &&...params)
       : TBase(TKernelCtor::ctor(p_name, std::forward<TParams>(params)...)) {}
 };
-}  // namespace MetaNN
+} // namespace MetaNN

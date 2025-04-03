@@ -9,10 +9,10 @@ namespace {
 void test_vector_case1() {
   cout << "Test vector case 1...\t";
   static_assert(IsVector<Vector<CheckElement, CheckDevice>>);
-  static_assert(IsVector<Vector<CheckElement, CheckDevice>&>);
-  static_assert(IsVector<Vector<CheckElement, CheckDevice>&&>);
-  static_assert(IsVector<const Vector<CheckElement, CheckDevice>&>);
-  static_assert(IsVector<const Vector<CheckElement, CheckDevice>&&>);
+  static_assert(IsVector<Vector<CheckElement, CheckDevice> &>);
+  static_assert(IsVector<Vector<CheckElement, CheckDevice> &&>);
+  static_assert(IsVector<const Vector<CheckElement, CheckDevice> &>);
+  static_assert(IsVector<const Vector<CheckElement, CheckDevice> &&>);
 
   Vector<CheckElement, CheckDevice> rm;
   assert(rm.Shape()[0] == 0);
@@ -27,17 +27,18 @@ void test_vector_case1() {
 
   const Vector<CheckElement, CheckDevice> rm2 = rm;
   c = 0;
-  for (size_t j = 0; j < 20; ++j) assert(rm2(j) == c++);
+  for (size_t j = 0; j < 20; ++j)
+    assert(rm2(j) == c++);
   cout << "done" << endl;
 }
 
 void test_matrix_case1() {
   cout << "Test matrix case 1...\t";
   static_assert(IsMatrix<Matrix<CheckElement, CheckDevice>>);
-  static_assert(IsMatrix<Matrix<CheckElement, CheckDevice>&>);
-  static_assert(IsMatrix<Matrix<CheckElement, CheckDevice>&&>);
-  static_assert(IsMatrix<const Matrix<CheckElement, CheckDevice>&>);
-  static_assert(IsMatrix<const Matrix<CheckElement, CheckDevice>&&>);
+  static_assert(IsMatrix<Matrix<CheckElement, CheckDevice> &>);
+  static_assert(IsMatrix<Matrix<CheckElement, CheckDevice> &&>);
+  static_assert(IsMatrix<const Matrix<CheckElement, CheckDevice> &>);
+  static_assert(IsMatrix<const Matrix<CheckElement, CheckDevice> &&>);
 
   Matrix<CheckElement, CheckDevice> rm;
   assert(rm.Shape()[0] == 0);
@@ -57,7 +58,8 @@ void test_matrix_case1() {
   const Matrix<CheckElement, CheckDevice> rm2 = rm;
   c = 0;
   for (size_t i = 0; i < 10; ++i) {
-    for (size_t j = 0; j < 20; ++j) assert(rm2(i, j) == c++);
+    for (size_t j = 0; j < 20; ++j)
+      assert(rm2(i, j) == c++);
   }
   cout << "done" << endl;
 }
@@ -85,13 +87,13 @@ void test_3d_array_case1() {
   cout << "Test 3d array case 1...\t";
   static_assert(IsThreeDArray<ThreeDArray<CheckElement, CheckDevice>>,
                 "Test Error");
-  static_assert(IsThreeDArray<ThreeDArray<CheckElement, CheckDevice>&>,
+  static_assert(IsThreeDArray<ThreeDArray<CheckElement, CheckDevice> &>,
                 "Test Error");
-  static_assert(IsThreeDArray<ThreeDArray<CheckElement, CheckDevice>&&>,
+  static_assert(IsThreeDArray<ThreeDArray<CheckElement, CheckDevice> &&>,
                 "Test Error");
-  static_assert(IsThreeDArray<const ThreeDArray<CheckElement, CheckDevice>&>,
+  static_assert(IsThreeDArray<const ThreeDArray<CheckElement, CheckDevice> &>,
                 "Test Error");
-  static_assert(IsThreeDArray<const ThreeDArray<CheckElement, CheckDevice>&&>,
+  static_assert(IsThreeDArray<const ThreeDArray<CheckElement, CheckDevice> &&>,
                 "Test Error");
 
   ThreeDArray<CheckElement, CheckDevice> rm;
@@ -117,7 +119,8 @@ void test_3d_array_case1() {
   c = 0;
   for (size_t p = 0; p < 5; ++p) {
     for (size_t i = 0; i < 10; ++i) {
-      for (size_t j = 0; j < 20; ++j) assert(rm2(p, i, j) == c++);
+      for (size_t j = 0; j < 20; ++j)
+        assert(rm2(p, i, j) == c++);
     }
   }
 
@@ -137,12 +140,12 @@ void test_3d_array_case1() {
 void test_batch_scalar_case1() {
   cout << "Test static batch scalar case 1...\t";
   static_assert(IsTensorWithDim<Tensor<CheckElement, CheckDevice, 1>, 1>);
-  static_assert(IsTensorWithDim<Tensor<CheckElement, CheckDevice, 1>&, 1>);
-  static_assert(IsTensorWithDim<Tensor<CheckElement, CheckDevice, 1>&&, 1>);
+  static_assert(IsTensorWithDim<Tensor<CheckElement, CheckDevice, 1> &, 1>);
+  static_assert(IsTensorWithDim<Tensor<CheckElement, CheckDevice, 1> &&, 1>);
   static_assert(
-      IsTensorWithDim<const Tensor<CheckElement, CheckDevice, 1>&, 1>);
+      IsTensorWithDim<const Tensor<CheckElement, CheckDevice, 1> &, 1>);
   static_assert(
-      IsTensorWithDim<const Tensor<CheckElement, CheckDevice, 1>&&, 1>);
+      IsTensorWithDim<const Tensor<CheckElement, CheckDevice, 1> &&, 1>);
 
   Tensor<CheckElement, CheckDevice, 1> check;
   assert(check.Shape()[0] == 0);
@@ -174,10 +177,10 @@ void test_batch_scalar_case1() {
 void test_batch_matrix_case1() {
   cout << "Test static batch matrix case 1...\t";
   static_assert(IsTensorWithDim<Tensor<int, CheckDevice, 3>, 3>);
-  static_assert(IsTensorWithDim<Tensor<int, CheckDevice, 3>&, 3>);
-  static_assert(IsTensorWithDim<Tensor<int, CheckDevice, 3>&&, 3>);
-  static_assert(IsTensorWithDim<const Tensor<int, CheckDevice, 3>&, 3>);
-  static_assert(IsTensorWithDim<const Tensor<int, CheckDevice, 3>&&, 3>);
+  static_assert(IsTensorWithDim<Tensor<int, CheckDevice, 3> &, 3>);
+  static_assert(IsTensorWithDim<Tensor<int, CheckDevice, 3> &&, 3>);
+  static_assert(IsTensorWithDim<const Tensor<int, CheckDevice, 3> &, 3>);
+  static_assert(IsTensorWithDim<const Tensor<int, CheckDevice, 3> &&, 3>);
 
   Tensor<int, CheckDevice, 3> data(10, 13, 35);
   assert(data.AvailableForWrite());
@@ -236,10 +239,10 @@ void test_batch_matrix_case2() {
 void test_batch_3d_array_case1() {
   cout << "Test static batch 3d array case 1...\t";
   static_assert(IsTensorWithDim<Tensor<int, CheckDevice, 4>, 4>);
-  static_assert(IsTensorWithDim<Tensor<int, CheckDevice, 4>&, 4>);
-  static_assert(IsTensorWithDim<Tensor<int, CheckDevice, 4>&&, 4>);
-  static_assert(IsTensorWithDim<const Tensor<int, CheckDevice, 4>&, 4>);
-  static_assert(IsTensorWithDim<const Tensor<int, CheckDevice, 4>&&, 4>);
+  static_assert(IsTensorWithDim<Tensor<int, CheckDevice, 4> &, 4>);
+  static_assert(IsTensorWithDim<Tensor<int, CheckDevice, 4> &&, 4>);
+  static_assert(IsTensorWithDim<const Tensor<int, CheckDevice, 4> &, 4>);
+  static_assert(IsTensorWithDim<const Tensor<int, CheckDevice, 4> &&, 4>);
 
   Tensor<int, CheckDevice, 4> data(10, 7, 13, 35);
   assert(data.AvailableForWrite());
@@ -269,7 +272,7 @@ void test_batch_3d_array_case1() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Data {
 void test_tensor() {
@@ -285,4 +288,4 @@ void test_tensor() {
   test_batch_matrix_case2();
   test_batch_3d_array_case1();
 }
-}  // namespace Test::Data
+} // namespace Test::Data

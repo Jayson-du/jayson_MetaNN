@@ -95,11 +95,11 @@ void test_asin_layer2() {
   LayerNeutralInvariant(layer);
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Principal {
 void test_asin_layer() {
   test_asin_layer1();
   test_asin_layer2();
 }
-}  // namespace Test::Layer::Principal
+} // namespace Test::Layer::Principal

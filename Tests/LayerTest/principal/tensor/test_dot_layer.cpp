@@ -296,7 +296,7 @@ void test_dot_layer6() {
   LayerNeutralInvariant(layer);
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Principal {
 void test_dot_layer() {
@@ -307,4 +307,4 @@ void test_dot_layer() {
   test_dot_layer5();
   test_dot_layer6();
 }
-}  // namespace Test::Layer::Principal
+} // namespace Test::Layer::Principal

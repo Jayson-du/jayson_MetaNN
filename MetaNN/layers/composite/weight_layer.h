@@ -19,19 +19,19 @@ using Topology = ComposeTopology<
 template <typename TInputs, typename TPolicies>
 using Base = ComposeKernel<LayerPortSet<LayerInput>, LayerPortSet<LayerOutput>,
                            TInputs, TPolicies, Topology>;
-}  // namespace NSWeightLayer
+} // namespace NSWeightLayer
 
 template <typename TInputs, typename TPolicies>
 class WeightLayer : public NSWeightLayer::Base<TInputs, TPolicies> {
   using TBase = NSWeightLayer::Base<TInputs, TPolicies>;
 
- public:
+public:
   template <typename... TShapeParams>
-  WeightLayer(const std::string& p_name, TShapeParams&&... shapeParams)
+  WeightLayer(const std::string &p_name, TShapeParams &&...shapeParams)
       : TBase(TBase::CreateSublayers()
                   .template Set<ParamSublayer>(
                       p_name + "/param",
                       std::forward<TShapeParams>(shapeParams)...)
                   .template Set<DotSublayer>(p_name + "/add")) {}
 };
-}  // namespace MetaNN
+} // namespace MetaNN

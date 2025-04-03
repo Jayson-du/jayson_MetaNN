@@ -3,16 +3,13 @@
 namespace MetaNN {
 struct KernelSublayer;
 
-template <typename TPort>
-struct Previous;
+template <typename TPort> struct Previous;
 
 namespace NSRecurrentLayer {
-template <typename TKey>
-constexpr bool IsPreviousPort = false;
+template <typename TKey> constexpr bool IsPreviousPort = false;
 
-template <typename TKey>
-constexpr bool IsPreviousPort<Previous<TKey>> = true;
-}  // namespace NSRecurrentLayer
+template <typename TKey> constexpr bool IsPreviousPort<Previous<TKey>> = true;
+} // namespace NSRecurrentLayer
 
 template <typename TPortName, size_t ID>
 struct SeqID : public Helper::KVBinder<TPortName, Helper::Int_<ID>> {
@@ -21,12 +18,11 @@ struct SeqID : public Helper::KVBinder<TPortName, Helper::Int_<ID>> {
 };
 
 namespace NSRecurrentLayer {
-template <typename T>
-constexpr static bool IsSeqID = false;
+template <typename T> constexpr static bool IsSeqID = false;
 
 template <typename TPortName, size_t ID>
 constexpr static bool IsSeqID<SeqID<TPortName, ID>> = true;
-}  // namespace NSRecurrentLayer
+} // namespace NSRecurrentLayer
 
 struct RnnPolicy {
   using MajorClass = RnnPolicy;
@@ -41,15 +37,13 @@ ValuePolicyObj(PEnableBptt, RnnPolicy, UseBptt, true);
 ValuePolicyObj(PDisableBptt, RnnPolicy, UseBptt, false);
 #include <MetaNN/policies/policy_macro_end.h>
 
-template <typename... TSeqIDs>
-struct PSeqIDsAre : virtual public RnnPolicy {
+template <typename... TSeqIDs> struct PSeqIDsAre : virtual public RnnPolicy {
   using MinorClass = RnnPolicy::SeqIdContTypeCate;
   using SeqIdCont = PSeqIDsAre;
 };
 
 namespace NSRecurrentLayer {
-template <typename TInputSet, typename TOutputSet>
-struct CheckPortOverLap_;
+template <typename TInputSet, typename TOutputSet> struct CheckPortOverLap_;
 
 template <typename TInputSet, typename... TOutputPorts>
 struct CheckPortOverLap_<TInputSet, LayerPortSet<TOutputPorts...>> {
@@ -68,8 +62,7 @@ constexpr size_t IDSwap(size_t seqID, size_t oriID) {
   return (oriID == 0) ? seqID : ((oriID <= seqID) ? oriID - 1 : oriID);
 }
 
-template <size_t SeqID, typename TIndexes>
-struct GetPermuteInfo_;
+template <size_t SeqID, typename TIndexes> struct GetPermuteInfo_;
 
 template <size_t SeqID, size_t... Indexes>
 struct GetPermuteInfo_<SeqID, std::index_sequence<Indexes...>> {
@@ -109,11 +102,9 @@ struct Wrapper2KernelInputMap_<LayerInMap<LayerKV<TKeys, TValues>...>,
                                     IsPreviousPort<TKeys>, TValues>::type>...>;
 };
 
-template <typename TInputMap, typename TSeqIDs>
-struct CalKernelInputMap_;
+template <typename TInputMap, typename TSeqIDs> struct CalKernelInputMap_;
 
-template <typename TSeqIDs>
-struct CalKernelInputMap_<NullParameter, TSeqIDs> {
+template <typename TSeqIDs> struct CalKernelInputMap_<NullParameter, TSeqIDs> {
   using type = NullParameter;
 };
 
@@ -134,8 +125,7 @@ constexpr static bool InputMapPortsetMatch<
     LayerInMap<LayerKV<TKeys, TValues>...>, TInputPortset> =
     Set::IsEqual<LayerInMap<TKeys...>, TInputPortset>;
 
-template <typename TInputMap, typename TPolicies>
-struct KernelGenerator_ {
+template <typename TInputMap, typename TPolicies> struct KernelGenerator_ {
   using WrapperPolicy = PlainPolicy<TPolicies>;
 
   template <typename UInput, typename UPolicies>
@@ -179,16 +169,13 @@ struct KernelGenerator_ {
                 "Trivial recurrent layer is not allowed.");
 };
 
-template <typename TKey>
-struct PreviousToPrimePort_;
+template <typename TKey> struct PreviousToPrimePort_;
 
-template <typename TKey>
-struct PreviousToPrimePort_<Previous<TKey>> {
+template <typename TKey> struct PreviousToPrimePort_<Previous<TKey>> {
   using type = TKey;
 };
 
-template <bool bFeedbackOutput, typename TInputMap>
-struct ShapeDictHelper {
+template <bool bFeedbackOutput, typename TInputMap> struct ShapeDictHelper {
   static_assert(!bFeedbackOutput);
   using type = NullParameter;
 };
@@ -200,7 +187,7 @@ struct ShapeDictHelper<true, LayerInMap<LayerKV<TKeys, TValues>...>> {
   using type = std::stack<shapeDictType>;
 
   template <typename Key, typename TIn, typename Cont>
-  static void PickShapeInfoHelper(const TIn& p_in, Cont&& p_cont) {
+  static void PickShapeInfoHelper(const TIn &p_in, Cont &&p_cont) {
     auto curShape = p_in.template Get<Key>().Shape();
     static_assert(
         std::is_same_v<decltype(curShape),
@@ -209,7 +196,7 @@ struct ShapeDictHelper<true, LayerInMap<LayerKV<TKeys, TValues>...>> {
   }
 
   template <typename TIn>
-  static void PickShapeInfo(type& shapeStack, const TIn& p_in) {
+  static void PickShapeInfo(type &shapeStack, const TIn &p_in) {
     shapeDictType res;
     (PickShapeInfoHelper<TKeys>(p_in, res), ...);
     shapeStack.push(res);
@@ -217,12 +204,12 @@ struct ShapeDictHelper<true, LayerInMap<LayerKV<TKeys, TValues>...>> {
 
   template <typename TKeysCont, typename TSeqIdCont, typename TShapeCont,
             typename TCont>
-  static auto CollapseHelper(const TShapeCont& p_shape, TCont&& p_cont) {
+  static auto CollapseHelper(const TShapeCont &p_shape, TCont &&p_cont) {
     if constexpr (Sequential::Size<TKeysCont> == 0)
       return std::forward<TCont>(p_cont);
     else {
       using CurType = Sequential::Head<TKeysCont>;
-      const auto& oriValue = p_cont.template Get<CurType>();
+      const auto &oriValue = p_cont.template Get<CurType>();
       if constexpr (Map::HasKey<TSeqIdCont, CurType>) {
         constexpr size_t seqID = Map::Find<TSeqIdCont, CurType>::value;
         constexpr static size_t ValueDim =
@@ -252,7 +239,7 @@ struct ShapeDictHelper<true, LayerInMap<LayerKV<TKeys, TValues>...>> {
   }
 
   template <typename TSeqIdCont, typename TRes>
-  static auto Collapse(type& shapeStack, TRes&& p_res) {
+  static auto Collapse(type &shapeStack, TRes &&p_res) {
     assert(!shapeStack.empty());
 
     auto currentShapeDict = shapeStack.top();
@@ -263,7 +250,7 @@ struct ShapeDictHelper<true, LayerInMap<LayerKV<TKeys, TValues>...>> {
 };
 
 template <typename TKeyCont, typename TSeqID, typename TInput, typename TOutput>
-auto PermuteBySeqID(const TInput& p_input, TOutput&& p_output) {
+auto PermuteBySeqID(const TInput &p_input, TOutput &&p_output) {
   if constexpr (Sequential::Size<TKeyCont> == 0)
     return std::forward<TOutput>(p_output);
   else {
@@ -292,14 +279,15 @@ auto PermuteBySeqID(const TInput& p_input, TOutput&& p_output) {
 }
 
 template <typename TKeyCont, typename TSeqID, typename TIn>
-size_t GetSeqNum(const TIn& p_in, size_t prev = 0) {
+size_t GetSeqNum(const TIn &p_in, size_t prev = 0) {
   if constexpr (Sequential::Size<TKeyCont> == 0)
     return prev;
   else {
     using CurType = Sequential::Head<TKeyCont>;
     if constexpr (Map::HasKey<TSeqID, CurType>) {
       size_t seqValue = p_in.template Get<CurType>().Shape()[0];
-      if (seqValue == 0) throw std::runtime_error("Empty sequence as input.");
+      if (seqValue == 0)
+        throw std::runtime_error("Empty sequence as input.");
       if (prev == 0)
         prev = seqValue;
       else if ((prev != seqValue) && (seqValue != 0)) {
@@ -311,7 +299,7 @@ size_t GetSeqNum(const TIn& p_in, size_t prev = 0) {
 }
 
 template <typename TKeyCont, typename TSeqID, typename TInput, typename TOutput>
-auto Split0(const TInput& p_input, TOutput&& p_output) {
+auto Split0(const TInput &p_input, TOutput &&p_output) {
   if constexpr (Sequential::Size<TKeyCont> == 0)
     return std::forward<TOutput>(p_output);
   else {
@@ -340,8 +328,8 @@ auto Split0(const TInput& p_input, TOutput&& p_output) {
 
 template <typename TKeyCont, typename TSeqID, typename TInput,
           typename TPrevious, typename TOutput>
-auto SplitN(const TInput& p_input, TOutput&& p_output,
-            const TPrevious& p_previous, size_t id) {
+auto SplitN(const TInput &p_input, TOutput &&p_output,
+            const TPrevious &p_previous, size_t id) {
   assert(id != 0);
 
   if constexpr (Sequential::Size<TKeyCont> == 0)
@@ -375,7 +363,7 @@ auto SplitN(const TInput& p_input, TOutput&& p_output,
 }
 
 template <typename TKeyCont, typename TInput, typename TOutput>
-auto InitOutputCont(TInput&& p_input, TOutput&& p_output) {
+auto InitOutputCont(TInput &&p_input, TOutput &&p_output) {
   if constexpr (Sequential::Size<TKeyCont> == 0)
     return std::forward<TOutput>(p_output);
   else {
@@ -392,7 +380,7 @@ auto InitOutputCont(TInput&& p_input, TOutput&& p_output) {
 }
 
 template <typename TKeyCont, typename TInput, typename TOutput>
-void FillOutputCont(TInput&& p_input, TOutput&& p_output) {
+void FillOutputCont(TInput &&p_input, TOutput &&p_output) {
   if constexpr (Sequential::Size<TKeyCont> == 0)
     return;
   else {
@@ -405,14 +393,15 @@ void FillOutputCont(TInput&& p_input, TOutput&& p_output) {
 }
 
 template <typename TKeyCont, typename TIn>
-size_t GetGradSeqNum(const TIn& p_in, size_t prev = 0) {
+size_t GetGradSeqNum(const TIn &p_in, size_t prev = 0) {
   if constexpr (Sequential::Size<TKeyCont> == 0)
     return prev;
   else {
     using CurType = Sequential::Head<TKeyCont>;
 
     size_t seqValue = p_in.template Get<CurType>().Shape()[0];
-    if (seqValue == 0) throw std::runtime_error("Empty sequence as input.");
+    if (seqValue == 0)
+      throw std::runtime_error("Empty sequence as input.");
     if (prev == 0)
       prev = seqValue;
     else if ((prev != seqValue) && (seqValue != 0)) {
@@ -424,7 +413,7 @@ size_t GetGradSeqNum(const TIn& p_in, size_t prev = 0) {
 }
 
 template <typename TKeyCont, typename TInput, typename TOutput>
-auto GradSplit0(const TInput& p_input, TOutput&& p_output) {
+auto GradSplit0(const TInput &p_input, TOutput &&p_output) {
   if constexpr (Sequential::Size<TKeyCont> == 0)
     return std::forward<TOutput>(p_output);
   else {
@@ -441,8 +430,8 @@ auto GradSplit0(const TInput& p_input, TOutput&& p_output) {
 
 template <typename TKeyCont, bool UseBptt, typename TInput, typename TPrevious,
           typename TOutput>
-auto GradSplitN(const TInput& p_input, const TPrevious& p_previous,
-                TOutput&& p_output, size_t id) {
+auto GradSplitN(const TInput &p_input, const TPrevious &p_previous,
+                TOutput &&p_output, size_t id) {
   if constexpr (Sequential::Size<TKeyCont> == 0)
     return std::forward<TOutput>(p_output);
   else {
@@ -467,7 +456,7 @@ auto GradSplitN(const TInput& p_input, const TPrevious& p_previous,
 }
 
 template <typename TKeyCont, typename TOutput>
-auto ReverseOutputCont(TOutput&& p_output) {
+auto ReverseOutputCont(TOutput &&p_output) {
   if constexpr (Sequential::Size<TKeyCont> == 0)
     return;
   else {
@@ -480,7 +469,7 @@ auto ReverseOutputCont(TOutput&& p_output) {
 }
 
 template <typename TKeyCont, typename TInput, typename TOutput>
-void FillNormalGradOutput(TInput&& p_input, TOutput&& p_output) {
+void FillNormalGradOutput(TInput &&p_input, TOutput &&p_output) {
   if constexpr (Sequential::Size<TKeyCont> == 0)
     return;
   else {
@@ -495,7 +484,7 @@ void FillNormalGradOutput(TInput&& p_input, TOutput&& p_output) {
 }
 
 template <typename TKeyCont, typename TInput, typename TOutput>
-auto FillPrevGradOutput(TInput&& p_input, TOutput&& p_output) {
+auto FillPrevGradOutput(TInput &&p_input, TOutput &&p_output) {
   if constexpr (Sequential::Size<TKeyCont> == 0)
     return std::forward<TOutput>(p_output);
   else {
@@ -511,10 +500,9 @@ auto FillPrevGradOutput(TInput&& p_input, TOutput&& p_output) {
     }
   }
 }
-}  // namespace NSRecurrentLayer
+} // namespace NSRecurrentLayer
 
-template <typename TInputs, typename TPolicies>
-class RecurrentLayer {
+template <typename TInputs, typename TPolicies> class RecurrentLayer {
   static_assert(IsPolicyContainer<TPolicies>);
   using CurrentPolicy = PlainPolicy<TPolicies>;
   using KernelGen = NSRecurrentLayer::KernelGenerator_<TInputs, TPolicies>;
@@ -522,7 +510,7 @@ class RecurrentLayer {
   using KernelType = typename KernelGen::KernelType;
   constexpr static bool UseBptt = KernelGen::UseBptt;
 
- public:
+public:
   static constexpr bool IsFeedbackOutput =
       PolicySelect<GradPolicy, CurrentPolicy>::IsFeedbackOutput;
   static constexpr bool IsUpdate = KernelType::IsUpdate;
@@ -531,29 +519,27 @@ class RecurrentLayer {
   using OutputPortSet = typename KernelGen::OutputPortSet;
   using InputMap = typename KernelGen::InputMap;
 
- private:
+private:
   using SeqIdCont = typename PolicySelect<RnnPolicy, CurrentPolicy>::SeqIdCont;
   using TShapeDickHelper =
       typename NSRecurrentLayer::ShapeDictHelper<IsFeedbackOutput, InputMap>;
 
- public:
+public:
   template <typename... TParams>
-  RecurrentLayer(const std::string& p_name, TParams&&... kernelParams)
+  RecurrentLayer(const std::string &p_name, TParams &&...kernelParams)
       : m_name(p_name),
         m_kernel(p_name + "/kernel", std::forward<TParams>(kernelParams)...) {}
 
   template <typename TInitializer, typename TBuffer>
-  void Init(TInitializer& initializer, TBuffer& loadBuffer) {
+  void Init(TInitializer &initializer, TBuffer &loadBuffer) {
     LayerInit(m_kernel, initializer, loadBuffer);
   }
 
-  template <typename TSave>
-  void SaveWeights(TSave& saver) const {
+  template <typename TSave> void SaveWeights(TSave &saver) const {
     LayerSaveWeights(m_kernel, saver);
   }
 
-  template <typename TGradCollector>
-  void GradCollect(TGradCollector& col) {
+  template <typename TGradCollector> void GradCollect(TGradCollector &col) {
     LayerGradCollect(m_kernel, col);
   }
 
@@ -568,8 +554,7 @@ class RecurrentLayer {
     LayerNeutralInvariant(m_kernel);
   }
 
-  template <typename TIn>
-  auto FeedForward(TIn&& p_in) {
+  template <typename TIn> auto FeedForward(TIn &&p_in) {
     using TInputKeys = typename RemConstRef<TIn>::Keys;
     if constexpr (IsFeedbackOutput) {
       TShapeDickHelper::PickShapeInfo(m_inputShapeStack, p_in);
@@ -599,9 +584,9 @@ class RecurrentLayer {
     return outputCont;
   }
 
-  template <typename TIn>
-  auto FeedBackward(TIn&& p_in) {
-    if constexpr (UseBptt) static_assert(KernelType::IsFeedbackOutput);
+  template <typename TIn> auto FeedBackward(TIn &&p_in) {
+    if constexpr (UseBptt)
+      static_assert(KernelType::IsFeedbackOutput);
 
     using TInputKeys = typename RemConstRef<TIn>::Keys;
     if constexpr (!IsFeedbackOutput && !IsUpdate) {
@@ -654,10 +639,10 @@ class RecurrentLayer {
     }
   }
 
- private:
+private:
   std::string m_name;
   KernelType m_kernel;
 
   typename TShapeDickHelper::type m_inputShapeStack;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

@@ -34,7 +34,7 @@ EnumTypePolicyObj(PVarScaleFanAvg, VarScaleFillerPolicy, ScaleMode, FanAvg);
 
 namespace NSVarScaleFiller {
 template <typename TElem, typename TDevice, size_t uDim>
-auto GetFanInFanOut(const Tensor<TElem, TDevice, uDim>& t) {
+auto GetFanInFanOut(const Tensor<TElem, TDevice, uDim> &t) {
   if constexpr (uDim == 1) {
     return std::tuple{1, 1};
   } else if constexpr (uDim == 2) {
@@ -47,19 +47,17 @@ auto GetFanInFanOut(const Tensor<TElem, TDevice, uDim>& t) {
                   "Dimension is 0.");
   }
 }
-}  // namespace NSVarScaleFiller
+} // namespace NSVarScaleFiller
 
-template <typename TPolicyCont = PolicyContainer<>>
-class VarScaleFiller {
+template <typename TPolicyCont = PolicyContainer<>> class VarScaleFiller {
   using TRandomEngine =
       typename PolicySelect<InitPolicy, TPolicyCont>::RandEngine;
 
- public:
+public:
   VarScaleFiller(double factor = 1, unsigned seed = std::random_device{}())
       : m_factor(factor), m_engine(seed) {}
 
-  template <typename TData>
-  void Fill(TData& data) {
+  template <typename TData> void Fill(TData &data) {
     auto [fanIn, fanOut] = NSVarScaleFiller::GetFanInFanOut(data);
     using ScaleMode =
         typename PolicySelect<VarScaleFillerPolicy, TPolicyCont>::ScaleMode;
@@ -102,21 +100,20 @@ class VarScaleFiller {
     }
   }
 
- private:
+private:
   double m_factor;
   TRandomEngine m_engine;
 };
 
 namespace NSVarScaleFiller {
-template <typename TPolicyCont>
-struct MSRAFillerPolicy_ {
+template <typename TPolicyCont> struct MSRAFillerPolicy_ {
   using type1 = ChangePolicy<PNormVarScale, TPolicyCont>;
   using type = ChangePolicy<PVarScaleFanIn, type1>;
 };
 
 template <typename TPolicyCont>
 using MSRAFillerPolicy = typename MSRAFillerPolicy_<TPolicyCont>::type;
-}  // namespace NSVarScaleFiller
+} // namespace NSVarScaleFiller
 
 // MSRA Filler, use Norm Dist and FanIn Mode
 template <typename TPolicyCont = PolicyContainer<>>
@@ -125,7 +122,7 @@ class MSRAFiller
   using BaseType =
       VarScaleFiller<NSVarScaleFiller::MSRAFillerPolicy<TPolicyCont>>;
 
- public:
+public:
   MSRAFiller(unsigned seed = std::random_device{}()) : BaseType(2, seed) {}
 };
 
@@ -135,7 +132,7 @@ class XavierFiller
     : public VarScaleFiller<ChangePolicy<PVarScaleFanAvg, TPolicyCont>> {
   using BaseType = VarScaleFiller<ChangePolicy<PVarScaleFanAvg, TPolicyCont>>;
 
- public:
+public:
   XavierFiller(unsigned seed = std::random_device{}()) : BaseType(1, seed) {}
 };
-}  // namespace MetaNN
+} // namespace MetaNN

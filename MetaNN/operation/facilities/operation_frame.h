@@ -14,8 +14,8 @@ struct Slice;
 
 namespace MetaNN {
 template <typename TOperand>
-constexpr bool IsValidOper<OpTags::Slice, TOperand> =
-    (DataCategory<TOperand>::DimNum > 0);
+constexpr bool
+    IsValidOper<OpTags::Slice, TOperand> = (DataCategory<TOperand>::DimNum > 0);
 
 template <typename TOpTag, typename TOperands,
           typename TPolicies = PolicyContainer<>>
@@ -28,7 +28,7 @@ class Operation<TOpTag, OperandContainer<TOperands...>, TPolicies> {
   static_assert((std::is_same_v<RemConstRef<TOperands>, TOperands> && ...),
                 "TOperands is not an available types");
 
- public:
+public:
   using Policies = TPolicies;
   using CategoryTag = OperCateCal<TOpTag, TPolicies, TOperands...>;
   using ElementType = typename OperElementType_<TOpTag, TOperands...>::type;
@@ -37,7 +37,7 @@ class Operation<TOpTag, OperandContainer<TOperands...>, TPolicies> {
   template <size_t Id>
   using OperandType = Sequential::At<OperandContainer<TOperands...>, Id>;
 
- public:
+public:
   explicit Operation(TOperands... p_operands)
       : Operation(OperAuxParams<TOpTag, ElementType, CategoryTag>{},
                   std::move(p_operands)...) {}
@@ -48,18 +48,17 @@ class Operation<TOpTag, OperandContainer<TOperands...>, TPolicies> {
         m_shapeInfo(m_auxParams, p_operands...),
         m_operands({std::move(p_operands)...}) {}
 
-  template <size_t id>
-  const auto& Operand() const {
+  template <size_t id> const auto &Operand() const {
     return std::get<id>(m_operands);
   }
 
-  const auto& OperandTuple() const noexcept { return m_operands; }
+  const auto &OperandTuple() const noexcept { return m_operands; }
 
-  const auto& AuxParams() const { return m_auxParams; }
+  const auto &AuxParams() const { return m_auxParams; }
 
-  const auto& Shape() const { return m_shapeInfo.Shape(); }
+  const auto &Shape() const { return m_shapeInfo.Shape(); }
 
-  bool operator==(const Operation& val) const {
+  bool operator==(const Operation &val) const {
     // Note: shape is deduced from m_auxParams and m_operands, so if they are
     // same, then shape is same.
     return (m_auxParams == val.m_auxParams) && (m_operands == val.m_operands);
@@ -70,7 +69,7 @@ class Operation<TOpTag, OperandContainer<TOperands...>, TPolicies> {
       using ResType = Operation<OpTags::Slice, OperandContainer<Operation>>;
       return ResType(OperAuxParams<OpTags::Slice, typename ResType::ElementType,
                                    typename ResType::CategoryTag>(index),
-                     (const Operation&)*this);
+                     (const Operation &)*this);
     } else {
       static_assert(DependencyFalse<Operation>, "Slice is not supported.");
     }
@@ -90,7 +89,7 @@ class Operation<TOpTag, OperandContainer<TOperands...>, TPolicies> {
     return m_evalBuf.ConstHandle();
   }
 
- private:
+private:
   OperAuxParams<TOpTag, ElementType, CategoryTag> m_auxParams;
   OperShapeInfo<TOpTag, CategoryTag, TPolicies> m_shapeInfo;
   std::tuple<TOperands...> m_operands;
@@ -98,4 +97,4 @@ class Operation<TOpTag, OperandContainer<TOperands...>, TPolicies> {
   using TPrincipal = PrincipalDataType<CategoryTag, ElementType, DeviceType>;
   EvalBuffer<TPrincipal> m_evalBuf;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

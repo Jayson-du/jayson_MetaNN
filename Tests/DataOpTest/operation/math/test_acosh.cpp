@@ -61,7 +61,7 @@ void test_acosh_case3() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_acosh() {
@@ -69,7 +69,7 @@ void test_acosh() {
   test_acosh_case2();
   test_acosh_case3();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math
 
 namespace {
 void test_acosh_grad_case1() {
@@ -130,7 +130,7 @@ void test_acosh_grad_case3() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_acosh_grad() {
@@ -138,4 +138,4 @@ void test_acosh_grad() {
   test_acosh_grad_case2();
   test_acosh_grad_case3();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math

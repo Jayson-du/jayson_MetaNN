@@ -47,11 +47,11 @@ void test_abs_case2() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_abs() {
   test_abs_case1();
   test_abs_case2();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math

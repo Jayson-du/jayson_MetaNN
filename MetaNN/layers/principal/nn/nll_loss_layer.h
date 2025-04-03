@@ -1,12 +1,11 @@
 #pragma once
 
 namespace MetaNN {
-template <typename TInputs, typename TPolicies>
-class NLLLossLayer {
+template <typename TInputs, typename TPolicies> class NLLLossLayer {
   static_assert(IsPolicyContainer<TPolicies>);
   using CurLayerPolicy = PlainPolicy<TPolicies>;
 
- public:
+public:
   static constexpr bool IsFeedbackOutput =
       PolicySelect<GradPolicy, CurLayerPolicy>::IsFeedbackOutput;
   static constexpr bool IsUpdate = false;
@@ -19,15 +18,14 @@ class NLLLossLayer {
                                   Identity_<TInputs>>::type;
   static_assert(CheckInputMapAvailable_<InputMap, InputPortSet>::value);
 
- private:
+private:
   using TLayerInputFP = typename InputMap::template Find<LayerInput>;
   using TLossLayerWeightFP = typename InputMap::template Find<LossLayerWeight>;
 
- public:
+public:
   NLLLossLayer(std::string name) : m_name(std::move(name)) {}
 
-  template <typename TIn>
-  auto FeedForward(TIn&& p_in) {
+  template <typename TIn> auto FeedForward(TIn &&p_in) {
     auto val = LayerTraits::PickItemFromCont<InputMap, LayerInput>(
         std::forward<TIn>(p_in));
     auto weight = LayerTraits::PickItemFromCont<InputMap, LossLayerWeight>(
@@ -43,8 +41,7 @@ class NLLLossLayer {
         std::move(res));
   }
 
-  template <typename TGrad>
-  auto FeedBackward(TGrad&& p_grad) {
+  template <typename TGrad> auto FeedBackward(TGrad &&p_grad) {
     if constexpr (IsFeedbackOutput) {
       if ((m_input.empty()) || (m_weight.empty())) {
         throw std::runtime_error("Cannot feed back in NLL loss layer");
@@ -70,11 +67,11 @@ class NLLLossLayer {
     }
   }
 
- private:
+private:
   std::string m_name;
   LayerTraits::LayerInternalBuf<TLayerInputFP, IsFeedbackOutput> m_input;
   LayerTraits::LayerInternalBuf<TLossLayerWeightFP, IsFeedbackOutput> m_weight;
 
   LayerTraits::ShapeChecker<TLayerInputFP, IsFeedbackOutput> m_inputShape;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

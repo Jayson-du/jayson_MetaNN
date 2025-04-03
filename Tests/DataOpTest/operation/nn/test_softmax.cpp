@@ -46,8 +46,8 @@ void test_softmax_case2() {
 
     assert(res == res2);
 
-    const auto& evalHandle1 = res.EvalRegister();
-    const auto& evalHandle2 = res2.EvalRegister();
+    const auto &evalHandle1 = res.EvalRegister();
+    const auto &evalHandle2 = res2.EvalRegister();
     EvalPlan::Inst().Eval();
 
     auto cm1 = evalHandle1.Data();
@@ -96,7 +96,7 @@ void test_softmax_case4() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::NN {
 void test_softmax() {
@@ -105,7 +105,7 @@ void test_softmax() {
   test_softmax_case3();
   test_softmax_case4();
 }
-}  // namespace Test::Operation::NN
+} // namespace Test::Operation::NN
 
 namespace {
 void test_softmax_grad_case1() {
@@ -210,7 +210,7 @@ void test_softmax_grad_case4() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::NN {
 void test_softmax_grad() {
@@ -219,4 +219,4 @@ void test_softmax_grad() {
   test_softmax_grad_case3();
   test_softmax_grad_case4();
 }
-}  // namespace Test::Operation::NN
+} // namespace Test::Operation::NN

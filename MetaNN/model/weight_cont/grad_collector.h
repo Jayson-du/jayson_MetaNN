@@ -15,8 +15,7 @@ struct GradInfo {
   GradInfo(WeightType p_weight)
       : weight(std::move(p_weight)), grad(weight.Shape()) {}
 
-  template <typename TGrad>
-  void Push(TGrad&& p_grad) {
+  template <typename TGrad> void Push(TGrad &&p_grad) {
     auto tmp = MakeDynamic(std::forward<TGrad>(p_grad));
     static_assert(std::is_same_v<decltype(tmp), GradItemType>);
     if (tmp.Shape() != weight.Shape()) {
@@ -25,33 +24,32 @@ struct GradInfo {
     grad.PushBack(std::move(tmp));
   }
 
-  const auto& Weight() const { return weight; }
+  const auto &Weight() const { return weight; }
 
   auto Grad() const {
     switch (grad.Shape()[0]) {
-      case 0:
-        throw std::runtime_error("Empty grad.");
-      case 1:
-        return MakeDynamic(grad[0]);
-      default:
-        return MakeDynamic(
-            ReduceSum<PolicyContainer<PModifyDimNumIs<1>>>(grad));
+    case 0:
+      throw std::runtime_error("Empty grad.");
+    case 1:
+      return MakeDynamic(grad[0]);
+    default:
+      return MakeDynamic(ReduceSum<PolicyContainer<PModifyDimNumIs<1>>>(grad));
     }
   }
 
- private:
+private:
   WeightType weight;
   ScalableTensor<GradItemType> grad;
 };
 
-template <typename TElement, typename TDevice>
-class GradCollector {
- private:
+template <typename TElement, typename TDevice> class GradCollector {
+private:
   template <typename TCont, typename TMap, typename TWeight>
-  auto GetOrCreateEntry(std::string_view name, TCont& p_cont, TMap& p_map,
-                        const TWeight& p_weight) {
+  auto GetOrCreateEntry(std::string_view name, TCont &p_cont, TMap &p_map,
+                        const TWeight &p_weight) {
     auto it = p_map.find(name);
-    if (it != p_map.end()) return it->second;
+    if (it != p_map.end())
+      return it->second;
 
     using TGradInfo = typename TCont::value_type;
     p_cont.push_front(TGradInfo(p_weight));
@@ -60,7 +58,7 @@ class GradCollector {
   }
 
   template <typename TMap>
-  const auto& GetEntry(std::string_view name, TMap& p_map) {
+  const auto &GetEntry(std::string_view name, TMap &p_map) {
     auto it = p_map.find(name);
     if (it == p_map.end()) {
       throw std::runtime_error(
@@ -70,13 +68,13 @@ class GradCollector {
     return *(it->second);
   }
 
- public:
+public:
   template <typename TWeight, typename TGrad>
-  void Collect(const std::string& name, const TWeight& weight, TGrad&& grad) {
+  void Collect(const std::string &name, const TWeight &weight, TGrad &&grad) {
     using TGradInfo =
         GradInfo<TElement, TDevice, typename TWeight::CategoryTag>;
 
-    auto* ptr = m_weightBuffer.TryGet<TGradInfo>(name);
+    auto *ptr = m_weightBuffer.TryGet<TGradInfo>(name);
     if (!ptr) {
       m_weightBuffer.Set(name, TGradInfo(weight));
       ptr = m_weightBuffer.TryGet<TGradInfo>(name);
@@ -86,18 +84,17 @@ class GradCollector {
 
   void Clear() { m_weightBuffer.Clear(); }
 
-  template <typename TCategory>
-  const auto& GetContainer() const {
+  template <typename TCategory> const auto &GetContainer() const {
     using TGradInfo = GradInfo<TElement, TDevice, TCategory>;
 
-    auto* cont = m_weightBuffer.GetCont<TGradInfo>();
+    auto *cont = m_weightBuffer.GetCont<TGradInfo>();
     if (!cont) {
       throw std::runtime_error("Grad container not exist");
     }
     return cont->data;
   }
 
- private:
+private:
   WeightBuffer m_weightBuffer;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

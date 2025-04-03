@@ -68,7 +68,7 @@ void test_nll_loss_case3() {
   assert(fabs(check / sumTruth - res.Value()) < 0.001f);
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::NN {
 void test_nll_loss() {
@@ -76,7 +76,7 @@ void test_nll_loss() {
   test_nll_loss_case2();
   test_nll_loss_case3();
 }
-}  // namespace Test::Operation::NN
+} // namespace Test::Operation::NN
 
 namespace {
 void test_nll_loss_grad1() {
@@ -163,7 +163,7 @@ void test_nll_loss_grad3() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::NN {
 void test_nll_loss_grad() {
@@ -171,4 +171,4 @@ void test_nll_loss_grad() {
   test_nll_loss_grad2();
   test_nll_loss_grad3();
 }
-}  // namespace Test::Operation::NN
+} // namespace Test::Operation::NN

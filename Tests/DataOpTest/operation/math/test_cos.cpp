@@ -86,7 +86,7 @@ void test_cos_case4() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_cos() {
@@ -95,7 +95,7 @@ void test_cos() {
   test_cos_case3();
   test_cos_case4();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math
 
 namespace {
 void test_cos_grad_case1() {
@@ -211,7 +211,7 @@ void test_cos_grad_case5() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_cos_grad() {
@@ -221,4 +221,4 @@ void test_cos_grad() {
   test_cos_grad_case4();
   test_cos_grad_case5();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math

@@ -32,8 +32,8 @@ inline auto FillTensor(TIt b, TShapeParams... shapeParams) {
 }
 
 template <typename TElem, size_t uDim>
-bool Compare(const MetaNN::Tensor<TElem, MetaNN::DeviceTags::CPU, uDim>& v1,
-             const MetaNN::Tensor<TElem, MetaNN::DeviceTags::CPU, uDim>& v2,
+bool Compare(const MetaNN::Tensor<TElem, MetaNN::DeviceTags::CPU, uDim> &v1,
+             const MetaNN::Tensor<TElem, MetaNN::DeviceTags::CPU, uDim> &v2,
              TElem availGap) {
   assert(v1.Shape() == v2.Shape());
 

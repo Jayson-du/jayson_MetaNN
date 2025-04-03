@@ -37,11 +37,11 @@ void test_constant_filler2() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Model::ParamInitializer {
 void test_constant_filler() {
   test_constant_filler1();
   test_constant_filler2();
 }
-}  // namespace Test::Model::ParamInitializer
+} // namespace Test::Model::ParamInitializer

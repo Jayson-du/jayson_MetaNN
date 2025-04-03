@@ -90,7 +90,7 @@ void test_sign_case3() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_sign() {
@@ -98,4 +98,4 @@ void test_sign() {
   test_sign_case2();
   test_sign_case3();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math

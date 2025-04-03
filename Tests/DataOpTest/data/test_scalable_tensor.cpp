@@ -131,7 +131,7 @@ void test_scalable_tensor_case3() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Data {
 void test_scalable_tensor() {
@@ -139,4 +139,4 @@ void test_scalable_tensor() {
   test_scalable_tensor_case2();
   test_scalable_tensor_case3();
 }
-}  // namespace Test::Data
+} // namespace Test::Data

@@ -16,16 +16,15 @@ namespace MetaNN {
 namespace OperSlice::NSCaseGen {
 template <typename TInputHandle, typename TOutputHandle>
 class EvalItem : public BaseEvalItem {
- public:
+public:
   using CategoryTag = CategoryTagFromHandle<TOutputHandle>;
 
   template <typename TAuxParams>
   EvalItem(TInputHandle oriHandle, TOutputHandle outputHandle,
-           const TAuxParams& p_params)
+           const TAuxParams &p_params)
       : BaseEvalItem(TypeID<EvalItem>(), {oriHandle.DataPtr()},
                      outputHandle.DataPtr()),
-        m_inputHandle(std::move(oriHandle)),
-        m_id(p_params.m_elemID),
+        m_inputHandle(std::move(oriHandle)), m_id(p_params.m_elemID),
         m_outputHandle(std::move(outputHandle)) {}
 
   const TInputHandle m_inputHandle;
@@ -38,13 +37,13 @@ class EvalGroup
     : public TrivialEvalGroup<EvalItem<TInputHandle, TOutputHandle>> {
   using EvalItemType = EvalItem<TInputHandle, TOutputHandle>;
 
- protected:
-  virtual void EvalInternalLogic(EvalItemType& evalItem) final override {
-    const auto& in = evalItem.m_inputHandle.Data();
+protected:
+  virtual void EvalInternalLogic(EvalItemType &evalItem) final override {
+    const auto &in = evalItem.m_inputHandle.Data();
     evalItem.m_outputHandle.SetData(in[evalItem.m_id]);
   }
 };
-}  // namespace OperSlice::NSCaseGen
+} // namespace OperSlice::NSCaseGen
 
 template <typename TPolicy, typename TOperand>
 struct OperCategory_<OpTags::Slice, TPolicy, TOperand> {
@@ -57,16 +56,16 @@ struct OperAuxParams<OpTags::Slice, TElem, TCate> {
 
   const size_t m_elemID;
 
-  bool operator==(const OperAuxParams& val) const {
+  bool operator==(const OperAuxParams &val) const {
     return (m_elemID == val.m_elemID);
   }
 };
 
 template <typename TCate, typename TPolicies>
 class OperShapeInfo<OpTags::Slice, TCate, TPolicies> {
- public:
+public:
   template <typename TOperAuxParams, typename TOperand>
-  OperShapeInfo(const TOperAuxParams&, const TOperand& operand) {
+  OperShapeInfo(const TOperAuxParams &, const TOperand &operand) {
     static_assert(TCate::DimNum + 1 == DataCategory<TOperand>::DimNum);
     if constexpr (TCate::DimNum != 0) {
       for (size_t i = 0; i < TCate::DimNum; ++i) {
@@ -75,16 +74,15 @@ class OperShapeInfo<OpTags::Slice, TCate, TPolicies> {
     }
   }
 
-  const auto& Shape() const { return m_shape; }
+  const auto &Shape() const { return m_shape; }
 
- private:
+private:
   MetaNN::Shape<TCate::DimNum> m_shape;
 };
 
-template <>
-struct OperSeq_<OpTags::Slice> {
+template <> struct OperSeq_<OpTags::Slice> {
   using type = OperCalAlgoChain<TailCalculator<OperSlice::NSCaseGen::EvalItem,
                                                OperSlice::NSCaseGen::EvalGroup,
                                                PolicyContainer<PPassAuxParam>>>;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

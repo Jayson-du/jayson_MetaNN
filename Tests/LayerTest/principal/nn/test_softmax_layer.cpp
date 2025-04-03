@@ -242,7 +242,7 @@ void test_softmax_layer5() {
   LayerNeutralInvariant(layer);
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Principal {
 void test_softmax_layer() {
@@ -252,4 +252,4 @@ void test_softmax_layer() {
   test_softmax_layer4();
   test_softmax_layer5();
 }
-}  // namespace Test::Layer::Principal
+} // namespace Test::Layer::Principal

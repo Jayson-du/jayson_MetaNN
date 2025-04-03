@@ -18,7 +18,7 @@ template <typename TInputHandle1, typename TInputHandle2,
 class EvalItem : public BaseEvalItem {
   using CategoryTag = CategoryTagFromHandle<TOutputHandle>;
 
- public:
+public:
   EvalItem(TInputHandle1 oriHandle1, TInputHandle2 oriHandle2,
            TInputHandle3 oriHandle3, TOutputHandle outputHandle,
            Shape<CategoryTag::DimNum> shape)
@@ -47,11 +47,11 @@ class EvalGroup
   using EvalItemType =
       EvalItem<TInputHandle1, TInputHandle2, TInputHandle3, TOutputHandle>;
 
- protected:
-  virtual void EvalInternalLogic(EvalItemType& evalItem) final override {
-    const auto& in1 = evalItem.m_inputHandle1.Data();
-    const auto& in2 = evalItem.m_inputHandle2.Data();
-    const auto& in3 = evalItem.m_inputHandle3.Data();
+protected:
+  virtual void EvalInternalLogic(EvalItemType &evalItem) final override {
+    const auto &in1 = evalItem.m_inputHandle1.Data();
+    const auto &in2 = evalItem.m_inputHandle2.Data();
+    const auto &in3 = evalItem.m_inputHandle3.Data();
 
     using ResType = typename TOutputHandle::DataType;
     using ElementType = typename ResType::ElementType;
@@ -66,14 +66,14 @@ class EvalGroup
     assert(outCount % count3 == 0);
 
     auto low_in1 = LowerAccess(in1);
-    const ElementType* mem_in1 = low_in1.RawMemory();
+    const ElementType *mem_in1 = low_in1.RawMemory();
     auto low_in2 = LowerAccess(in2);
-    const ElementType* mem_in2 = low_in2.RawMemory();
+    const ElementType *mem_in2 = low_in2.RawMemory();
     auto low_in3 = LowerAccess(in3);
-    const ElementType* mem_in3 = low_in3.RawMemory();
+    const ElementType *mem_in3 = low_in3.RawMemory();
 
     auto low_out = LowerAccess(out);
-    ElementType* mem_out = low_out.MutableRawMemory();
+    ElementType *mem_out = low_out.MutableRawMemory();
 
     static_assert(
         std::is_same_v<DeviceTypeFromHandle<TOutputHandle>, DeviceTags::CPU>,
@@ -86,10 +86,9 @@ class EvalGroup
     evalItem.m_outputHandle.SetData(std::move(out));
   }
 };
-}  // namespace OperInterpolate::NSCaseGen
+} // namespace OperInterpolate::NSCaseGen
 
-template <>
-struct OperSeq_<OpTags::Interpolate> {
+template <> struct OperSeq_<OpTags::Interpolate> {
   using type =
       OperCalAlgoChain<TailCalculator<OperInterpolate::NSCaseGen::EvalItem,
                                       OperInterpolate::NSCaseGen::EvalGroup,
@@ -97,13 +96,13 @@ struct OperSeq_<OpTags::Interpolate> {
 };
 
 template <typename TP1, typename TP2, typename TP3,
-          std::enable_if_t<IsValidOper<OpTags::Interpolate, TP1, TP2, TP3>>* =
+          std::enable_if_t<IsValidOper<OpTags::Interpolate, TP1, TP2, TP3>> * =
               nullptr>
-auto Interpolate(TP1&& p_m1, TP2&& p_m2, TP3&& p_m3) {
+auto Interpolate(TP1 &&p_m1, TP2 &&p_m2, TP3 &&p_m3) {
   using ResType = Operation<
       OpTags::Interpolate,
       OperandContainer<RemConstRef<TP1>, RemConstRef<TP2>, RemConstRef<TP3>>>;
   return ResType(std::forward<TP1>(p_m1), std::forward<TP2>(p_m2),
                  std::forward<TP3>(p_m3));
 }
-}  // namespace MetaNN
+} // namespace MetaNN

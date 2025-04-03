@@ -63,11 +63,11 @@ void test_var_scale_filler2() {
        << " std-delta = " << fabs(sqrt(var) - sqrt(2.0 / 1000)) << ' ';
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Model::ParamInitializer {
 void test_var_scale_filler() {
   test_var_scale_filler1();
   test_var_scale_filler2();
 }
-}  // namespace Test::Model::ParamInitializer
+} // namespace Test::Model::ParamInitializer

@@ -125,7 +125,7 @@ void test_tile_case3() {
           }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Tensor {
 void test_tile() {
@@ -133,4 +133,4 @@ void test_tile() {
   test_tile_case2();
   test_tile_case3();
 }
-}  // namespace Test::Operation::Tensor
+} // namespace Test::Operation::Tensor

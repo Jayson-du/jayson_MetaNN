@@ -117,7 +117,7 @@ void test_reduce_sum_case5() {
 
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_reduce_sum() {
@@ -127,4 +127,4 @@ void test_reduce_sum() {
   test_reduce_sum_case4();
   test_reduce_sum_case5();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math

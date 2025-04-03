@@ -7,4 +7,4 @@ void test_tensor() {
   test_dot_layer();
   test_permute_layer();
 }
-}  // namespace Test::Layer::Principal
+} // namespace Test::Layer::Principal

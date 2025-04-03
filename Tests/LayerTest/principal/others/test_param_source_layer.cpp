@@ -27,7 +27,7 @@ void test_param_source_layer1() {
 
   LoadBuffer<CheckElement, CheckDevice> weightSaver;
   layer.SaveWeights(weightSaver);
-  auto* w = weightSaver.TryGet<CategoryTags::Tensor<2>>("root");
+  auto *w = weightSaver.TryGet<CategoryTags::Tensor<2>>("root");
   assert(w);
 
   auto wInfo = *w;
@@ -61,7 +61,7 @@ void test_param_source_layer2() {
 
   LoadBuffer<CheckElement, CheckDevice> weightSaver;
   layer.SaveWeights(weightSaver);
-  auto* w = weightSaver.TryGet<CategoryTags::Tensor<2>>("root");
+  auto *w = weightSaver.TryGet<CategoryTags::Tensor<2>>("root");
   assert(w);
 
   auto wInfo = *w;
@@ -95,7 +95,7 @@ void test_param_source_layer3() {
 
   LoadBuffer<CheckElement, CheckDevice> weightSaver;
   layer.SaveWeights(weightSaver);
-  auto* w = weightSaver.TryGet<CategoryTags::Tensor<2>>("root");
+  auto *w = weightSaver.TryGet<CategoryTags::Tensor<2>>("root");
   assert(w);
   assert(*w == mat);
 
@@ -188,7 +188,7 @@ void test_param_source_layer6() {
   GradCollector<CheckElement, CheckDevice> grad_collector;
   layer.GradCollect(grad_collector);
 
-  auto& gradCont = grad_collector.GetContainer<CategoryTags::Tensor<2>>();
+  auto &gradCont = grad_collector.GetContainer<CategoryTags::Tensor<2>>();
   assert(gradCont.size() == 1);
 
   auto handle1 = gradCont.begin()->second.Weight().EvalRegister();
@@ -262,7 +262,7 @@ void test_param_source_layer8() {
   layer.NeutralInvariant();
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Principal {
 void test_param_source_layer() {
@@ -275,4 +275,4 @@ void test_param_source_layer() {
   test_param_source_layer7();
   test_param_source_layer8();
 }
-}  // namespace Test::Layer::Principal
+} // namespace Test::Layer::Principal

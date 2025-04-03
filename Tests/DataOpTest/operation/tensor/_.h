@@ -14,4 +14,4 @@ void test() {
   test_slice();
   test_tile();
 }
-}  // namespace Test::Operation::Tensor
+} // namespace Test::Operation::Tensor

@@ -12,6 +12,6 @@ struct InitPolicy {
 };
 
 TypePolicyTemplate(PRandomGeneratorIs, InitPolicy, RandEngine);
-}  // namespace MetaNN
+} // namespace MetaNN
 
 #include <MetaNN/policies/policy_macro_end.h>

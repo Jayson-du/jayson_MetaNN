@@ -8,10 +8,10 @@
 
 namespace MetaNN {
 class EvalPlan {
-  using DataPtr = const void*;
+  using DataPtr = const void *;
 
- public:
-  static EvalPlan& Inst() {
+public:
+  static EvalPlan &Inst() {
     static EvalPlan inst;
     return inst;
   }
@@ -20,7 +20,8 @@ class EvalPlan {
   void Register(std::unique_ptr<BaseEvalItem> item) {
     assert(item);
     DataPtr outPtr = item->OutputPtr();
-    if (IsAlreadyRegisted(outPtr)) return;
+    if (IsAlreadyRegisted(outPtr))
+      return;
 
     const auto itemID = item->ID();
     auto dispIt = m_itemDispatcher.find(itemID);
@@ -28,10 +29,10 @@ class EvalPlan {
       m_itemDispatcher.insert({itemID, std::make_unique<TDispatcher>(itemID)});
     }
 
-    const auto& inPtrs = item->InputPtrs();
+    const auto &inPtrs = item->InputPtrs();
 
     size_t inArc = 0;
-    for (auto* const in : inPtrs) {
+    for (auto *const in : inPtrs) {
       if (m_nodes.find(in) != m_nodes.end()) {
         m_nodeAimPos[in].insert(outPtr);
         ++inArc;
@@ -82,7 +83,8 @@ class EvalPlan {
         m_nodeInArcNum.erase(p);
 
         auto aimNodeIt = m_nodeAimPos.find(p);
-        if (aimNodeIt == m_nodeAimPos.end()) continue;
+        if (aimNodeIt == m_nodeAimPos.end())
+          continue;
         for (DataPtr aimNode : aimNodeIt->second) {
           auto arcNumIt = m_nodeInArcNum.find(aimNode);
           assert(arcNumIt != m_nodeInArcNum.end());
@@ -103,12 +105,12 @@ class EvalPlan {
     assert(m_nodes.empty());
   }
 
- private:
+private:
   EvalPlan() = default;
-  EvalPlan(const EvalPlan&) = delete;
-  EvalPlan& operator=(const EvalPlan&) = delete;
+  EvalPlan(const EvalPlan &) = delete;
+  EvalPlan &operator=(const EvalPlan &) = delete;
 
-  void AddToDispatcher(const std::set<DataPtr>& procNodes) {
+  void AddToDispatcher(const std::set<DataPtr> &procNodes) {
     for (DataPtr curNodePtr : procNodes) {
       auto it = m_nodes.find(curNodePtr);
       assert(it != m_nodes.end());
@@ -122,7 +124,7 @@ class EvalPlan {
     }
   }
 
- private:
+private:
   std::unordered_map<DataPtr, size_t> m_nodeInArcNum;
   std::unordered_map<DataPtr, std::set<DataPtr>> m_nodeAimPos;
   std::unordered_map<DataPtr, std::unique_ptr<BaseEvalItem>> m_nodes;
@@ -131,10 +133,9 @@ class EvalPlan {
   std::set<DataPtr> m_procNodes;
 };
 
-template <typename TData>
-auto Evaluate(const TData& data) {
+template <typename TData> auto Evaluate(const TData &data) {
   auto evalHandle = data.EvalRegister();
   EvalPlan::Inst().Eval();
   return evalHandle.Data();
 }
-}  // namespace MetaNN
+} // namespace MetaNN

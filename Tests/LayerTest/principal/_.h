@@ -10,4 +10,4 @@ void test_principal() {
   Principal::test_others();
   Principal::test_tensor();
 }
-}  // namespace Test::Layer
+} // namespace Test::Layer

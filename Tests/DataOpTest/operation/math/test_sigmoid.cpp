@@ -87,7 +87,7 @@ void test_sigmoid_case4() {
   cout << "done" << endl;
 }
 
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_sigmoid() {
@@ -96,7 +96,7 @@ void test_sigmoid() {
   test_sigmoid_case3();
   test_sigmoid_case4();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math
 
 namespace {
 void test_sigmoid_grad_case1() {
@@ -135,11 +135,11 @@ void test_sigmoid_grad_case2() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_sigmoid_grad() {
   test_sigmoid_grad_case1();
   test_sigmoid_grad_case2();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math

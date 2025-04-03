@@ -11,4 +11,4 @@ void test() {
   Test::Operation::Others::test();
   Test::Operation::Tensor::test();
 }
-}  // namespace Test::Operation
+} // namespace Test::Operation

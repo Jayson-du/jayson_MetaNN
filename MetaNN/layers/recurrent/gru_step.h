@@ -61,8 +61,7 @@ using Base =
     ComposeKernel<LayerPortSet<LayerInput, Previous<LayerOutput>>,
                   LayerPortSet<LayerOutput>, TInputMap, TPolicies, Topology>;
 
-template <typename TPolicies>
-struct CalParameterPolicy_ {
+template <typename TPolicies> struct CalParameterPolicy_ {
   static_assert(IsPolicyContainer<TPolicies>,
                 "TPolicies is not a policy container.");
   using CurLayerPolicy = PlainPolicy<TPolicies>;
@@ -77,7 +76,7 @@ struct CalParameterPolicy_ {
 
 template <typename TPolicies>
 using CalParameterPolicy = typename CalParameterPolicy_<TPolicies>::type;
-}  // namespace NSGruStep
+} // namespace NSGruStep
 
 template <typename TInputMap, typename TPolicies>
 class GruStep
@@ -86,8 +85,8 @@ class GruStep
   using ModifiedPolicy = NSGruStep::CalParameterPolicy<TPolicies>;
   using TBase = NSGruStep::Base<TInputMap, ModifiedPolicy>;
 
- public:
-  GruStep(const std::string& p_name, size_t p_fanIn, size_t p_fanOut)
+public:
+  GruStep(const std::string &p_name, size_t p_fanIn, size_t p_fanOut)
       : TBase(
             TBase::CreateSublayers()
                 .template Set<NSGruStep::Wz>(p_name + "/Wz", p_fanIn, p_fanOut)
@@ -106,4 +105,4 @@ class GruStep
                 .template Set<NSGruStep::Interpolate>(p_name +
                                                       "/Interpolate")) {}
 };
-}  // namespace MetaNN
+} // namespace MetaNN

@@ -8,12 +8,11 @@
 #include <type_traits>
 
 namespace MetaNN {
-template <typename TPolicyCont = PolicyContainer<>>
-class GaussianFiller {
+template <typename TPolicyCont = PolicyContainer<>> class GaussianFiller {
   using TRandomEngine =
       typename PolicySelect<InitPolicy, TPolicyCont>::RandEngine;
 
- public:
+public:
   GaussianFiller(double p_mean, double p_std,
                  unsigned seed = std::random_device{}())
       : m_engine(seed), m_mean(p_mean), m_std(p_std) {
@@ -22,17 +21,16 @@ class GaussianFiller {
     }
   }
 
-  template <typename TData>
-  void Fill(TData& data) {
+  template <typename TData> void Fill(TData &data) {
     using ElementType = typename TData::ElementType;
     std::normal_distribution<ElementType> dist(static_cast<ElementType>(m_mean),
                                                static_cast<ElementType>(m_std));
     NSInitializer::FillWithDist(data, dist, m_engine);
   }
 
- private:
+private:
   TRandomEngine m_engine;
   double m_mean;
   double m_std;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

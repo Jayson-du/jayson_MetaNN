@@ -31,4 +31,4 @@ void test_math() {
   test_tan_layer();
   test_tanh_layer();
 }
-}  // namespace Test::Layer::Principal
+} // namespace Test::Layer::Principal

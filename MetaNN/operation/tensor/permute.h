@@ -17,7 +17,7 @@ namespace MetaNN {
 namespace OperPermute::NSCaseGen {
 template <typename TInputHandle, typename TOutputHandle, typename TPolicies>
 class EvalItem : public BaseEvalItem {
- public:
+public:
   using CategoryTag = CategoryTagFromHandle<TOutputHandle>;
 
   EvalItem(TInputHandle oriHandle, TOutputHandle outputHandle,
@@ -25,8 +25,7 @@ class EvalItem : public BaseEvalItem {
       : BaseEvalItem(TypeID<EvalItem>(), {oriHandle.DataPtr()},
                      outputHandle.DataPtr()),
         m_inputHandle(std::move(oriHandle)),
-        m_outputHandle(std::move(outputHandle)),
-        m_outShape(std::move(shape)) {}
+        m_outputHandle(std::move(outputHandle)), m_outShape(std::move(shape)) {}
 
   const TInputHandle m_inputHandle;
   TOutputHandle m_outputHandle;
@@ -39,10 +38,10 @@ class EvalGroup : public TrivialEvalGroup<
   using EvalItemType = EvalItem<TInputHandle, TOutputHandle, TPolicies>;
   constexpr static size_t uDim = EvalItemType::CategoryTag::DimNum;
 
- protected:
-  virtual void EvalInternalLogic(EvalItemType& evalItem) final override {
-    const auto& in = evalItem.m_inputHandle.Data();
-    const auto& oriShape = in.Shape();
+protected:
+  virtual void EvalInternalLogic(EvalItemType &evalItem) final override {
+    const auto &in = evalItem.m_inputHandle.Data();
+    const auto &oriShape = in.Shape();
 
     constexpr auto dims = PolicySelect<DimPolicy, TPolicies>::DimArray;
 
@@ -65,17 +64,18 @@ class EvalGroup : public TrivialEvalGroup<
     while (true) {
       auto rit2_n = rit2;
       ++rit2_n;
-      if (rit2_n == aimGaps.rend()) break;
+      if (rit2_n == aimGaps.rend())
+        break;
       *rit2_n = (*rit1) * (*rit2);
       ++rit1;
       ++rit2;
     }
 
     auto low_in = LowerAccess(in);
-    const ElementType* mem_in = low_in.RawMemory();
+    const ElementType *mem_in = low_in.RawMemory();
 
     auto low_out = LowerAccess(out);
-    ElementType* mem_out = low_out.MutableRawMemory();
+    ElementType *mem_out = low_out.MutableRawMemory();
 
     static_assert(
         std::is_same_v<DeviceTypeFromHandle<TOutputHandle>, DeviceTags::CPU>,
@@ -94,19 +94,18 @@ class EvalGroup : public TrivialEvalGroup<
     evalItem.m_outputHandle.SetData(std::move(out));
   }
 
- private:
-  void CalAimPos(const std::array<size_t, uDim>& oriPos,
-                 const std::array<size_t, uDim>& dims,
-                 std::array<size_t, uDim>& aimPos) const {
+private:
+  void CalAimPos(const std::array<size_t, uDim> &oriPos,
+                 const std::array<size_t, uDim> &dims,
+                 std::array<size_t, uDim> &aimPos) const {
     for (size_t i = 0; i < uDim; ++i) {
       aimPos[i] = oriPos[dims[i]];
     }
   }
 };
-}  // namespace OperPermute::NSCaseGen
+} // namespace OperPermute::NSCaseGen
 
-template <>
-struct OperSeq_<OpTags::Permute> {
+template <> struct OperSeq_<OpTags::Permute> {
   using type = OperCalAlgoChain<TailCalculator<
       OperPermute::NSCaseGen::EvalItem, OperPermute::NSCaseGen::EvalGroup,
       PolicyContainer<PPassPolicy, PPassShape>>>;
@@ -120,9 +119,9 @@ template <typename TCate, typename TPolicies>
 class OperShapeInfo<OpTags::Permute, TCate, TPolicies> {
   constexpr static size_t uDim = TCate::DimNum;
 
- public:
+public:
   template <typename TOperAuxParams, typename TOperand>
-  OperShapeInfo(const TOperAuxParams&, const TOperand& operand) {
+  OperShapeInfo(const TOperAuxParams &, const TOperand &operand) {
     constexpr auto dims = PolicySelect<DimPolicy, TPolicies>::DimArray;
     auto prevShape = operand.Shape();
 
@@ -131,23 +130,24 @@ class OperShapeInfo<OpTags::Permute, TCate, TPolicies> {
     }
   }
 
-  const auto& Shape() const { return m_shape; }
+  const auto &Shape() const { return m_shape; }
 
- private:
+private:
   MetaNN::Shape<uDim> m_shape;
 };
 
 namespace OperPermute {
-template <size_t uDim>
-constexpr bool ValidDims(std::array<size_t, uDim> dims) {
+template <size_t uDim> constexpr bool ValidDims(std::array<size_t, uDim> dims) {
   std::array<bool, uDim> checkBuf{};
   for (size_t i = 0; i < uDim; ++i) {
-    if (dims[i] >= uDim) return false;
+    if (dims[i] >= uDim)
+      return false;
     checkBuf[i] = true;
   }
 
   for (size_t i = 0; i < uDim; ++i) {
-    if (!checkBuf[i]) return false;
+    if (!checkBuf[i])
+      return false;
   }
   return true;
 }
@@ -155,15 +155,16 @@ constexpr bool ValidDims(std::array<size_t, uDim> dims) {
 template <size_t uDim>
 constexpr bool TrivialDims(std::array<size_t, uDim> dims) {
   for (size_t i = 0; i < uDim; ++i) {
-    if (dims[i] != i) return false;
+    if (dims[i] != i)
+      return false;
   }
   return true;
 }
-}  // namespace OperPermute
+} // namespace OperPermute
 
 template <typename TDimPolicy, typename TP,
-          std::enable_if_t<IsValidOper<OpTags::Permute, TP>>* = nullptr>
-auto Permute(TP&& oper) {
+          std::enable_if_t<IsValidOper<OpTags::Permute, TP>> * = nullptr>
+auto Permute(TP &&oper) {
   constexpr auto dims = PolicySelect<DimPolicy, TDimPolicy>::DimArray;
   static_assert(OperPermute::ValidDims(dims));
   if constexpr (OperPermute::TrivialDims(dims)) {
@@ -179,25 +180,24 @@ auto Permute(TP&& oper) {
 }
 
 template <typename TP,
-          std::enable_if_t<IsValidOper<OpTags::Permute, TP>>* = nullptr>
-auto Transpose(TP&& oper) {
+          std::enable_if_t<IsValidOper<OpTags::Permute, TP>> * = nullptr>
+auto Transpose(TP &&oper) {
   static_assert(DataCategory<TP>::DimNum == 2);
   return Permute<PolicyContainer<PDimArrayIs<1, 0>>>(std::forward<TP>(oper));
 }
 
 namespace OperPermute {
-template <typename TIndexSeq, typename TDimArray>
-struct DimInv_;
+template <typename TIndexSeq, typename TDimArray> struct DimInv_;
 
 template <size_t... Index, typename TDimArray>
 struct DimInv_<std::index_sequence<Index...>, TDimArray> {
   using type = PDimArrayIs<ValueSequential::Order<TDimArray, Index>...>;
 };
-}  // namespace OperPermute
+} // namespace OperPermute
 
 template <typename TDimPolicy, typename TP,
-          std::enable_if_t<IsValidOper<OpTags::Permute, TP>>* = nullptr>
-auto PermuteInv(TP&& oper) {
+          std::enable_if_t<IsValidOper<OpTags::Permute, TP>> * = nullptr>
+auto PermuteInv(TP &&oper) {
   constexpr auto dims = PolicySelect<DimPolicy, TDimPolicy>::DimArray;
   static_assert(OperPermute::ValidDims(dims));
   if constexpr (OperPermute::TrivialDims(dims)) {
@@ -211,4 +211,4 @@ auto PermuteInv(TP&& oper) {
     return Permute<PolicyContainer<PModDim>>(std::forward<TP>(oper));
   }
 }
-}  // namespace MetaNN
+} // namespace MetaNN

@@ -16,7 +16,7 @@ constexpr static size_t InferredDimSize = (size_t)-1;
 namespace OperReshape::NSCaseGen {
 template <typename TInputHandle, typename TOutputHandle>
 class EvalItem : public BaseEvalItem {
- public:
+public:
   using CategoryTag = CategoryTagFromHandle<TOutputHandle>;
 
   EvalItem(TInputHandle oriHandle, TOutputHandle outputHandle,
@@ -24,8 +24,7 @@ class EvalItem : public BaseEvalItem {
       : BaseEvalItem(TypeID<EvalItem>(), {oriHandle.DataPtr()},
                      outputHandle.DataPtr()),
         m_inputHandle(std::move(oriHandle)),
-        m_outputHandle(std::move(outputHandle)),
-        m_outShape(std::move(shape)) {}
+        m_outputHandle(std::move(outputHandle)), m_outShape(std::move(shape)) {}
 
   const TInputHandle m_inputHandle;
   TOutputHandle m_outputHandle;
@@ -37,9 +36,9 @@ class EvalGroup
     : public TrivialEvalGroup<EvalItem<TInputHandle, TOutputHandle>> {
   using EvalItemType = EvalItem<TInputHandle, TOutputHandle>;
 
- protected:
-  virtual void EvalInternalLogic(EvalItemType& evalItem) final override {
-    const auto& in = evalItem.m_inputHandle.Data();
+protected:
+  virtual void EvalInternalLogic(EvalItemType &evalItem) final override {
+    const auto &in = evalItem.m_inputHandle.Data();
     assert(in.Shape().Count() == evalItem.m_outShape.Count());
     auto low_in = LowerAccess(in);
 
@@ -53,10 +52,9 @@ class EvalGroup
     }
   }
 };
-}  // namespace OperReshape::NSCaseGen
+} // namespace OperReshape::NSCaseGen
 
-template <>
-struct OperSeq_<OpTags::Reshape> {
+template <> struct OperSeq_<OpTags::Reshape> {
   using type =
       OperCalAlgoChain<TailCalculator<OperReshape::NSCaseGen::EvalItem,
                                       OperReshape::NSCaseGen::EvalGroup,
@@ -67,21 +65,21 @@ template <typename TCate, typename TPolicies>
 class OperShapeInfo<OpTags::Reshape, TCate, TPolicies> {
   constexpr static size_t uDim = TCate::DimNum;
 
- public:
+public:
   template <typename TOperAuxParams, typename TOperand>
-  OperShapeInfo(const TOperAuxParams& params, const TOperand&)
+  OperShapeInfo(const TOperAuxParams &params, const TOperand &)
       : m_shape(params.m_shape) {}
 
-  const auto& Shape() const { return m_shape; }
+  const auto &Shape() const { return m_shape; }
 
- private:
+private:
   MetaNN::Shape<uDim> m_shape;
 };
 
 template <typename TElem, typename TCate>
 struct OperAuxParams<OpTags::Reshape, TElem, TCate> {
   template <typename T>
-  OperAuxParams(MetaNN::Shape<TCate::DimNum> new_shape, const T& old_shape)
+  OperAuxParams(MetaNN::Shape<TCate::DimNum> new_shape, const T &old_shape)
       : m_shape(new_shape) {
     const size_t ori_shape_count = old_shape.Count();
     if constexpr (TCate::DimNum == 0) {
@@ -127,8 +125,8 @@ struct OperCategory_<OpTags::Reshape, TPolicy, TOperand> {
 };
 
 template <typename TP, size_t uDim,
-          std::enable_if_t<IsValidOper<OpTags::Reshape, TP>>* = nullptr>
-auto Reshape(TP&& oper, MetaNN::Shape<uDim> newShape) {
+          std::enable_if_t<IsValidOper<OpTags::Reshape, TP>> * = nullptr>
+auto Reshape(TP &&oper, MetaNN::Shape<uDim> newShape) {
   using rawOp = RemConstRef<TP>;
   using ResType = Operation<OpTags::Reshape, OperandContainer<rawOp>,
                             PolicyContainer<PDimCountIs<uDim>>>;
@@ -138,4 +136,4 @@ auto Reshape(TP&& oper, MetaNN::Shape<uDim> newShape) {
       aux(std::move(newShape), oper.Shape());
   return ResType(std::move(aux), std::forward<TP>(oper));
 }
-}  // namespace MetaNN
+} // namespace MetaNN

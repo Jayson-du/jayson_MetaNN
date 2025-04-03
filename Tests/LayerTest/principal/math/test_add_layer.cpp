@@ -299,7 +299,7 @@ void test_add_layer6() {
   layer.NeutralInvariant();
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Principal {
 void test_add_layer() {
@@ -310,4 +310,4 @@ void test_add_layer() {
   test_add_layer5();
   test_add_layer6();
 }
-}  // namespace Test::Layer::Principal
+} // namespace Test::Layer::Principal

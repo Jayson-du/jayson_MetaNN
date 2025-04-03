@@ -95,11 +95,11 @@ void test_acos_layer2() {
   LayerNeutralInvariant(layer);
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Principal {
 void test_acos_layer() {
   test_acos_layer1();
   test_acos_layer2();
 }
-}  // namespace Test::Layer::Principal
+} // namespace Test::Layer::Principal

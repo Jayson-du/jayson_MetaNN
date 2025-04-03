@@ -294,34 +294,34 @@ void test_gru4() {
   GradCollector<CheckElement, CheckDevice> grad_collector;
   layer.GradCollect(grad_collector);
 
-  const auto& matrixCont =
+  const auto &matrixCont =
       grad_collector.GetContainer<CategoryTags::Tensor<2>>();
-  const auto& w_grad =
+  const auto &w_grad =
       Evaluate(matrixCont.find("root/kernel/W/param")->second.Grad());
   assert(
       Compare(w_grad, FillTensor<CheckElement>(wi_grad_check, 4, 6), 0.001f));
 
-  const auto& wz_grad =
+  const auto &wz_grad =
       Evaluate(matrixCont.find("root/kernel/Wz/param")->second.Grad());
   assert(
       Compare(wz_grad, FillTensor<CheckElement>(wu_grad_check, 4, 6), 0.001f));
 
-  const auto& wr_grad =
+  const auto &wr_grad =
       Evaluate(matrixCont.find("root/kernel/Wr/param")->second.Grad());
   assert(
       Compare(wr_grad, FillTensor<CheckElement>(wr_grad_check, 4, 6), 0.001f));
 
-  const auto& u_grad =
+  const auto &u_grad =
       Evaluate(matrixCont.find("root/kernel/U/param")->second.Grad());
   assert(Compare(u_grad, FillTensor<CheckElement>(check_input_grad, 6, 6),
                  0.001f));
 
-  const auto& uz_grad =
+  const auto &uz_grad =
       Evaluate(matrixCont.find("root/kernel/Uz/param")->second.Grad());
   assert(
       Compare(uz_grad, FillTensor<CheckElement>(check_up_grad, 6, 6), 0.001f));
 
-  const auto& ur_grad =
+  const auto &ur_grad =
       Evaluate(matrixCont.find("root/kernel/Ur/param")->second.Grad());
   assert(Compare(ur_grad, FillTensor<CheckElement>(check_reset_grad, 6, 6),
                  0.001f));
@@ -329,7 +329,7 @@ void test_gru4() {
   LayerNeutralInvariant(layer);
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Recurrent {
 void test_gru() {
@@ -338,4 +338,4 @@ void test_gru() {
   test_gru3();
   test_gru4();
 }
-}  // namespace Test::Layer::Recurrent
+} // namespace Test::Layer::Recurrent

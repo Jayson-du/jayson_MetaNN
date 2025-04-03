@@ -6,7 +6,7 @@ void test_bias_layer();
 void test_linear_layer();
 void test_single_layer_perceptron();
 void test_weight_layer();
-}  // namespace Composite
+} // namespace Composite
 
 void test_composite() {
   Composite::test_compose_kenrel();
@@ -16,4 +16,4 @@ void test_composite() {
   Composite::test_single_layer_perceptron();
   Composite::test_weight_layer();
 }
-}  // namespace Test::Layer
+} // namespace Test::Layer

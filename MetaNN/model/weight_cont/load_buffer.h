@@ -8,19 +8,18 @@
 #include <unordered_map>
 
 namespace MetaNN {
-template <typename TElem, typename TDevice>
-class LoadBuffer {
- public:
+template <typename TElem, typename TDevice> class LoadBuffer {
+public:
   LoadBuffer() = default;
 
   template <typename TCategory>
-  const auto* TryGet(const std::string& name) const {
+  const auto *TryGet(const std::string &name) const {
     using AimType = PrincipalDataType<TCategory, TElem, TDevice>;
     return m_weightBuffer.TryGet<AimType>(name);
   }
 
   template <typename TData>
-  void Set(const std::string& name, const TData& data) {
+  void Set(const std::string &name, const TData &data) {
     static_assert(std::is_same_v<typename TData::ElementType, TElem>);
     static_assert(std::is_same_v<typename TData::DeviceType, TDevice>);
     m_weightBuffer.Set(name, data);
@@ -29,12 +28,12 @@ class LoadBuffer {
   void Clear() { m_weightBuffer.Clear(); }
 
   template <typename TParamCate>
-  bool IsParamExist(const std::string& name) const {
+  bool IsParamExist(const std::string &name) const {
     using AimType = PrincipalDataType<TParamCate, TElem, TDevice>;
     return m_weightBuffer.IsExist<AimType>(name);
   }
 
- private:
+private:
   WeightBuffer m_weightBuffer;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

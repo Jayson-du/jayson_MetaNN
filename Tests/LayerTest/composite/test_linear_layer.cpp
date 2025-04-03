@@ -112,13 +112,13 @@ void test_linear_layer2() {
 
   GradCollector<CheckElement, CheckDevice> grad_collector;
   layer.GradCollect(grad_collector);
-  auto& gradCont = grad_collector.GetContainer<CategoryTags::Matrix>();
+  auto &gradCont = grad_collector.GetContainer<CategoryTags::Matrix>();
   assert(gradCont.size() == 2);
 
   bool weight_update_valid = false;
   bool bias_update_valid = false;
 
-  for (auto& p : gradCont) {
+  for (auto &p : gradCont) {
     auto w = p.second.Weight();
     auto info = Evaluate(p.second.Grad());
     if (w.Shape() == w1.Shape()) {
@@ -206,7 +206,7 @@ void test_linear_layer3() {
 
   GradCollector<CheckElement, CheckDevice> grad_collector;
   layer.GradCollect(grad_collector);
-  auto& gradCont = grad_collector.GetContainer<CategoryTags::Matrix>();
+  auto &gradCont = grad_collector.GetContainer<CategoryTags::Matrix>();
   assert(gradCont.size() == 1);
 
   auto w = gradCont.begin()->second.Weight();
@@ -278,7 +278,7 @@ void test_linear_layer4() {
 
   GradCollector<CheckElement, CheckDevice> grad_collector;
   layer.GradCollect(grad_collector);
-  auto& gradCont = grad_collector.GetContainer<CategoryTags::Matrix>();
+  auto &gradCont = grad_collector.GetContainer<CategoryTags::Matrix>();
   assert(gradCont.size() == 1);
 
   auto w = gradCont.begin()->second.Weight();
@@ -298,7 +298,7 @@ void test_linear_layer4() {
   assert(params.IsParamExist<CategoryTags::Matrix>("root/bias"));
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Composite {
 void test_linear_layer() {
@@ -307,4 +307,4 @@ void test_linear_layer() {
   test_linear_layer3();
   test_linear_layer4();
 }
-}  // namespace Test::Layer::Composite
+} // namespace Test::Layer::Composite

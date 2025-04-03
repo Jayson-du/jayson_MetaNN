@@ -13,7 +13,7 @@ namespace MetaNN {
 namespace NSBiasVector {
 template <typename TInputHandle, typename TOutputHandle>
 class EvalItem : public BaseEvalItem {
- public:
+public:
   using DeviceType = DeviceTypeFromHandle<TOutputHandle>;
 
   EvalItem(TInputHandle inputHandle, TOutputHandle outputHandle, size_t vecLen,
@@ -21,9 +21,7 @@ class EvalItem : public BaseEvalItem {
       : BaseEvalItem(TypeID<EvalItem>(), {inputHandle.DataPtr()},
                      outputHandle.DataPtr()),
         m_inputHandle(std::move(inputHandle)),
-        m_resHandle(std::move(outputHandle)),
-        m_vecLen(vecLen),
-        m_pos(pos) {}
+        m_resHandle(std::move(outputHandle)), m_vecLen(vecLen), m_pos(pos) {}
 
   TInputHandle m_inputHandle;
   TOutputHandle m_resHandle;
@@ -36,8 +34,8 @@ class EvalGroup
     : public TrivialEvalGroup<EvalItem<TInputHandle, TOutputHandle>> {
   using EvalItemType = EvalItem<TInputHandle, TOutputHandle>;
 
- protected:
-  virtual void EvalInternalLogic(EvalItemType& evalItem) final override {
+protected:
+  virtual void EvalInternalLogic(EvalItemType &evalItem) final override {
     using ResType = typename TOutputHandle::DataType;
     using ElementType = typename ResType::ElementType;
 
@@ -54,26 +52,24 @@ class EvalGroup
     evalItem.m_resHandle.SetData(std::move(out));
   }
 };
-}  // namespace NSBiasVector
+} // namespace NSBiasVector
 
-template <typename TScalar>
-class BiasVector {
- public:
+template <typename TScalar> class BiasVector {
+public:
   using CategoryTag = CategoryTags::Tensor<1>;
   using ElementType = typename TScalar::ElementType;
   using DeviceType = typename TScalar::DeviceType;
 
- public:
+public:
   explicit BiasVector(size_t vecLen, size_t pos, TScalar scalar)
-      : m_shape(MetaNN::Shape(vecLen)),
-        m_pos(pos),
+      : m_shape(MetaNN::Shape(vecLen)), m_pos(pos),
         m_scalar(std::move(scalar)) {
     assert(pos < vecLen);
   }
 
-  const auto& Shape() const noexcept { return m_shape; }
+  const auto &Shape() const noexcept { return m_shape; }
 
-  bool operator==(const BiasVector& val) const {
+  bool operator==(const BiasVector &val) const {
     return (m_shape == val.m_shape) && (m_pos == val.m_pos) &&
            (m_scalar == val.m_scalar);
   }
@@ -101,12 +97,15 @@ class BiasVector {
 
   size_t HotPos() const { return m_pos; }
 
-  const auto& Scalar() const { return m_scalar; }
+  const auto &Scalar() const { return m_scalar; }
 
- private:
+private:
+  // 记录维度
   MetaNN::Shape<1> m_shape;
+  // 第几个元素
   size_t m_pos;
+  // 存储0维Tensor
   TScalar m_scalar;
   EvalBuffer<Tensor<ElementType, DeviceType, 1>> m_evalBuf;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

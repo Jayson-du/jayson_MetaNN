@@ -584,8 +584,8 @@ void test_compose_kernel10() {
                      std::shared_ptr<Layer5Final>>>);
   static_assert(Check::IsFeedbackOutput);
   static_assert(
-      !Check::IsUpdate);  // Note: although Layer2Final has update as its
-                          // policy, the layer itself is not updated.
+      !Check::IsUpdate); // Note: although Layer2Final has update as its
+                         // policy, the layer itself is not updated.
 
   Check vCheck(Check::CreateSublayers()
                    .Set<Sublayer1>("MySublayer1")
@@ -595,7 +595,7 @@ void test_compose_kernel10() {
                    .Set<Sublayer5>("MySublayer5"));
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Composite {
 void test_compose_kenrel() {
@@ -610,4 +610,4 @@ void test_compose_kenrel() {
   test_compose_kernel9();
   test_compose_kernel10();
 }
-}  // namespace Test::Layer::Composite
+} // namespace Test::Layer::Composite

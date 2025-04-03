@@ -33,4 +33,4 @@ template <template <typename, typename> class T, typename TInputMap,
           typename... TPolicies>
 using MakeTrainLayer =
     typename MakeTrainLayer_<T, TInputMap, TPolicies...>::type;
-}  // namespace MetaNN
+} // namespace MetaNN

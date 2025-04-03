@@ -9,6 +9,10 @@ using namespace MetaNN;
 namespace {
 void test_shape1() {
   cout << "Test shape case 1 (equality)...\t";
+
+  Shape<3> sh0(1, 2, 3);
+  auto x = Shape(1, 2, 3, 4);
+
   Shape<3> sh;
   assert(sh[0] == 0);
   assert(sh[1] == 0);
@@ -104,7 +108,7 @@ void test_shape6() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Data::Facilities {
 void test_shape() {
@@ -115,4 +119,4 @@ void test_shape() {
   test_shape5();
   test_shape6();
 }
-}  // namespace Test::Data::Facilities
+} // namespace Test::Data::Facilities

@@ -170,7 +170,7 @@ void test_divide_case8() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_divide() {
@@ -188,4 +188,4 @@ void test_divide() {
   // divide from number
   test_divide_case8();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math

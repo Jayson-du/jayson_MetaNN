@@ -18,7 +18,7 @@ namespace OperDot::NSCaseGen {
 template <typename TInputHandle1, typename TInputHandle2,
           typename TOutputHandle, typename TPolicy>
 class EvalItem : public BaseEvalItem {
- public:
+public:
   using CategoryTag = CategoryTagFromHandle<TOutputHandle>;
 
   EvalItem(TInputHandle1 operand1, TInputHandle2 operand2,
@@ -26,8 +26,7 @@ class EvalItem : public BaseEvalItem {
       : BaseEvalItem(TypeID<EvalItem>(),
                      {operand1.DataPtr(), operand2.DataPtr()},
                      outputHandle.DataPtr()),
-        m_operand1(std::move(operand1)),
-        m_operand2(std::move(operand2)),
+        m_operand1(std::move(operand1)), m_operand2(std::move(operand2)),
         m_outputHandle(std::move(outputHandle)),
         m_outputShape(std::move(shape)) {}
 
@@ -45,10 +44,10 @@ class EvalGroup
   using EvalItemType =
       EvalItem<TInputHandle1, TInputHandle2, TOutputHandle, TPolicy>;
 
- protected:
-  virtual void EvalInternalLogic(EvalItemType& evalItem) final override {
-    const auto& in1 = evalItem.m_operand1.Data();
-    const auto& in2 = evalItem.m_operand2.Data();
+protected:
+  virtual void EvalInternalLogic(EvalItemType &evalItem) final override {
+    const auto &in1 = evalItem.m_operand1.Data();
+    const auto &in2 = evalItem.m_operand2.Data();
 
     constexpr size_t modDimNum = PolicySelect<DimPolicy, TPolicy>::ModifyDimNum;
     size_t contractCount = 1;
@@ -65,13 +64,13 @@ class EvalGroup
     ResType out(evalItem.m_outputShape);
 
     auto low_in1 = LowerAccess(in1);
-    const ElementType* mem_in1 = low_in1.RawMemory();
+    const ElementType *mem_in1 = low_in1.RawMemory();
 
     auto low_in2 = LowerAccess(in2);
-    const ElementType* mem_in2 = low_in2.RawMemory();
+    const ElementType *mem_in2 = low_in2.RawMemory();
 
     auto low_out = LowerAccess(out);
-    ElementType* mem_out = low_out.MutableRawMemory();
+    ElementType *mem_out = low_out.MutableRawMemory();
 
     static_assert(
         std::is_same_v<DeviceTypeFromHandle<TOutputHandle>, DeviceTags::CPU>,
@@ -89,7 +88,7 @@ class EvalGroup
     evalItem.m_outputHandle.SetData(std::move(out));
   }
 };
-}  // namespace OperDot::NSCaseGen
+} // namespace OperDot::NSCaseGen
 
 template <typename TOperand1, typename TOperand2>
 constexpr bool IsValidOper<OpTags::Dot, TOperand1, TOperand2> =
@@ -106,10 +105,10 @@ struct OperCategory_<OpTags::Dot, TPolicy, TOperand1, TOperand2> {
 
 template <typename TCate, typename TPolicies>
 class OperShapeInfo<OpTags::Dot, TCate, TPolicies> {
- public:
+public:
   template <typename TOperAuxParams, typename TOperand1, typename TOperand2>
-  OperShapeInfo(const TOperAuxParams&, const TOperand1& operand1,
-                const TOperand2& operand2) {
+  OperShapeInfo(const TOperAuxParams &, const TOperand1 &operand1,
+                const TOperand2 &operand2) {
     if constexpr (TCate::DimNum > 0) {
       constexpr static size_t modDimNum =
           PolicySelect<DimPolicy, TPolicies>::ModifyDimNum;
@@ -127,22 +126,21 @@ class OperShapeInfo<OpTags::Dot, TCate, TPolicies> {
     }
   }
 
-  const auto& Shape() const { return m_shape; }
+  const auto &Shape() const { return m_shape; }
 
- private:
+private:
   MetaNN::Shape<TCate::DimNum> m_shape;
 };
 
-template <>
-struct OperSeq_<OpTags::Dot> {
+template <> struct OperSeq_<OpTags::Dot> {
   using type = OperCalAlgoChain<TailCalculator<
       OperDot::NSCaseGen::EvalItem, OperDot::NSCaseGen::EvalGroup,
       PolicyContainer<PPassPolicy, PPassShape>>>;
 };
 
 template <typename TPolicy = PolicyContainer<>, typename TP1, typename TP2,
-          std::enable_if_t<IsValidOper<OpTags::Dot, TP1, TP2>>* = nullptr>
-auto Dot(TP1&& p_m1, TP2&& p_m2) {
+          std::enable_if_t<IsValidOper<OpTags::Dot, TP1, TP2>> * = nullptr>
+auto Dot(TP1 &&p_m1, TP2 &&p_m2) {
   constexpr size_t modDimNum = PolicySelect<DimPolicy, TPolicy>::ModifyDimNum;
   static_assert(DataCategory<TP1>::DimNum >= modDimNum);
   static_assert(DataCategory<TP2>::DimNum >= modDimNum);
@@ -159,4 +157,4 @@ auto Dot(TP1&& p_m1, TP2&& p_m2) {
                 PolicyContainer<PModifyDimNumIs<modDimNum>>>;
   return ResType(std::forward<TP1>(p_m1), std::forward<TP2>(p_m2));
 }
-}  // namespace MetaNN
+} // namespace MetaNN

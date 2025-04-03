@@ -17,4 +17,4 @@ template <typename TElem, typename TDevice>
 using BatchThreeDArraySequence =
     StaticArray<TElem, TDevice, CategoryTags::BatchSequence,
                 CategoryTags::ThreeDArray>;
-}  // namespace MetaNN
+} // namespace MetaNN

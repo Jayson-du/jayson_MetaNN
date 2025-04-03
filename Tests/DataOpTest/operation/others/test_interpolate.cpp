@@ -75,7 +75,7 @@ void test_interpolate_case3() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Others {
 void test_interpolate() {
@@ -83,4 +83,4 @@ void test_interpolate() {
   test_interpolate_case2();
   test_interpolate_case3();
 }
-}  // namespace Test::Operation::Others
+} // namespace Test::Operation::Others

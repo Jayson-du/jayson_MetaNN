@@ -4,12 +4,11 @@
 #include <MetaNN/policies/_.h>
 
 namespace MetaNN {
-template <typename TInputs, typename TPolicies>
-class InterpolateLayer {
+template <typename TInputs, typename TPolicies> class InterpolateLayer {
   static_assert(IsPolicyContainer<TPolicies>);
   using CurLayerPolicy = PlainPolicy<TPolicies>;
 
- public:
+public:
   static constexpr bool IsFeedbackOutput =
       PolicySelect<GradPolicy, CurLayerPolicy>::IsFeedbackOutput;
   static constexpr bool IsUpdate = false;
@@ -24,7 +23,7 @@ class InterpolateLayer {
                                   Identity_<TInputs>>::type;
   static_assert(CheckInputMapAvailable_<InputMap, InputPortSet>::value);
 
- private:
+private:
   using TInterpolateLayerWeight1FP =
       typename InputMap::template Find<InterpolateLayerWeight1>;
   using TInterpolateLayerWeight2FP =
@@ -32,11 +31,10 @@ class InterpolateLayer {
   using TInterpolateLayerLambdaFP =
       typename InputMap::template Find<InterpolateLayerLambda>;
 
- public:
+public:
   InterpolateLayer(std::string name) : m_name(std::move(name)) {}
 
-  template <typename TIn>
-  auto FeedForward(TIn&& p_in) {
+  template <typename TIn> auto FeedForward(TIn &&p_in) {
     auto input1 =
         LayerTraits::PickItemFromCont<InputMap, InterpolateLayerWeight1>(
             std::forward<TIn>(p_in));
@@ -61,8 +59,7 @@ class InterpolateLayer {
         Interpolate(input1, input2, lambda));
   }
 
-  template <typename TGrad>
-  auto FeedBackward(TGrad&& p_grad) {
+  template <typename TGrad> auto FeedBackward(TGrad &&p_grad) {
     if constexpr (!IsFeedbackOutput ||
                   RemConstRef<TGrad>::template IsValueEmpty<LayerOutput>) {
       if constexpr (IsFeedbackOutput) {
@@ -115,7 +112,7 @@ class InterpolateLayer {
     }
   }
 
- private:
+private:
   std::string m_name;
   LayerTraits::LayerInternalBuf<TInterpolateLayerWeight1FP, IsFeedbackOutput>
       m_input1Stack;
@@ -131,4 +128,4 @@ class InterpolateLayer {
   LayerTraits::ShapeChecker<TInterpolateLayerLambdaFP, IsFeedbackOutput>
       m_lambdaShape;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

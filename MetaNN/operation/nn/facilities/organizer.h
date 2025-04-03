@@ -9,15 +9,15 @@ struct GenLossOperCategory_ {
 };
 
 class GenLossOperShapeInfo {
- public:
+public:
   template <typename TOpTag, typename THead, typename... TRemain>
   GenLossOperShapeInfo(const OperAuxParams<TOpTag, typename THead::ElementType,
-                                           CategoryTags::Tensor<0>>&,
-                       const THead& head, const TRemain&... rem) {}
+                                           CategoryTags::Tensor<0>> &,
+                       const THead &head, const TRemain &...rem) {}
 
-  const auto& Shape() const {
+  const auto &Shape() const {
     static MetaNN::Shape<0> inst;
     return inst;
   }
 };
-}  // namespace MetaNN
+} // namespace MetaNN

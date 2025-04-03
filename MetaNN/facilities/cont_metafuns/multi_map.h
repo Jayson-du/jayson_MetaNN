@@ -25,10 +25,9 @@ struct imp_<TProcessed, TKey, TValue, Helper::KVBinder<TKey, TVs>, TRemain...> {
       TProcessed, Helper::KVBinder<TKey, Sequential::PushBack<TVs, TValue>>,
       TRemain...>;
 };
-}  // namespace NSInsert
+} // namespace NSInsert
 
-template <typename TCon, typename TKey, typename TValue>
-struct Insert_;
+template <typename TCon, typename TKey, typename TValue> struct Insert_;
 
 template <template <typename...> typename TCon, typename... TItems,
           typename TKey, typename TValue>
@@ -41,21 +40,19 @@ using Insert = typename Insert_<TCon, TKey, TValue>::type;
 // Find
 // ===================================================================================
 namespace NSFind {
-template <typename TCon>
-struct map_;
+template <typename TCon> struct map_;
 
 template <template <typename...> typename TCon, typename... TItem>
 struct map_<TCon<TItem...>> : TItem... {
   using TItem::apply...;
   static Helper::ValueSequence<> apply(...);
 };
-}  // namespace NSFind
+} // namespace NSFind
 
-template <typename TCon, typename TKey>
-struct Find_ {
-  using type = decltype(NSFind::map_<TCon>::apply((TKey*)nullptr));
+template <typename TCon, typename TKey> struct Find_ {
+  using type = decltype(NSFind::map_<TCon>::apply((TKey *)nullptr));
 };
 
 template <typename TCon, typename TKey>
 using Find = typename Find_<TCon, TKey>::type;
-}  // namespace MetaNN::MultiMap
+} // namespace MetaNN::MultiMap

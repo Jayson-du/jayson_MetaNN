@@ -18,7 +18,7 @@ template <typename TInputHandle, typename TOutputHandle>
 class EvalItem : public BaseEvalItem {
   using CategoryTag = CategoryTagFromHandle<TOutputHandle>;
 
- public:
+public:
   EvalItem(TInputHandle oriHandle, TOutputHandle outputHandle)
       : BaseEvalItem(TypeID<EvalItem>(), {oriHandle.DataPtr()},
                      outputHandle.DataPtr()),
@@ -34,9 +34,9 @@ class EvalGroup
     : public TrivialEvalGroup<EvalItem<TInputHandle, TOutputHandle>> {
   using EvalItemType = EvalItem<TInputHandle, TOutputHandle>;
 
- protected:
-  virtual void EvalInternalLogic(EvalItemType& evalItem) final override {
-    const auto& in = evalItem.m_inputHandle.Data();
+protected:
+  virtual void EvalInternalLogic(EvalItemType &evalItem) final override {
+    const auto &in = evalItem.m_inputHandle.Data();
 
     using ResType = typename TOutputHandle::DataType;
     using ElementType = typename ResType::ElementType;
@@ -46,10 +46,10 @@ class EvalGroup
     assert(count == out.Shape().Count());
 
     auto low_in = LowerAccess(in);
-    const ElementType* mem_in = low_in.RawMemory();
+    const ElementType *mem_in = low_in.RawMemory();
 
     auto low_out = LowerAccess(out);
-    ElementType* mem_out = low_out.MutableRawMemory();
+    ElementType *mem_out = low_out.MutableRawMemory();
 
     static_assert(
         std::is_same_v<DeviceTypeFromHandle<TOutputHandle>, DeviceTags::CPU>,
@@ -63,19 +63,18 @@ class EvalGroup
     evalItem.m_outputHandle.SetData(std::move(out));
   }
 };
-}  // namespace OperAbs::NSCaseGen
+} // namespace OperAbs::NSCaseGen
 
-template <>
-struct OperSeq_<OpTags::Abs> {
+template <> struct OperSeq_<OpTags::Abs> {
   using type = OperCalAlgoChain<TailCalculator<OperAbs::NSCaseGen::EvalItem,
                                                OperAbs::NSCaseGen::EvalGroup>>;
 };
 
 template <typename TP,
-          std::enable_if_t<IsValidOper<OpTags::Abs, TP>>* = nullptr>
-auto Abs(TP&& p_m) {
+          std::enable_if_t<IsValidOper<OpTags::Abs, TP>> * = nullptr>
+auto Abs(TP &&p_m) {
   using rawM = RemConstRef<TP>;
   using ResType = Operation<OpTags::Abs, OperandContainer<rawM>>;
   return ResType(std::forward<TP>(p_m));
 }
-}  // namespace MetaNN
+} // namespace MetaNN

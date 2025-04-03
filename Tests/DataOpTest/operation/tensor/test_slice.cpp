@@ -38,11 +38,11 @@ void test_slice_case2() {
 
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Tensor {
 void test_slice() {
   test_slice_case1();
   test_slice_case2();
 }
-}  // namespace Test::Operation::Tensor
+} // namespace Test::Operation::Tensor

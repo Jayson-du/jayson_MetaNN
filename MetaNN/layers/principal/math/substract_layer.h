@@ -5,12 +5,11 @@
 
 #include <stack>
 namespace MetaNN {
-template <typename TInputs, typename TPolicies>
-class SubstractLayer {
+template <typename TInputs, typename TPolicies> class SubstractLayer {
   static_assert(IsPolicyContainer<TPolicies>);
   using CurLayerPolicy = PlainPolicy<TPolicies>;
 
- public:
+public:
   static constexpr bool IsFeedbackOutput =
       PolicySelect<GradPolicy, CurLayerPolicy>::IsFeedbackOutput;
   static constexpr bool IsUpdate = false;
@@ -23,18 +22,17 @@ class SubstractLayer {
                                   Identity_<TInputs>>::type;
   static_assert(CheckInputMapAvailable_<InputMap, InputPortSet>::value);
 
- private:
+private:
   using TLeftOperandFP = typename InputMap::template Find<LeftOperand>;
   using TRightOperandFP = typename InputMap::template Find<RightOperand>;
 
- public:
+public:
   SubstractLayer(std::string name) : m_name(std::move(name)) {}
 
-  template <typename TIn>
-  auto FeedForward(TIn&& p_in) {
-    const auto& input1 = LayerTraits::PickItemFromCont<InputMap, LeftOperand>(
+  template <typename TIn> auto FeedForward(TIn &&p_in) {
+    const auto &input1 = LayerTraits::PickItemFromCont<InputMap, LeftOperand>(
         std::forward<TIn>(p_in));
-    const auto& input2 = LayerTraits::PickItemFromCont<InputMap, RightOperand>(
+    const auto &input2 = LayerTraits::PickItemFromCont<InputMap, RightOperand>(
         std::forward<TIn>(p_in));
 
     if constexpr (IsFeedbackOutput) {
@@ -46,8 +44,7 @@ class SubstractLayer {
                                                                        input2);
   }
 
-  template <typename TGrad>
-  auto FeedBackward(TGrad&& p_grad) {
+  template <typename TGrad> auto FeedBackward(TGrad &&p_grad) {
     if constexpr (!IsFeedbackOutput ||
                   RemConstRef<TGrad>::template IsValueEmpty<LayerOutput>) {
       if constexpr (IsFeedbackOutput) {
@@ -76,7 +73,7 @@ class SubstractLayer {
     }
   }
 
- private:
+private:
   std::string m_name;
 
   LayerTraits::ShapeChecker<TLeftOperandFP, IsFeedbackOutput>
@@ -84,4 +81,4 @@ class SubstractLayer {
   LayerTraits::ShapeChecker<TRightOperandFP, IsFeedbackOutput>
       m_inputShapeChecker2;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

@@ -124,8 +124,10 @@ void test_abs_layer3() {
     for (size_t i = 0; i < loop_count; ++i) {
       for (size_t j = 0; j < 3; ++j) {
         float aim = 0;
-        if (in(i, j) > 0) aim = grad(i, j);
-        if (in(i, j) < 0) aim = -grad(i, j);
+        if (in(i, j) > 0)
+          aim = grad(i, j);
+        if (in(i, j) < 0)
+          aim = -grad(i, j);
         assert(fabs(fb(i, j) - aim) < 0.00001f);
       }
     }
@@ -206,7 +208,7 @@ void test_abs_layer5() {
   LayerNeutralInvariant(layer);
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Principal {
 void test_abs_layer() {
@@ -216,4 +218,4 @@ void test_abs_layer() {
   test_abs_layer4();
   test_abs_layer5();
 }
-}  // namespace Test::Layer::Principal
+} // namespace Test::Layer::Principal

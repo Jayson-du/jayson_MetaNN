@@ -86,7 +86,7 @@ void test_acos_case4() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_acos() {
@@ -95,7 +95,7 @@ void test_acos() {
   test_acos_case3();
   test_acos_case4();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math
 
 namespace {
 void test_acos_grad_case1() {
@@ -213,7 +213,7 @@ void test_acos_grad_case5() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_acos_grad() {
@@ -223,4 +223,4 @@ void test_acos_grad() {
   test_acos_grad_case4();
   test_acos_grad_case5();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math

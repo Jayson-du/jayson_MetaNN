@@ -34,8 +34,8 @@ void test_gaussian_filler1() {
        << " std-delta = " << fabs(sqrt(var) - 3.3) << ' ';
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Model::ParamInitializer {
 void test_gaussian_filler() { test_gaussian_filler1(); }
-}  // namespace Test::Model::ParamInitializer
+} // namespace Test::Model::ParamInitializer

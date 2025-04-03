@@ -159,7 +159,7 @@ void test_multiply_case6() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_multiply() {
@@ -170,4 +170,4 @@ void test_multiply() {
   test_multiply_case5();
   test_multiply_case6();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math

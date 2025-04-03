@@ -29,8 +29,8 @@ void test_policy_operations1() {
   static_assert(is_same_v<check4, PolicyContainer<PNoUpdate>>);
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Policies {
 void test_policy_operations() { test_policy_operations1(); }
-}  // namespace Test::Policies
+} // namespace Test::Policies

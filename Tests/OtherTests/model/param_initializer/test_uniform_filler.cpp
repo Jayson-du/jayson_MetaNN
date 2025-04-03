@@ -34,8 +34,8 @@ void test_uniform_filler1() {
        << " std-delta = " << fabs(sqrt(var) - sqrt(1.0f / 3)) << ' ';
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Model::ParamInitializer {
 void test_uniform_filler() { test_uniform_filler1(); }
-}  // namespace Test::Model::ParamInitializer
+} // namespace Test::Model::ParamInitializer

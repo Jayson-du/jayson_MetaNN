@@ -104,7 +104,7 @@ void test_relu_layer3() {
   LayerNeutralInvariant(layer);
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Principal {
 void test_relu_layer() {
@@ -112,4 +112,4 @@ void test_relu_layer() {
   test_relu_layer2();
   test_relu_layer3();
 }
-}  // namespace Test::Layer::Principal
+} // namespace Test::Layer::Principal

@@ -44,7 +44,7 @@ void test_bias_layer1() {
 
   loadBuffer.Clear();
   layer.SaveWeights(loadBuffer);
-  auto* w = loadBuffer.TryGet<CategoryTags::Tensor<2>>("root/param");
+  auto *w = loadBuffer.TryGet<CategoryTags::Tensor<2>>("root/param");
   assert(w);
 
   auto wInfo = *w;
@@ -140,7 +140,7 @@ void test_bias_layer3() {
   GradCollector<CheckElement, CheckDevice> grad_collector;
   layer.GradCollect(grad_collector);
 
-  auto& gradCont = grad_collector.GetContainer<CategoryTags::Matrix>();
+  auto &gradCont = grad_collector.GetContainer<CategoryTags::Matrix>();
   assert(gradCont.size() == 1);
 
   auto handle1 = gradCont.begin()->second.Weight().EvalRegister();
@@ -207,7 +207,7 @@ void test_bias_layer4() {
 
   GradCollector<CheckElement, CheckDevice> grad_collector;
   layer.GradCollect(grad_collector);
-  auto& gradCont = grad_collector.GetContainer<CategoryTags::Matrix>();
+  auto &gradCont = grad_collector.GetContainer<CategoryTags::Matrix>();
   assert(gradCont.size() == 1);
 
   auto handle1 = gradCont.begin()->second.Weight().EvalRegister();
@@ -296,7 +296,7 @@ void test_bias_layer5() {
 
   GradCollector<CheckElement, CheckDevice> grad_collector;
   layer.GradCollect(grad_collector);
-  auto& gradCont = grad_collector.GetContainer<CategoryTags::Matrix>();
+  auto &gradCont = grad_collector.GetContainer<CategoryTags::Matrix>();
   assert(gradCont.size() == 1);
 
   auto handle1 = gradCont.begin()->second.Weight().EvalRegister();
@@ -376,7 +376,7 @@ void test_bias_layer7() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Composite {
 void test_bias_layer() {
@@ -388,4 +388,4 @@ void test_bias_layer() {
   test_bias_layer6();
   test_bias_layer7();
 }
-}  // namespace Test::Layer::Composite
+} // namespace Test::Layer::Composite

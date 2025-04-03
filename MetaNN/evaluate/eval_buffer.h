@@ -5,9 +5,8 @@
 #include <memory>
 
 namespace MetaNN {
-template <typename TData>
-class EvalBuffer {
- public:
+template <typename TData> class EvalBuffer {
+public:
   using DataType = TData;
 
   auto Handle() const { return m_handle; }
@@ -18,7 +17,7 @@ class EvalBuffer {
 
   bool IsEvaluated() const noexcept { return m_handle.IsEvaluated(); }
 
- private:
+private:
   EvalHandle<TData> m_handle;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

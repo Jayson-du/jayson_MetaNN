@@ -35,11 +35,11 @@ void test_value_source_layer2() {
 
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Principal {
 void test_value_source_layer() {
   test_value_source_layer1();
   test_value_source_layer2();
 }
-}  // namespace Test::Layer::Principal
+} // namespace Test::Layer::Principal

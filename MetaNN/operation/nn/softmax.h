@@ -16,13 +16,13 @@ struct SoftmaxGrad;
 
 // optimization assistant tags
 struct NLLLossGrad;
-}  // namespace MetaNN::OpTags
+} // namespace MetaNN::OpTags
 
 namespace MetaNN {
 namespace OperSoftmax::NSCaseGen {
 template <typename TInputHandle, typename TOutputHandle, typename TPolicy>
 class EvalItem : public BaseEvalItem {
- public:
+public:
   EvalItem(TInputHandle oriHandle, TOutputHandle outputHandle)
       : BaseEvalItem(TypeID<EvalItem>(), {oriHandle.DataPtr()},
                      outputHandle.DataPtr()),
@@ -40,9 +40,9 @@ class EvalGroup
   using ResType = typename TOutputHandle::DataType;
   using ElementType = typename ResType::ElementType;
 
- protected:
-  virtual void EvalInternalLogic(EvalItemType& evalItem) final override {
-    const auto& in = evalItem.m_inputHandle.Data();
+protected:
+  virtual void EvalInternalLogic(EvalItemType &evalItem) final override {
+    const auto &in = evalItem.m_inputHandle.Data();
     ResType out(in.Shape());
 
     constexpr size_t modDimNum = PolicySelect<DimPolicy, TPolicy>::ModifyDimNum;
@@ -55,10 +55,10 @@ class EvalGroup
     const size_t modCount = in.Shape().Count() / loopCount;
 
     auto low_in = LowerAccess(in);
-    const ElementType* mem_in = low_in.RawMemory();
+    const ElementType *mem_in = low_in.RawMemory();
 
     auto low_out = LowerAccess(out);
-    ElementType* mem_out = low_out.MutableRawMemory();
+    ElementType *mem_out = low_out.MutableRawMemory();
 
     static_assert(
         std::is_same_v<DeviceTypeFromHandle<TOutputHandle>, DeviceTags::CPU>,
@@ -72,8 +72,8 @@ class EvalGroup
     evalItem.m_outputHandle.SetData(std::move(out));
   }
 
- private:
-  void EvalSoftmax(ElementType* out, const ElementType* in, const size_t len) {
+private:
+  void EvalSoftmax(ElementType *out, const ElementType *in, const size_t len) {
     ElementType maxElem = *std::max_element(in, in + len);
     ElementType sum{};
 
@@ -87,10 +87,9 @@ class EvalGroup
     }
   }
 };
-}  // namespace OperSoftmax::NSCaseGen
+} // namespace OperSoftmax::NSCaseGen
 
-template <>
-struct OperSeq_<OpTags::Softmax> {
+template <> struct OperSeq_<OpTags::Softmax> {
   using type =
       OperCalAlgoChain<TailCalculator<OperSoftmax::NSCaseGen::EvalItem,
                                       OperSoftmax::NSCaseGen::EvalGroup,
@@ -98,8 +97,8 @@ struct OperSeq_<OpTags::Softmax> {
 };
 
 template <typename TPolicy = PolicyContainer<>, typename TP,
-          std::enable_if_t<IsValidOper<OpTags::Softmax, TP>>* = nullptr>
-auto Softmax(TP&& p_m) {
+          std::enable_if_t<IsValidOper<OpTags::Softmax, TP>> * = nullptr>
+auto Softmax(TP &&p_m) {
   constexpr size_t modDimNum = PolicySelect<DimPolicy, TPolicy>::ModifyDimNum;
   static_assert(DataCategory<TP>::DimNum >= modDimNum);
   using rawM = RemConstRef<TP>;
@@ -107,14 +106,14 @@ auto Softmax(TP&& p_m) {
                             PolicyContainer<PModifyDimNumIs<modDimNum>>>;
   return ResType(std::forward<TP>(p_m));
 }
-}  // namespace MetaNN
+} // namespace MetaNN
 
 namespace MetaNN {
 namespace OperSoftmaxGrad::NSCaseGen {
 template <typename TGradHandle, typename TInputHandle, typename TOutputHandle,
           typename TPolicy>
 class EvalItem : public BaseEvalItem {
- public:
+public:
   EvalItem(TGradHandle gradHandle, TInputHandle oriHandle,
            TOutputHandle outputHandle)
       : BaseEvalItem(TypeID<EvalItem>(),
@@ -139,10 +138,10 @@ class EvalGroup
   using ResType = typename TOutputHandle::DataType;
   using ElementType = typename ResType::ElementType;
 
- protected:
-  virtual void EvalInternalLogic(EvalItemType& evalItem) final override {
-    const auto& grad = evalItem.m_gradHandle.Data();
-    const auto& in = evalItem.m_inputHandle.Data();
+protected:
+  virtual void EvalInternalLogic(EvalItemType &evalItem) final override {
+    const auto &grad = evalItem.m_gradHandle.Data();
+    const auto &in = evalItem.m_inputHandle.Data();
     assert(in.Shape() == grad.Shape());
 
     ResType out(in.Shape());
@@ -156,12 +155,12 @@ class EvalGroup
     const size_t modCount = in.Shape().Count() / loopCount;
 
     auto low_grad = LowerAccess(grad);
-    const ElementType* mem_grad = low_grad.RawMemory();
+    const ElementType *mem_grad = low_grad.RawMemory();
     auto low_in = LowerAccess(in);
-    const ElementType* mem_in = low_in.RawMemory();
+    const ElementType *mem_in = low_in.RawMemory();
 
     auto low_out = LowerAccess(out);
-    ElementType* mem_out = low_out.MutableRawMemory();
+    ElementType *mem_out = low_out.MutableRawMemory();
 
     static_assert(
         std::is_same_v<DeviceTypeFromHandle<TOutputHandle>, DeviceTags::CPU>,
@@ -176,9 +175,9 @@ class EvalGroup
     evalItem.m_outputHandle.SetData(std::move(out));
   }
 
- private:
-  void EvalSingleLoop(ElementType* out, const ElementType* grad,
-                      const ElementType* in, const size_t len) {
+private:
+  void EvalSingleLoop(ElementType *out, const ElementType *grad,
+                      const ElementType *in, const size_t len) {
     ElementType sum{};
     for (size_t i = 0; i < len; ++i) {
       sum += grad[i] * in[i];
@@ -188,11 +187,10 @@ class EvalGroup
     }
   }
 };
-}  // namespace OperSoftmaxGrad::NSCaseGen
+} // namespace OperSoftmaxGrad::NSCaseGen
 
 namespace OperSoftmaxGrad::NSCaseNLLLossGrad {
-template <typename T1, typename T2>
-struct Valid_ {
+template <typename T1, typename T2> struct Valid_ {
   constexpr static bool value = false;
 };
 
@@ -206,7 +204,7 @@ struct Valid_<Operation<OpTags::NLLLossGrad, TLossOperands, PolicyContainer<>>,
 template <typename TGradHandle, typename TWeightHandle, typename TSoftmaxHandle,
           typename TOutputHandle, typename TPolicy>
 class EvalItem : public BaseEvalItem {
- public:
+public:
   EvalItem(TGradHandle gradHandle, TWeightHandle weightHandle,
            TSoftmaxHandle softmaxHandle, TOutputHandle outputHandle)
       : BaseEvalItem(TypeID<EvalItem>(),
@@ -232,14 +230,14 @@ class EvalGroup
   using EvalItemType = EvalItem<TGradHandle, TWeightHandle, TSoftmaxHandle,
                                 TOutputHandle, TPolicy>;
 
- protected:
-  virtual void EvalInternalLogic(EvalItemType& evalItem) final override {
+protected:
+  virtual void EvalInternalLogic(EvalItemType &evalItem) final override {
     using ResType = typename TOutputHandle::DataType;
     using ElementType = typename ResType::ElementType;
 
-    const auto& grad = evalItem.m_gradHandle.Data();
-    const auto& weight = evalItem.m_weightHandle.Data();
-    const auto& softmaxRes = evalItem.m_softmaxHandle.Data();
+    const auto &grad = evalItem.m_gradHandle.Data();
+    const auto &weight = evalItem.m_weightHandle.Data();
+    const auto &softmaxRes = evalItem.m_softmaxHandle.Data();
     assert(weight.Shape() == softmaxRes.Shape());
 
     constexpr size_t modDimNum = PolicySelect<DimPolicy, TPolicy>::ModifyDimNum;
@@ -255,12 +253,12 @@ class EvalGroup
 
     const ElementType gradValue = grad.Value();
     auto low_weight = LowerAccess(weight);
-    const ElementType* mem_weight = low_weight.RawMemory();
+    const ElementType *mem_weight = low_weight.RawMemory();
     auto low_softmaxRes = LowerAccess(softmaxRes);
-    const ElementType* mem_softmaxRes = low_softmaxRes.RawMemory();
+    const ElementType *mem_softmaxRes = low_softmaxRes.RawMemory();
 
     auto low_out = LowerAccess(out);
-    ElementType* mem_out = low_out.MutableRawMemory();
+    ElementType *mem_out = low_out.MutableRawMemory();
 
     for (size_t curLoop = 0; curLoop < loopCount; ++curLoop) {
       ElementType sum{};
@@ -281,16 +279,16 @@ class EvalGroup
 
 struct Calculator {
   template <typename TCaseTail, typename TEvalRes, typename TOp>
-  static void EvalRegister(TEvalRes& evalRes, const TOp& oper) {
+  static void EvalRegister(TEvalRes &evalRes, const TOp &oper) {
     if constexpr (!Valid_<typename TOp::template OperandType<0>,
                           typename TOp::template OperandType<1>>::value) {
       using THead = Sequential::Head<TCaseTail>;
       using TTail = Sequential::Tail<TCaseTail>;
       THead::template EvalRegister<TTail>(evalRes, oper);
     } else {
-      const auto& oper0 = oper.template Operand<0>();
-      const auto& oper1 = oper.template Operand<1>();
-      const auto& softmax_res = oper0.template Operand<2>();
+      const auto &oper0 = oper.template Operand<0>();
+      const auto &oper1 = oper.template Operand<1>();
+      const auto &softmax_res = oper0.template Operand<2>();
       if (softmax_res != oper1) {
         using THead = Sequential::Head<TCaseTail>;
         using TTail = Sequential::Tail<TCaseTail>;
@@ -324,10 +322,9 @@ struct Calculator {
     }
   }
 };
-}  // namespace OperSoftmaxGrad::NSCaseNLLLossGrad
+} // namespace OperSoftmaxGrad::NSCaseNLLLossGrad
 
-template <>
-struct OperSeq_<OpTags::SoftmaxGrad> {
+template <> struct OperSeq_<OpTags::SoftmaxGrad> {
   using type =
       OperCalAlgoChain<OperSoftmaxGrad::NSCaseNLLLossGrad::Calculator,
                        TailCalculator<OperSoftmaxGrad::NSCaseGen::EvalItem,
@@ -336,9 +333,9 @@ struct OperSeq_<OpTags::SoftmaxGrad> {
 };
 
 template <typename TPolicy = PolicyContainer<>, typename TGrad, typename TInput,
-          std::enable_if_t<IsValidOper<OpTags::SoftmaxGrad, TGrad, TInput>>* =
+          std::enable_if_t<IsValidOper<OpTags::SoftmaxGrad, TGrad, TInput>> * =
               nullptr>
-auto SoftmaxGrad(TGrad&& p_grad, TInput&& p_input) {
+auto SoftmaxGrad(TGrad &&p_grad, TInput &&p_input) {
   static_assert(std::is_same_v<DataCategory<TGrad>, DataCategory<TInput>>);
   constexpr size_t modDimNum = PolicySelect<DimPolicy, TPolicy>::ModifyDimNum;
   static_assert(DataCategory<TInput>::DimNum >= modDimNum);
@@ -350,4 +347,4 @@ auto SoftmaxGrad(TGrad&& p_grad, TInput&& p_input) {
                 PolicyContainer<PModifyDimNumIs<modDimNum>>>;
   return ResType(std::forward<TGrad>(p_grad), std::forward<TInput>(p_input));
 }
-}  // namespace MetaNN
+} // namespace MetaNN

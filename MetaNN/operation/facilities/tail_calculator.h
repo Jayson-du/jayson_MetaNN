@@ -32,8 +32,7 @@ ValuePolicyObj(PNoPassAuxParam, TailCalculatorPolicy, IsPassAuxParam, false);
 template <template <typename> class T>
 struct PDispatcherIs : virtual public TailCalculatorPolicy {
   using MinorClass = TailCalculatorPolicy::DispatcherTempCate;
-  template <typename TGroup>
-  using Dispatcher = T<TGroup>;
+  template <typename TGroup> using Dispatcher = T<TGroup>;
 };
 
 namespace NSTailCalculator {
@@ -55,8 +54,8 @@ struct PickEvalTypes_<false, EvalItem, EvalGroup, TPolicy, TOtherParams...> {
 
 template <bool passShape, bool passAuxParam, typename TItemType,
           typename TShape, typename TAuxParam, typename... TOtherParams>
-auto CreateEvalItem(TShape&& p_shape, TAuxParam&& p_auxParam,
-                    TOtherParams&&... others) {
+auto CreateEvalItem(TShape &&p_shape, TAuxParam &&p_auxParam,
+                    TOtherParams &&...others) {
   if constexpr (passShape && passAuxParam) {
     return std::make_unique<TItemType>(std::forward<TOtherParams>(others)...,
                                        std::forward<TShape>(p_shape),
@@ -71,22 +70,22 @@ auto CreateEvalItem(TShape&& p_shape, TAuxParam&& p_auxParam,
     return std::make_unique<TItemType>(std::forward<TOtherParams>(others)...);
   }
 }
-}  // namespace NSTailCalculator
+} // namespace NSTailCalculator
 
 template <template <typename...> class EvalItem,
           template <typename...> class EvalGroup,
           typename TPolicy = PolicyContainer<>>
 struct TailCalculator {
   template <typename TCaseTail, typename TEvalRes, typename TOp>
-  static void EvalRegister(TEvalRes& evalRes, const TOp& oper) {
+  static void EvalRegister(TEvalRes &evalRes, const TOp &oper) {
     static_assert(std::is_same_v<TCaseTail, OperCalAlgoChain<>>,
                   "General case is not the last one");
 
-    const auto& operands = oper.OperandTuple();
+    const auto &operands = oper.OperandTuple();
     constexpr size_t tupleSize =
         Sequential::Size<RemConstRef<decltype(operands)>>;
     using IndexSeq = Helper::MakeIndexSequence<(int)tupleSize>;
-    constexpr IndexSeq* dummyParam = nullptr;
+    constexpr IndexSeq *dummyParam = nullptr;
 
     auto operandHandles = GetOperandHandles(operands, dummyParam);
     DoEvalRegister<typename TOp::Policies>(std::move(operandHandles),
@@ -94,10 +93,10 @@ struct TailCalculator {
                                            oper.AuxParams(), dummyParam);
   }
 
- private:
+private:
   template <typename TOpTuple, template <int...> class IndCont, int... Index>
-  static auto GetOperandHandles(const TOpTuple& opers,
-                                const IndCont<Index...>*) {
+  static auto GetOperandHandles(const TOpTuple &opers,
+                                const IndCont<Index...> *) {
     using ResType = std::tuple<
         RemConstRef<decltype(std::get<Index>(opers).EvalRegister())>...>;
     return ResType{std::get<Index>(opers).EvalRegister()...};
@@ -107,8 +106,8 @@ struct TailCalculator {
             typename TShape, typename TAuxParams,
             template <int...> class IndCont, int... Index>
   static auto DoEvalRegister(TOperHandleTuple operHandles, TResHandle resHandle,
-                             const TShape& shape, const TAuxParams& auxParams,
-                             const IndCont<Index...>*) {
+                             const TShape &shape, const TAuxParams &auxParams,
+                             const IndCont<Index...> *) {
     using namespace NSTailCalculator;
     constexpr bool IsPassPolicy =
         PolicySelect<TailCalculatorPolicy, TPolicy>::IsPassPolicy;
@@ -132,4 +131,4 @@ struct TailCalculator {
     EvalPlan::Inst().Register<TDispatcher>(std::move(item));
   }
 };
-}  // namespace MetaNN
+} // namespace MetaNN

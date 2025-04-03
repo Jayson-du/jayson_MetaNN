@@ -9,23 +9,20 @@
 namespace MetaNN {
 /// ============== policy select ============================
 namespace NSPolicySelect {
-template <typename TPolicyCont>
-struct PolicySelRes;
+template <typename TPolicyCont> struct PolicySelRes;
 
 template <typename TCurPolicy, typename... TOtherPolicies>
 struct PolicySelRes<PolicyContainer<TCurPolicy, TOtherPolicies...>>
     : TCurPolicy, TOtherPolicies... {};
 
-template <typename TMajorClass>
-struct MajorFilter_ {
+template <typename TMajorClass> struct MajorFilter_ {
   template <typename TState, typename TInput>
   using apply = std::conditional_t<
       std::is_same_v<typename TInput::MajorClass, TMajorClass>,
       Sequential::PushBack_<TState, TInput>, Identity_<TState>>;
 };
 
-template <typename TPolicyCont>
-struct MinorCheck_ {
+template <typename TPolicyCont> struct MinorCheck_ {
   static constexpr bool value = true;
 };
 
@@ -39,15 +36,14 @@ struct MinorCheck_<PolicyContainer<TCurPolicy, TP...>> {
       AndValue<cur_check, MinorCheck_<PolicyContainer<TP...>>>;
 };
 
-template <typename TMajorClass, typename TPolicyContainer>
-struct Selector_ {
+template <typename TMajorClass, typename TPolicyContainer> struct Selector_ {
   using TMF = Sequential::Fold<PolicyContainer<>, TPolicyContainer,
                                MajorFilter_<TMajorClass>::template apply>;
   static_assert(MinorCheck_<TMF>::value, "Minor class set conflict!");
   using type = std::conditional_t<Sequential::Size<TMF> == 0, TMajorClass,
                                   PolicySelRes<TMF>>;
 };
-}  // namespace NSPolicySelect
+} // namespace NSPolicySelect
 
 template <typename TMajorClass, typename TPolicyContainer>
 using PolicySelect =
@@ -55,20 +51,18 @@ using PolicySelect =
 
 /// ============== policy derive ============================
 namespace NSPolicyDerive {
-template <typename TPolicy>
-struct PolicyExistKV {
-  static std::true_type apply(typename TPolicy::MajorClass*,
-                              typename TPolicy::MinorClass*);
+template <typename TPolicy> struct PolicyExistKV {
+  static std::true_type apply(typename TPolicy::MajorClass *,
+                              typename TPolicy::MinorClass *);
 };
 
 template <typename TLayer, typename... TParams>
 struct PolicyExistKV<SubPolicyContainer<TLayer, TParams...>> {
   // Just a placeholder.
-  static void apply(SubPolicyContainer<TLayer, TParams...>*);
+  static void apply(SubPolicyContainer<TLayer, TParams...> *);
 };
 
-template <typename TSubPlicies>
-struct PolicyExist;
+template <typename TSubPlicies> struct PolicyExist;
 
 template <typename... TPolicies>
 struct PolicyExist<PolicyContainer<TPolicies...>>
@@ -77,17 +71,16 @@ struct PolicyExist<PolicyContainer<TPolicies...>>
   using PolicyExistKV<TPolicies>::apply...;
 };
 
-template <typename TSubPolicies>
-struct Filter_ {
+template <typename TSubPolicies> struct Filter_ {
   template <typename TState, typename TInput>
   using apply =
       std::conditional_t<decltype(PolicyExist<TSubPolicies>::apply(
-                             (typename TInput::MajorClass*)nullptr,
-                             (typename TInput::MinorClass*)nullptr))::value,
+                             (typename TInput::MajorClass *)nullptr,
+                             (typename TInput::MinorClass *)nullptr))::value,
                          Identity_<TState>,
                          Sequential::PushBack_<TState, TInput>>;
 };
-}  // namespace NSPolicyDerive
+} // namespace NSPolicyDerive
 
 template <typename TSubPolicies, typename TParentPolicies>
 using PolicyDerive =
@@ -96,8 +89,7 @@ using PolicyDerive =
 /// ============== plain policy ============================
 namespace NSPlainPolicy {
 struct imp {
-  template <typename TState, typename TInput>
-  struct apply {
+  template <typename TState, typename TInput> struct apply {
     using type = Sequential::PushBack<TState, TInput>;
   };
 
@@ -106,7 +98,7 @@ struct imp {
     using type = TState;
   };
 };
-}  // namespace NSPlainPolicy
+} // namespace NSPlainPolicy
 
 template <typename TPolicyContainer>
 using PlainPolicy = Sequential::Fold<PolicyContainer<>, TPolicyContainer,
@@ -114,10 +106,8 @@ using PlainPolicy = Sequential::Fold<PolicyContainer<>, TPolicyContainer,
 
 /// ============== sub policy picker============================
 namespace NSSubPolicyPicker {
-template <typename TLayerName>
-struct imp_ {
-  template <typename TState, typename TInput>
-  struct apply {
+template <typename TLayerName> struct imp_ {
+  template <typename TState, typename TInput> struct apply {
     using type = TState;
   };
 
@@ -134,7 +124,7 @@ struct SubPolicyPicker_ {
                                imp_<TLayerName>::template apply>;
   using type = PolicyDerive<tmp, PlainPolicy<TPolicyContainer>>;
 };
-}  // namespace NSSubPolicyPicker
+} // namespace NSSubPolicyPicker
 
 template <typename TPolicyContainer, typename TLayerName>
 using SubPolicyPicker =
@@ -143,8 +133,7 @@ using SubPolicyPicker =
 
 /// ============== change policy ===============================
 namespace NSChangePolicy {
-template <typename TNewPolicy>
-struct Filter_ {
+template <typename TNewPolicy> struct Filter_ {
   using TNewMajor = typename TNewPolicy::MajorClass;
   using TNewMinor = typename TNewPolicy::MinorClass;
 
@@ -161,10 +150,9 @@ struct Filter_ {
         Sequential::PushBack<TState, SubPolicyContainer<TLayer, TParams...>>;
   };
 };
-}  // namespace NSChangePolicy
+} // namespace NSChangePolicy
 
-template <typename TNewPolicy, typename TOriContainer>
-struct ChangePolicy_ {
+template <typename TNewPolicy, typename TOriContainer> struct ChangePolicy_ {
   using type = Sequential::PushBack<
       Sequential::Fold<PolicyContainer<>, TOriContainer,
                        NSChangePolicy::Filter_<TNewPolicy>::template apply>,
@@ -228,4 +216,4 @@ template <typename TPolicyContainer, typename TMajorClass, typename TMinorClass>
 constexpr static bool HasNonTrivialPolicy =
     HasNonTrivialPolicy_<TPolicyContainer, TMajorClass, TMinorClass>::value;
 
-}  // namespace MetaNN
+} // namespace MetaNN

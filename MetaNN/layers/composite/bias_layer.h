@@ -19,19 +19,19 @@ using Topology = ComposeTopology<
 template <typename TInputMap, typename TPolicies>
 using Base = ComposeKernel<LayerPortSet<LayerInput>, LayerPortSet<LayerOutput>,
                            TInputMap, TPolicies, Topology>;
-}  // namespace NSBiasLayer
+} // namespace NSBiasLayer
 
 template <typename TInputs, typename TPolicies>
 class BiasLayer : public NSBiasLayer::Base<TInputs, TPolicies> {
   using TBase = NSBiasLayer::Base<TInputs, TPolicies>;
 
- public:
+public:
   template <typename... TShapeParams>
-  BiasLayer(const std::string& p_name, TShapeParams&&... shapeParams)
+  BiasLayer(const std::string &p_name, TShapeParams &&...shapeParams)
       : TBase(TBase::CreateSublayers()
                   .template Set<ParamSublayer>(
                       p_name + "/param",
                       std::forward<TShapeParams>(shapeParams)...)
                   .template Set<AddSublayer>(p_name + "/add")) {}
 };
-}  // namespace MetaNN
+} // namespace MetaNN

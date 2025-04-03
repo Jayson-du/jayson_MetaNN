@@ -116,7 +116,7 @@ void test_tanh_case5() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_tanh() {
@@ -126,7 +126,7 @@ void test_tanh() {
   test_tanh_case4();
   test_tanh_case5();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math
 
 namespace {
 void test_tanh_grad_case1() {
@@ -165,11 +165,11 @@ void test_tanh_grad_case2() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_tanh_grad() {
   test_tanh_grad_case1();
   test_tanh_grad_case2();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math

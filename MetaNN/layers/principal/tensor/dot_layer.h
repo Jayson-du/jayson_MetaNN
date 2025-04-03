@@ -6,8 +6,7 @@
 
 namespace MetaNN {
 namespace NSDotLayer {
-template <typename TIndexArr, size_t uModDim>
-struct ModeDim2PermuteArrHelper_;
+template <typename TIndexArr, size_t uModDim> struct ModeDim2PermuteArrHelper_;
 
 template <size_t... I, size_t uModDim>
 struct ModeDim2PermuteArrHelper_<std::index_sequence<I...>, uModDim> {
@@ -15,20 +14,18 @@ struct ModeDim2PermuteArrHelper_<std::index_sequence<I...>, uModDim> {
   using type = PDimArrayIs<((I + uModDim) % dimLen)...>;
 };
 
-template <size_t uDim, size_t uModDim>
-struct ModeDim2PermuteArr_ {
+template <size_t uDim, size_t uModDim> struct ModeDim2PermuteArr_ {
   using type =
       typename ModeDim2PermuteArrHelper_<std::make_index_sequence<uDim>,
                                          uModDim>::type;
 };
-}  // namespace NSDotLayer
+} // namespace NSDotLayer
 
-template <typename TInputs, typename TPolicies>
-class DotLayer {
+template <typename TInputs, typename TPolicies> class DotLayer {
   static_assert(IsPolicyContainer<TPolicies>);
   using CurLayerPolicy = PlainPolicy<TPolicies>;
 
- public:
+public:
   static constexpr bool IsFeedbackOutput =
       PolicySelect<GradPolicy, CurLayerPolicy>::IsFeedbackOutput;
   static constexpr bool IsUpdate = false;
@@ -41,21 +38,20 @@ class DotLayer {
                                   Identity_<TInputs>>::type;
   static_assert(CheckInputMapAvailable_<InputMap, InputPortSet>::value);
 
- private:
+private:
   using TLeftOperandFP = typename InputMap::template Find<LeftOperand>;
   using TRightOperandFP = typename InputMap::template Find<RightOperand>;
 
   constexpr static size_t modDimNum =
       PolicySelect<DimPolicy, CurLayerPolicy>::ModifyDimNum;
 
- public:
+public:
   DotLayer(std::string name) : m_name(std::move(name)) {}
 
-  template <typename TIn>
-  auto FeedForward(TIn&& p_in) {
-    const auto& input1 = LayerTraits::PickItemFromCont<InputMap, LeftOperand>(
+  template <typename TIn> auto FeedForward(TIn &&p_in) {
+    const auto &input1 = LayerTraits::PickItemFromCont<InputMap, LeftOperand>(
         std::forward<TIn>(p_in));
-    const auto& input2 = LayerTraits::PickItemFromCont<InputMap, RightOperand>(
+    const auto &input2 = LayerTraits::PickItemFromCont<InputMap, RightOperand>(
         std::forward<TIn>(p_in));
     auto res = Dot<CurLayerPolicy>(input1, input2);
 
@@ -74,8 +70,7 @@ class DotLayer {
         std::move(res));
   }
 
-  template <typename TGrad>
-  auto FeedBackward(TGrad&& p_grad) {
+  template <typename TGrad> auto FeedBackward(TGrad &&p_grad) {
     if constexpr (!IsFeedbackOutput ||
                   RemConstRef<TGrad>::template IsValueEmpty<LayerOutput>) {
       if constexpr (IsFeedbackOutput) {
@@ -129,7 +124,7 @@ class DotLayer {
     }
   }
 
- private:
+private:
   std::string m_name;
   LayerTraits::LayerInternalBuf<TLeftOperandFP, IsFeedbackOutput> m_input1;
   LayerTraits::LayerInternalBuf<TRightOperandFP, IsFeedbackOutput> m_input2;
@@ -137,4 +132,4 @@ class DotLayer {
   LayerTraits::ShapeChecker<TLeftOperandFP, IsFeedbackOutput> m_inputShape1;
   LayerTraits::ShapeChecker<TRightOperandFP, IsFeedbackOutput> m_inputShape2;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

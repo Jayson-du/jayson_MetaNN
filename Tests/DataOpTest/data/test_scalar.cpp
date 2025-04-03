@@ -26,8 +26,8 @@ void test_scalar_case1() {
   assert(x.Data() == pi);
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Data {
 void test_scalar() { test_scalar_case1(); }
-}  // namespace Test::Data
+} // namespace Test::Data

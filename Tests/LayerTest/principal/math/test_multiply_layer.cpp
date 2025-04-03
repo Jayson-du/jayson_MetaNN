@@ -336,7 +336,7 @@ void test_multiply_layer6() {
 
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Principal {
 void test_multiply_layer() {
@@ -347,4 +347,4 @@ void test_multiply_layer() {
   test_multiply_layer5();
   test_multiply_layer6();
 }
-}  // namespace Test::Layer::Principal
+} // namespace Test::Layer::Principal

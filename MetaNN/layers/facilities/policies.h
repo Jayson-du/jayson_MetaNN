@@ -43,8 +43,7 @@ struct LayerStructurePolicy {
   // ActFunc
   struct ActFuncTemplateCate;
 
-  template <typename TInputMap, typename TPolicies>
-  struct DummyActFun;
+  template <typename TInputMap, typename TPolicies> struct DummyActFun;
 
   template <typename TInputMap, typename TPolicies>
   using ActFunc = DummyActFun<TInputMap, TPolicies>;
@@ -67,5 +66,5 @@ struct PActFuncIs : virtual public LayerStructurePolicy {
 };
 ValuePolicyObj(PBiasInvolved, LayerStructurePolicy, BiasInvolved, true);
 ValuePolicyObj(PBiasNotInvolved, LayerStructurePolicy, BiasInvolved, false);
-}  // namespace MetaNN
+} // namespace MetaNN
 #include <MetaNN/policies/policy_macro_end.h>

@@ -14,4 +14,4 @@ void test() {
   test_softmax();
   test_softmax_grad();
 }
-}  // namespace Test::Operation::NN
+} // namespace Test::Operation::NN

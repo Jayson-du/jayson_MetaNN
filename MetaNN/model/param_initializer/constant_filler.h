@@ -6,8 +6,7 @@
 
 namespace MetaNN {
 namespace NSConstantFiller {
-template <typename TData>
-void Fill(TData& data, const double& val) {
+template <typename TData> void Fill(TData &data, const double &val) {
   if (!data.AvailableForWrite()) {
     throw std::runtime_error("Data is sharing weight, cannot fill-in.");
   }
@@ -21,18 +20,17 @@ void Fill(TData& data, const double& val) {
     r[i] = static_cast<ElementType>(val);
   }
 }
-}  // namespace NSConstantFiller
+} // namespace NSConstantFiller
 
 class ConstantFiller {
- public:
+public:
   ConstantFiller(double val = 0) : m_value(val) {}
 
-  template <typename TData>
-  void Fill(TData& data) const {
+  template <typename TData> void Fill(TData &data) const {
     NSConstantFiller::Fill(data, m_value);
   }
 
- private:
+private:
   double m_value;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

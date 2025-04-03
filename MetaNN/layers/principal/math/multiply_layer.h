@@ -4,12 +4,11 @@
 #include <MetaNN/policies/_.h>
 
 namespace MetaNN {
-template <typename TInputs, typename TPolicies>
-class MultiplyLayer {
+template <typename TInputs, typename TPolicies> class MultiplyLayer {
   static_assert(IsPolicyContainer<TPolicies>);
   using CurLayerPolicy = PlainPolicy<TPolicies>;
 
- public:
+public:
   static constexpr bool IsFeedbackOutput =
       PolicySelect<GradPolicy, CurLayerPolicy>::IsFeedbackOutput;
   static constexpr bool IsUpdate = false;
@@ -22,18 +21,17 @@ class MultiplyLayer {
                                   Identity_<TInputs>>::type;
   static_assert(CheckInputMapAvailable_<InputMap, InputPortSet>::value);
 
- private:
+private:
   using TLeftOperandFP = typename InputMap::template Find<LeftOperand>;
   using TRightOperandFP = typename InputMap::template Find<RightOperand>;
 
- public:
+public:
   MultiplyLayer(std::string name) : m_name(std::move(name)) {}
 
-  template <typename TIn>
-  auto FeedForward(TIn&& p_in) {
-    const auto& input1 = LayerTraits::PickItemFromCont<InputMap, LeftOperand>(
+  template <typename TIn> auto FeedForward(TIn &&p_in) {
+    const auto &input1 = LayerTraits::PickItemFromCont<InputMap, LeftOperand>(
         std::forward<TIn>(p_in));
-    const auto& input2 = LayerTraits::PickItemFromCont<InputMap, RightOperand>(
+    const auto &input2 = LayerTraits::PickItemFromCont<InputMap, RightOperand>(
         std::forward<TIn>(p_in));
 
     if constexpr (IsFeedbackOutput) {
@@ -47,8 +45,7 @@ class MultiplyLayer {
                                                                       input2);
   }
 
-  template <typename TGrad>
-  auto FeedBackward(TGrad&& p_grad) {
+  template <typename TGrad> auto FeedBackward(TGrad &&p_grad) {
     if constexpr (!IsFeedbackOutput ||
                   RemConstRef<TGrad>::template IsValueEmpty<LayerOutput>) {
       if constexpr (IsFeedbackOutput) {
@@ -87,7 +84,7 @@ class MultiplyLayer {
     }
   }
 
- private:
+private:
   std::string m_name;
   LayerTraits::LayerInternalBuf<TLeftOperandFP, IsFeedbackOutput> m_input1;
   LayerTraits::LayerInternalBuf<TRightOperandFP, IsFeedbackOutput> m_input2;
@@ -95,4 +92,4 @@ class MultiplyLayer {
   LayerTraits::ShapeChecker<TLeftOperandFP, IsFeedbackOutput> m_inputShape1;
   LayerTraits::ShapeChecker<TRightOperandFP, IsFeedbackOutput> m_inputShape2;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

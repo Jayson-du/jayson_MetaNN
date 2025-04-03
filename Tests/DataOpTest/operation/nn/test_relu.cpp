@@ -32,11 +32,11 @@ void test_relu_case1() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::NN {
 void test_relu() { test_relu_case1(); }
-}  // namespace Test::Operation::NN
+} // namespace Test::Operation::NN
 
 namespace {
 void test_relu_grad_case1() {
@@ -64,8 +64,8 @@ void test_relu_grad_case1() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::NN {
 void test_relu_grad() { test_relu_grad_case1(); }
-}  // namespace Test::Operation::NN
+} // namespace Test::Operation::NN

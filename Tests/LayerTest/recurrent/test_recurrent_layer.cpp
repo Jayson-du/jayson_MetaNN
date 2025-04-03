@@ -21,13 +21,13 @@ using Base =
     ComposeKernel<LayerPortSet<LayerInput, Previous<LayerOutput>>,
                   LayerPortSet<LayerOutput>, TInputMap, TPolicies, Topology>;
 
-}  // namespace NSAddWrapLayer
+} // namespace NSAddWrapLayer
 
 template <typename TInputs, typename TPolicies>
 class AddWrapLayer : public NSAddWrapLayer::Base<TInputs, TPolicies> {
   using TBase = NSAddWrapLayer::Base<TInputs, TPolicies>;
 
- public:
+public:
   AddWrapLayer(std::string p_name)
       : TBase(TBase::CreateSublayers().template Set<AddSublayer>(
             std::move(p_name))) {}
@@ -49,19 +49,19 @@ using Base = ComposeKernel<
     LayerPortSet<LeftOperand, RightOperand, Previous<LayerOutput>>,
     LayerPortSet<LayerOutput>, TInputMap, TPolicies, Topology>;
 
-}  // namespace NSAddWrapLayer2
+} // namespace NSAddWrapLayer2
 
 template <typename TInputs, typename TPolicies>
 class AddWrapLayer2 : public NSAddWrapLayer2::Base<TInputs, TPolicies> {
   using TBase = NSAddWrapLayer2::Base<TInputs, TPolicies>;
 
- public:
+public:
   AddWrapLayer2(std::string p_name)
       : TBase(TBase::CreateSublayers()
                   .template Set<AddSublayer1>(std::move(p_name + "/1"))
                   .template Set<AddSublayer2>(std::move(p_name + "/2"))) {}
 };
-}  // namespace
+} // namespace
 
 namespace {
 void test_recurrent_layer1() {
@@ -557,7 +557,7 @@ void test_recurrent_layer9() {
 
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Recurrent {
 void test_recurrent_layer() {
@@ -571,4 +571,4 @@ void test_recurrent_layer() {
   test_recurrent_layer8();
   test_recurrent_layer9();
 }
-}  // namespace Test::Layer::Recurrent
+} // namespace Test::Layer::Recurrent

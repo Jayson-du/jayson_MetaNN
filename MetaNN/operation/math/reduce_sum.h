@@ -12,16 +12,14 @@ struct ReduceSum;
 
 namespace MetaNN {
 namespace OperReduceSum {
-template <typename TPDim, typename TIndexes>
-struct DimArrToBitHelper_;
+template <typename TPDim, typename TIndexes> struct DimArrToBitHelper_;
 
 template <typename TPDim, size_t... I>
 struct DimArrToBitHelper_<TPDim, std::index_sequence<I...>> {
   using type = PDimBitArrayIs<ValueSequential::Contains<TPDim, I>...>;
 };
 
-template <typename TPolicy, size_t uDimNum>
-struct DimArrToBit_ {
+template <typename TPolicy, size_t uDimNum> struct DimArrToBit_ {
   using PDim =
       PickPolicyOjbect<TPolicy, DimPolicy, DimPolicy::DimArrayValueCate>;
   using type =
@@ -29,16 +27,14 @@ struct DimArrToBit_ {
                                   std::make_index_sequence<uDimNum>>::type;
 };
 
-template <size_t uTrueBound, typename TIndexes>
-struct ModDimToBitHelper_;
+template <size_t uTrueBound, typename TIndexes> struct ModDimToBitHelper_;
 
 template <size_t uTrueBound, size_t... I>
 struct ModDimToBitHelper_<uTrueBound, std::index_sequence<I...>> {
   using type = PDimBitArrayIs<(I < uTrueBound)...>;
 };
 
-template <typename TPolicy, size_t uDimNum>
-struct ModDimToBit_ {
+template <typename TPolicy, size_t uDimNum> struct ModDimToBit_ {
   constexpr static size_t ModDimNum =
       PolicySelect<DimPolicy, TPolicy>::ModifyDimNum;
   static_assert(ModDimNum <= uDimNum);
@@ -47,16 +43,13 @@ struct ModDimToBit_ {
                                   std::make_index_sequence<uDimNum>>::type;
 };
 
-template <typename TIndexes>
-struct DefaultToBitHelper_;
+template <typename TIndexes> struct DefaultToBitHelper_;
 
-template <size_t... I>
-struct DefaultToBitHelper_<std::index_sequence<I...>> {
+template <size_t... I> struct DefaultToBitHelper_<std::index_sequence<I...>> {
   using type = PDimBitArrayIs<(I >= 0)...>;
 };
 
-template <size_t uDimNum>
-struct DefaultToBit_ {
+template <size_t uDimNum> struct DefaultToBit_ {
   using type =
       typename DefaultToBitHelper_<std::make_index_sequence<uDimNum>>::type;
 };
@@ -64,7 +57,8 @@ struct DefaultToBit_ {
 template <size_t uDimNum>
 constexpr bool IsTrivialDimBits(std::array<bool, uDimNum> dimBits) {
   for (size_t i = 0; i < uDimNum; ++i) {
-    if (dimBits[i]) return false;
+    if (dimBits[i])
+      return false;
   }
   return true;
 }
@@ -73,7 +67,8 @@ template <size_t uDimNum>
 constexpr size_t AccuDimBits(std::array<bool, uDimNum> dimBits) {
   size_t res = 0;
   for (size_t i = 0; i < uDimNum; ++i) {
-    if (dimBits[i]) ++res;
+    if (dimBits[i])
+      ++res;
   }
   return res;
 }
@@ -85,12 +80,12 @@ template <template <auto...> class Cont, auto DimBits, int... Is>
 struct DimBits2VaridicTemp_<Cont, DimBits, Helper::IndexSequence<Is...>> {
   using type = Cont<DimBits[Is]...>;
 };
-}  // namespace OperReduceSum
+} // namespace OperReduceSum
 
 namespace OperReduceSum::NSCaseGen {
 template <typename TInputHandle, typename TOutputHandle, typename TPolicies>
 class EvalItem : public BaseEvalItem {
- public:
+public:
   using CategoryTag = CategoryTagFromHandle<TOutputHandle>;
 
   EvalItem(TInputHandle oriHandle, TOutputHandle outputHandle,
@@ -98,8 +93,7 @@ class EvalItem : public BaseEvalItem {
       : BaseEvalItem(TypeID<EvalItem>(), {oriHandle.DataPtr()},
                      outputHandle.DataPtr()),
         m_inputHandle(std::move(oriHandle)),
-        m_outputHandle(std::move(outputHandle)),
-        m_outShape(std::move(shape)) {}
+        m_outputHandle(std::move(outputHandle)), m_outShape(std::move(shape)) {}
 
   const TInputHandle m_inputHandle;
   TOutputHandle m_outputHandle;
@@ -112,10 +106,10 @@ class EvalGroup : public TrivialEvalGroup<
   using EvalItemType = EvalItem<TInputHandle, TOutputHandle, TPolicies>;
   constexpr static size_t OriDim = CategoryTagFromHandle<TInputHandle>::DimNum;
 
- protected:
-  virtual void EvalInternalLogic(EvalItemType& evalItem) final override {
-    const auto& in = evalItem.m_inputHandle.Data();
-    const auto& oriShape = in.Shape();
+protected:
+  virtual void EvalInternalLogic(EvalItemType &evalItem) final override {
+    const auto &in = evalItem.m_inputHandle.Data();
+    const auto &oriShape = in.Shape();
 
     constexpr auto dimBits = PolicySelect<DimPolicy, TPolicies>::DimBitArray;
     static_assert(OriDim == dimBits.size());
@@ -132,9 +126,9 @@ class EvalGroup : public TrivialEvalGroup<
     }
 
     auto low_in = LowerAccess(in);
-    const ElementType* mem_in = low_in.RawMemory();
+    const ElementType *mem_in = low_in.RawMemory();
     auto low_out = LowerAccess(out);
-    ElementType* mem_out = low_out.MutableRawMemory();
+    ElementType *mem_out = low_out.MutableRawMemory();
 
     static_assert(
         std::is_same_v<DeviceTypeFromHandle<TOutputHandle>, DeviceTags::CPU>,
@@ -175,23 +169,24 @@ class EvalGroup : public TrivialEvalGroup<
     evalItem.m_outputHandle.SetData(std::move(out));
   }
 
- private:
+private:
   constexpr static bool IsRegular(std::array<bool, OriDim> dimBits) {
     size_t i = 0;
     for (; i < OriDim; ++i) {
-      if (dimBits[i] == 0) break;
+      if (dimBits[i] == 0)
+        break;
     }
 
     for (; i < OriDim; ++i) {
-      if (dimBits[i] == 1) return false;
+      if (dimBits[i] == 1)
+        return false;
     }
     return true;
   }
 };
-}  // namespace OperReduceSum::NSCaseGen
+} // namespace OperReduceSum::NSCaseGen
 
-template <>
-struct OperSeq_<OpTags::ReduceSum> {
+template <> struct OperSeq_<OpTags::ReduceSum> {
   using type = OperCalAlgoChain<TailCalculator<
       OperReduceSum::NSCaseGen::EvalItem, OperReduceSum::NSCaseGen::EvalGroup,
       PolicyContainer<PPassPolicy, PPassShape>>>;
@@ -201,9 +196,9 @@ template <typename TCate, typename TPolicies>
 class OperShapeInfo<OpTags::ReduceSum, TCate, TPolicies> {
   constexpr static size_t uDim = TCate::DimNum;
 
- public:
+public:
   template <typename TOperAuxParams, typename TOperand>
-  OperShapeInfo(const TOperAuxParams&, const TOperand& operand) {
+  OperShapeInfo(const TOperAuxParams &, const TOperand &operand) {
     if constexpr (uDim != 0) {
       constexpr auto dimBits = PolicySelect<DimPolicy, TPolicies>::DimBitArray;
       auto prevShape = operand.Shape();
@@ -223,9 +218,9 @@ class OperShapeInfo<OpTags::ReduceSum, TCate, TPolicies> {
     }
   }
 
-  const auto& Shape() const { return m_shape; }
+  const auto &Shape() const { return m_shape; }
 
- private:
+private:
   MetaNN::Shape<uDim> m_shape;
 };
 
@@ -245,8 +240,8 @@ constexpr bool IsValidOper<OpTags::ReduceSum, TP> =
     (IsValidCategoryTag<DataCategory<TP>>)&&(DataCategory<TP>::DimNum > 0);
 
 template <typename TPolicy = PolicyContainer<>, typename TP,
-          std::enable_if_t<IsValidOper<OpTags::ReduceSum, TP>>* = nullptr>
-auto ReduceSum(TP&& oper) {
+          std::enable_if_t<IsValidOper<OpTags::ReduceSum, TP>> * = nullptr>
+auto ReduceSum(TP &&oper) {
   constexpr bool HasDimArray =
       HasNonTrivialPolicy<TPolicy, DimPolicy, DimPolicy::DimArrayValueCate>;
   constexpr bool HasModDimNum =
@@ -273,4 +268,4 @@ auto ReduceSum(TP&& oper) {
     return ResType(std::forward<TP>(oper));
   }
 }
-}  // namespace MetaNN
+} // namespace MetaNN

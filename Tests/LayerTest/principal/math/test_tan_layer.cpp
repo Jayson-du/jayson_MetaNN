@@ -152,7 +152,7 @@ void test_tan_layer4() {
   LayerNeutralInvariant(layer);
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Principal {
 void test_tan_layer() {
@@ -161,4 +161,4 @@ void test_tan_layer() {
   test_tan_layer3();
   test_tan_layer4();
 }
-}  // namespace Test::Layer::Principal
+} // namespace Test::Layer::Principal

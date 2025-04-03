@@ -158,13 +158,13 @@ void test_single_layer_perceptron3() {
 
   GradCollector<CheckElement, CheckDevice> grad_collector;
   layer.GradCollect(grad_collector);
-  auto& gradCont = grad_collector.GetContainer<CategoryTags::Matrix>();
+  auto &gradCont = grad_collector.GetContainer<CategoryTags::Matrix>();
   assert(gradCont.size() == 2);
 
   bool weight_update_valid = false;
   bool bias_update_valid = false;
 
-  for (auto& p : gradCont) {
+  for (auto &p : gradCont) {
     auto w = p.second.Weight();
     auto info = Evaluate(p.second.Grad());
     if (w.Shape() == w1.Shape()) {
@@ -247,7 +247,7 @@ void test_single_layer_perceptron4() {
 
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Composite {
 void test_single_layer_perceptron() {
@@ -256,4 +256,4 @@ void test_single_layer_perceptron() {
   test_single_layer_perceptron3();
   test_single_layer_perceptron4();
 }
-}  // namespace Test::Layer::Composite
+} // namespace Test::Layer::Composite

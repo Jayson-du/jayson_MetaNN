@@ -181,7 +181,7 @@ void test_dynamic_batch_3d_array_case1() {
 
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Data {
 void test_dynamic() {
@@ -192,4 +192,4 @@ void test_dynamic() {
   test_dynamic_batch_scalar_case1();
   test_dynamic_batch_3d_array_case1();
 }
-}  // namespace Test::Data
+} // namespace Test::Data

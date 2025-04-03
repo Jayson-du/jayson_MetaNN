@@ -10,19 +10,20 @@ namespace {
 void test_trivial_matrix_case1() {
   cout << "Test trivial matrix case 1...\t";
   static_assert(IsMatrix<TrivialTensor<Scalar<CheckElement, CheckDevice>, 2>>);
-  static_assert(IsMatrix<TrivialTensor<Scalar<CheckElement, CheckDevice>, 2>&>);
   static_assert(
-      IsMatrix<TrivialTensor<Scalar<CheckElement, CheckDevice>, 2>&&>);
+      IsMatrix<TrivialTensor<Scalar<CheckElement, CheckDevice>, 2> &>);
   static_assert(
-      IsMatrix<const TrivialTensor<Scalar<CheckElement, CheckDevice>, 2>&>);
+      IsMatrix<TrivialTensor<Scalar<CheckElement, CheckDevice>, 2> &&>);
   static_assert(
-      IsMatrix<const TrivialTensor<Scalar<CheckElement, CheckDevice>, 2>&&>);
+      IsMatrix<const TrivialTensor<Scalar<CheckElement, CheckDevice>, 2> &>);
+  static_assert(
+      IsMatrix<const TrivialTensor<Scalar<CheckElement, CheckDevice>, 2> &&>);
 
   auto rm = TrivialTensor(Scalar<CheckElement, CheckDevice>{100}, 10, 20);
   assert(rm.Shape()[0] == 10);
   assert(rm.Shape()[1] == 20);
 
-  const auto& evalHandle = rm.EvalRegister();
+  const auto &evalHandle = rm.EvalRegister();
   EvalPlan::Inst().Eval();
 
   auto rm1 = evalHandle.Data();
@@ -38,12 +39,12 @@ void test_trivial_matrix_case2() {
   cout << "Test trivial matrix case 2...\t";
   const Scalar<CheckElement, CheckDevice> sca1(14);
   const Scalar<CheckElement, CheckDevice> sca2(35);
-  const Scalar<CheckElement, CheckDevice>& sca3(sca2);
+  const Scalar<CheckElement, CheckDevice> &sca3(sca2);
   auto rm1 = TrivialTensor(sca1, 100, 10);
   auto rm2 = TrivialTensor(sca3, 10, 20);
 
-  const auto& evalRes1 = rm1.EvalRegister();
-  const auto& evalRes2 = rm2.EvalRegister();
+  const auto &evalRes1 = rm1.EvalRegister();
+  const auto &evalRes2 = rm2.EvalRegister();
 
   EvalPlan::Inst().Eval();
   for (size_t j = 0; j < 100; ++j) {
@@ -60,11 +61,11 @@ void test_trivial_matrix_case2() {
 
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Data {
 void test_trivial_tensor() {
   test_trivial_matrix_case1();
   test_trivial_matrix_case2();
 }
-}  // namespace Test::Data
+} // namespace Test::Data

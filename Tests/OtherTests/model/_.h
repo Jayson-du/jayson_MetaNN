@@ -6,4 +6,4 @@ void test_param_initializer();
 }
 
 void test_model() { Model::test_param_initializer(); }
-}  // namespace Test
+} // namespace Test

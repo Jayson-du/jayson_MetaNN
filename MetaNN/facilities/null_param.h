@@ -2,4 +2,4 @@
 
 namespace MetaNN {
 struct NullParameter {};
-}  // namespace MetaNN
+} // namespace MetaNN

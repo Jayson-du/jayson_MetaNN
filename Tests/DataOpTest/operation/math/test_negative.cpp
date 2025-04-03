@@ -46,11 +46,11 @@ void test_negative2() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_negative() {
   test_negative1();
   test_negative2();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math

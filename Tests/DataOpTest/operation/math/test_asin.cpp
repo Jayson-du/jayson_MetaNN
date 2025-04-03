@@ -86,7 +86,7 @@ void test_asin_case4() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_asin() {
@@ -95,7 +95,7 @@ void test_asin() {
   test_asin_case3();
   test_asin_case4();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math
 
 namespace {
 void test_asin_grad_case1() {
@@ -212,7 +212,7 @@ void test_asin_grad_case5() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_asin_grad() {
@@ -222,4 +222,4 @@ void test_asin_grad() {
   test_asin_grad_case4();
   test_asin_grad_case5();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math

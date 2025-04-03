@@ -9,4 +9,4 @@ void test_nn() {
   test_relu_layer();
   test_softmax_layer();
 }
-}  // namespace Test::Layer::Principal
+} // namespace Test::Layer::Principal

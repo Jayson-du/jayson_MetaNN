@@ -2,8 +2,7 @@
 using namespace MetaNN;
 
 namespace {
-template <typename... Params>
-struct MyVector;
+template <typename... Params> struct MyVector;
 
 namespace TestEqual {
 using Check1 = std::tuple<int, double, short>;
@@ -15,7 +14,7 @@ static_assert(!Set::IsEqual<Check1, Check3>);
 
 using Check4 = std::tuple<int, double, char>;
 static_assert(!Set::IsEqual<Check1, Check4>);
-}  // namespace TestEqual
+} // namespace TestEqual
 
 namespace TestHasKey {
 using Check = std::tuple<int, double, short>;
@@ -23,5 +22,5 @@ static_assert(Set::HasKey<Check, int>);
 static_assert(Set::HasKey<Check, double>);
 static_assert(Set::HasKey<Check, short>);
 static_assert(!Set::HasKey<Check, bool>);
-}  // namespace TestHasKey
-}  // namespace
+} // namespace TestHasKey
+} // namespace

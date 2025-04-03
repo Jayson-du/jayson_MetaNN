@@ -12,7 +12,7 @@ namespace MetaNN {
 namespace NSZeroTensor {
 template <typename TElem, typename TDevice, size_t uDim>
 class EvalItem : public BaseEvalItem {
- public:
+public:
   using CategoryTag = CategoryTags::Tensor<uDim>;
   using ElementType = TElem;
   using DeviceType = TDevice;
@@ -21,8 +21,7 @@ class EvalItem : public BaseEvalItem {
                resBuf,
            Shape<uDim> p_shape)
       : BaseEvalItem(TypeID<EvalItem>(), {}, resBuf.DataPtr()),
-        m_resHandle(std::move(resBuf)),
-        m_shape(std::move(p_shape)) {}
+        m_resHandle(std::move(resBuf)), m_shape(std::move(p_shape)) {}
 
   EvalHandle<PrincipalDataType<CategoryTag, ElementType, DeviceType>>
       m_resHandle;
@@ -33,8 +32,8 @@ template <typename TElem, typename TDevice, size_t uDim>
 class EvalGroup : public TrivialEvalGroup<EvalItem<TElem, TDevice, uDim>> {
   using EvalItemType = EvalItem<TElem, TDevice, uDim>;
 
- protected:
-  virtual void EvalInternalLogic(EvalItemType& evalItem) final override {
+protected:
+  virtual void EvalInternalLogic(EvalItemType &evalItem) final override {
     using CategoryTag = CategoryTags::Tensor<uDim>;
     PrincipalDataType<CategoryTag, TElem, TDevice> res(evalItem.m_shape);
     static_assert(std::is_same_v<TDevice, DeviceTags::CPU>,
@@ -54,28 +53,27 @@ class EvalGroup : public TrivialEvalGroup<EvalItem<TElem, TDevice, uDim>> {
     evalItem.m_resHandle.SetData(std::move(res));
   }
 };
-}  // namespace NSZeroTensor
+} // namespace NSZeroTensor
 
-template <typename TElem, typename TDevice, size_t uDim>
-class ZeroTensor {
- public:
+template <typename TElem, typename TDevice, size_t uDim> class ZeroTensor {
+public:
   using CategoryTag = CategoryTags::Tensor<uDim>;
   using ElementType = TElem;
   using DeviceType = TDevice;
 
- public:
+public:
   template <typename... TShapeParams,
             std::enable_if_t<(std::is_convertible_v<TShapeParams, size_t> &&
-                              ...)>* = nullptr>
-  explicit ZeroTensor(TShapeParams&&... shapeParams)
+                              ...)> * = nullptr>
+  explicit ZeroTensor(TShapeParams &&...shapeParams)
       : m_shape(std::forward<TShapeParams>(shapeParams)...) {}
 
   explicit ZeroTensor(MetaNN::Shape<uDim> p_shape)
       : m_shape(std::move(p_shape)) {}
 
-  const auto& Shape() const noexcept { return m_shape; }
+  const auto &Shape() const noexcept { return m_shape; }
 
-  bool operator==(const ZeroTensor& val) const {
+  bool operator==(const ZeroTensor &val) const {
     return (m_shape == val.m_shape);
   }
 
@@ -94,8 +92,8 @@ class ZeroTensor {
     return m_evalBuf.ConstHandle();
   }
 
- private:
+private:
   MetaNN::Shape<uDim> m_shape;
   EvalBuffer<PrincipalDataType<CategoryTag, ElementType, DeviceType>> m_evalBuf;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

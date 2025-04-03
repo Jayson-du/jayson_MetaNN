@@ -6,7 +6,7 @@ void test_constant_filler();
 void test_gaussian_filler();
 void test_uniform_filler();
 void test_var_scale_filler();
-}  // namespace ParamInitializer
+} // namespace ParamInitializer
 
 void test_param_initializer() {
   ParamInitializer::test_param_initializer();
@@ -16,4 +16,4 @@ void test_param_initializer() {
   ParamInitializer::test_uniform_filler();
   ParamInitializer::test_var_scale_filler();
 }
-}  // namespace Test::Model
+} // namespace Test::Model

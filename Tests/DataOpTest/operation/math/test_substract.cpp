@@ -145,7 +145,7 @@ void test_substract_case6() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_substract() {
@@ -156,4 +156,4 @@ void test_substract() {
   test_substract_case5();
   test_substract_case6();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math

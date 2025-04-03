@@ -86,7 +86,7 @@ void test_tan_case4() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_tan() {
@@ -95,7 +95,7 @@ void test_tan() {
   test_tan_case3();
   test_tan_case4();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math
 
 namespace {
 void test_tan_grad_case1() {
@@ -214,7 +214,7 @@ void test_tan_grad_case5() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_tan_grad() {
@@ -224,4 +224,4 @@ void test_tan_grad() {
   test_tan_grad_case4();
   test_tan_grad_case5();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math

@@ -78,7 +78,7 @@ void test_zero_tensor3() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Data {
 void test_zero_tensor() {
@@ -86,4 +86,4 @@ void test_zero_tensor() {
   test_zero_tensor2();
   test_zero_tensor3();
 }
-}  // namespace Test::Data
+} // namespace Test::Data

@@ -16,16 +16,15 @@ struct ValueSourcePolicy {
 TypePolicyTemplate(PValueTypeIs, ValueSourcePolicy, ValueType);
 #include <MetaNN/policies/policy_macro_end.h>
 
-template <typename TInputs, typename TPolicies>
-class ValueSourceLayer {
+template <typename TInputs, typename TPolicies> class ValueSourceLayer {
   static_assert(IsPolicyContainer<TPolicies>);
   using CurLayerPolicy = PlainPolicy<TPolicies>;
 
- public:
+public:
   static constexpr bool IsFeedbackOutput = false;
   static constexpr bool IsUpdate = false;
 
- private:
+private:
   using ValueType =
       typename PolicySelect<ValueSourcePolicy, CurLayerPolicy>::ValueType;
   constexpr static int Numerator =
@@ -34,27 +33,26 @@ class ValueSourceLayer {
       PolicySelect<ValueSourcePolicy, CurLayerPolicy>::Denominator;
   static_assert(std::is_same_v<ValueType, RemConstRef<ValueType>>);
 
- public:
+public:
   using InputPortSet = LayerPortSet<>;
   using OutputPortSet = LayerPortSet<struct LayerOutput>;
   using InputMap = typename EmptyLayerInMap_<InputPortSet>::type;
 
- public:
+public:
   ValueSourceLayer(std::string name, ValueType p_value)
       : m_name(std::move(name)), m_value(p_value) {}
 
-  auto FeedForward(const VarTypeDict<>::Values<>&) {
+  auto FeedForward(const VarTypeDict<>::Values<> &) {
     return LayerOutputCont<ValueSourceLayer>().template Set<LayerOutput>(
         m_value);
   }
 
-  template <typename TGrad>
-  auto FeedBackward(TGrad&&) {
+  template <typename TGrad> auto FeedBackward(TGrad &&) {
     return LayerInputCont<ValueSourceLayer>();
   }
 
- private:
+private:
   std::string m_name;
   ValueType m_value;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

@@ -6,8 +6,7 @@
 #include <cassert>
 
 namespace MetaNN {
-template <typename TElem, typename TDevice>
-class ContinuousMemory {
+template <typename TElem, typename TDevice> class ContinuousMemory {
   // 1. std::is_same<RemConstRef<TElem>会去掉所有的cv限定和引用
   // 2. TElem还是最原始的类型,
   // 所以如果TElem使用RemConstRef后与TElem不是同一种类型,
@@ -15,7 +14,7 @@ class ContinuousMemory {
   static_assert(std::is_same<RemConstRef<TElem>, TElem>::value);
   using ElementType = TElem;
 
- public:
+public:
   explicit ContinuousMemory(size_t p_size)
       : m_mem(Allocator<TDevice>::template Allocate<ElementType>(p_size)),
         m_size(p_size) {}
@@ -32,20 +31,20 @@ class ContinuousMemory {
 
   size_t Size() const { return m_size; }
 
-  bool operator==(const ContinuousMemory& val) const noexcept {
+  bool operator==(const ContinuousMemory &val) const noexcept {
     return (m_mem == val.m_mem) && (m_size == val.m_size);
   }
 
-  bool operator!=(const ContinuousMemory& val) const noexcept {
+  bool operator!=(const ContinuousMemory &val) const noexcept {
     return !(operator==(val));
   }
 
- private:
+private:
   ContinuousMemory(std::shared_ptr<ElementType> ptr, size_t p_size)
       : m_mem(std::move(ptr)), m_size(p_size) {}
 
- private:
+private:
   std::shared_ptr<ElementType> m_mem;
   size_t m_size;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

@@ -12,7 +12,7 @@
 namespace MetaNN::OpTags {
 struct Tan;
 struct TanGrad;
-}  // namespace MetaNN::OpTags
+} // namespace MetaNN::OpTags
 
 namespace MetaNN {
 namespace OperTan::NSCaseGen {
@@ -20,7 +20,7 @@ template <typename TInputHandle, typename TOutputHandle>
 class EvalItem : public BaseEvalItem {
   using CategoryTag = CategoryTagFromHandle<TOutputHandle>;
 
- public:
+public:
   EvalItem(TInputHandle oriHandle, TOutputHandle outputHandle)
       : BaseEvalItem(TypeID<EvalItem>(), {oriHandle.DataPtr()},
                      outputHandle.DataPtr()),
@@ -36,9 +36,9 @@ class EvalGroup
     : public TrivialEvalGroup<EvalItem<TInputHandle, TOutputHandle>> {
   using EvalItemType = EvalItem<TInputHandle, TOutputHandle>;
 
- protected:
-  virtual void EvalInternalLogic(EvalItemType& evalItem) final override {
-    const auto& in = evalItem.m_inputHandle.Data();
+protected:
+  virtual void EvalInternalLogic(EvalItemType &evalItem) final override {
+    const auto &in = evalItem.m_inputHandle.Data();
 
     using ResType = typename TOutputHandle::DataType;
     using ElementType = typename ResType::ElementType;
@@ -48,10 +48,10 @@ class EvalGroup
     assert(count == out.Shape().Count());
 
     auto low_in = LowerAccess(in);
-    const ElementType* mem_in = low_in.RawMemory();
+    const ElementType *mem_in = low_in.RawMemory();
 
     auto low_out = LowerAccess(out);
-    ElementType* mem_out = low_out.MutableRawMemory();
+    ElementType *mem_out = low_out.MutableRawMemory();
 
     static_assert(
         std::is_same_v<DeviceTypeFromHandle<TOutputHandle>, DeviceTags::CPU>,
@@ -63,22 +63,21 @@ class EvalGroup
     evalItem.m_outputHandle.SetData(std::move(out));
   }
 };
-}  // namespace OperTan::NSCaseGen
+} // namespace OperTan::NSCaseGen
 
-template <>
-struct OperSeq_<OpTags::Tan> {
+template <> struct OperSeq_<OpTags::Tan> {
   using type = OperCalAlgoChain<TailCalculator<OperTan::NSCaseGen::EvalItem,
                                                OperTan::NSCaseGen::EvalGroup>>;
 };
 
 template <typename TP,
-          std::enable_if_t<IsValidOper<OpTags::Tan, TP>>* = nullptr>
-auto Tan(TP&& p_m) {
+          std::enable_if_t<IsValidOper<OpTags::Tan, TP>> * = nullptr>
+auto Tan(TP &&p_m) {
   using rawM = RemConstRef<TP>;
   using ResType = Operation<OpTags::Tan, OperandContainer<rawM>>;
   return ResType(std::forward<TP>(p_m));
 }
-}  // namespace MetaNN
+} // namespace MetaNN
 
 namespace MetaNN {
 namespace OperTanGrad::NSCaseGen {
@@ -86,7 +85,7 @@ template <typename TGradHandle, typename TInputHandle, typename TOutputHandle>
 class EvalItem : public BaseEvalItem {
   using CategoryTag = CategoryTagFromHandle<TOutputHandle>;
 
- public:
+public:
   EvalItem(TGradHandle gradHandle, TInputHandle oriHandle,
            TOutputHandle outputHandle)
       : BaseEvalItem(TypeID<EvalItem>(),
@@ -106,10 +105,10 @@ class EvalGroup : public TrivialEvalGroup<
                       EvalItem<TGradHandle, TInputHandle, TOutputHandle>> {
   using EvalItemType = EvalItem<TGradHandle, TInputHandle, TOutputHandle>;
 
- protected:
-  virtual void EvalInternalLogic(EvalItemType& evalItem) final override {
-    const auto& grad = evalItem.m_gradHandle.Data();
-    const auto& in = evalItem.m_inputHandle.Data();
+protected:
+  virtual void EvalInternalLogic(EvalItemType &evalItem) final override {
+    const auto &grad = evalItem.m_gradHandle.Data();
+    const auto &in = evalItem.m_inputHandle.Data();
 
     using ResType = typename TOutputHandle::DataType;
     using ElementType = typename ResType::ElementType;
@@ -121,12 +120,12 @@ class EvalGroup : public TrivialEvalGroup<
     assert(count % grad_count == 0);
 
     auto low_grad = LowerAccess(grad);
-    const ElementType* mem_grad = low_grad.RawMemory();
+    const ElementType *mem_grad = low_grad.RawMemory();
     auto low_in = LowerAccess(in);
-    const ElementType* mem_in = low_in.RawMemory();
+    const ElementType *mem_in = low_in.RawMemory();
 
     auto low_out = LowerAccess(out);
-    ElementType* mem_out = low_out.MutableRawMemory();
+    ElementType *mem_out = low_out.MutableRawMemory();
 
     static_assert(
         std::is_same_v<DeviceTypeFromHandle<TOutputHandle>, DeviceTags::CPU>,
@@ -139,10 +138,9 @@ class EvalGroup : public TrivialEvalGroup<
     evalItem.m_outputHandle.SetData(std::move(out));
   }
 };
-}  // namespace OperTanGrad::NSCaseGen
+} // namespace OperTanGrad::NSCaseGen
 
-template <>
-struct OperSeq_<OpTags::TanGrad> {
+template <> struct OperSeq_<OpTags::TanGrad> {
   using type =
       OperCalAlgoChain<TailCalculator<OperTanGrad::NSCaseGen::EvalItem,
                                       OperTanGrad::NSCaseGen::EvalGroup>>;
@@ -150,8 +148,8 @@ struct OperSeq_<OpTags::TanGrad> {
 
 template <
     typename TGrad, typename TInput,
-    std::enable_if_t<IsValidOper<OpTags::TanGrad, TGrad, TInput>>* = nullptr>
-auto TanGrad(TGrad&& p_grad, TInput&& p_input) {
+    std::enable_if_t<IsValidOper<OpTags::TanGrad, TGrad, TInput>> * = nullptr>
+auto TanGrad(TGrad &&p_grad, TInput &&p_input) {
   static_assert(DataCategory<TInput>::DimNum >= DataCategory<TGrad>::DimNum);
 
   using rawOp1 = RemConstRef<TGrad>;
@@ -159,4 +157,4 @@ auto TanGrad(TGrad&& p_grad, TInput&& p_input) {
   using ResType = Operation<OpTags::TanGrad, OperandContainer<rawOp1, rawOp2>>;
   return ResType(std::forward<TGrad>(p_grad), std::forward<TInput>(p_input));
 }
-}  // namespace MetaNN
+} // namespace MetaNN

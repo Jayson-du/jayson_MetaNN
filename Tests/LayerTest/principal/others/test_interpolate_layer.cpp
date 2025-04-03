@@ -295,7 +295,7 @@ void test_interpolate_layer4() {
 
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 namespace Test::Layer::Principal {
 void test_interpolate_layer() {
   test_interpolate_layer1();
@@ -303,4 +303,4 @@ void test_interpolate_layer() {
   test_interpolate_layer3();
   test_interpolate_layer4();
 }
-}  // namespace Test::Layer::Principal
+} // namespace Test::Layer::Principal

@@ -159,7 +159,7 @@ void test_nll_loss_layer3() {
   LayerNeutralInvariant(layer);
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Layer::Principal {
 void test_nll_loss_layer() {
@@ -167,4 +167,4 @@ void test_nll_loss_layer() {
   test_nll_loss_layer2();
   test_nll_loss_layer3();
 }
-}  // namespace Test::Layer::Principal
+} // namespace Test::Layer::Principal

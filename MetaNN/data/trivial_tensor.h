@@ -11,14 +11,13 @@ namespace MetaNN {
 namespace NSTrivialTensor {
 template <typename TScalarHandle, typename TOutputHandle, size_t uDim>
 class EvalItem : public BaseEvalItem {
- public:
+public:
   using DeviceType = DeviceTypeFromHandle<TOutputHandle>;
 
   EvalItem(TScalarHandle p_scalar, TOutputHandle resBuf, Shape<uDim> p_shape)
       : BaseEvalItem(TypeID<EvalItem>(), {p_scalar.DataPtr()},
                      resBuf.DataPtr()),
-        m_resHandle(std::move(resBuf)),
-        m_shape(std::move(p_shape)),
+        m_resHandle(std::move(resBuf)), m_shape(std::move(p_shape)),
         m_scalarHandle(std::move(p_scalar)) {}
 
   TOutputHandle m_resHandle;
@@ -31,9 +30,9 @@ class EvalGroup
     : public TrivialEvalGroup<EvalItem<TScalarHandle, TOutputHandle, uDim>> {
   using EvalItemType = EvalItem<TScalarHandle, TOutputHandle, uDim>;
 
- protected:
-  virtual void EvalInternalLogic(EvalItemType& evalItem) final override {
-    const auto& in = evalItem.m_scalarHandle.Data();
+protected:
+  virtual void EvalInternalLogic(EvalItemType &evalItem) final override {
+    const auto &in = evalItem.m_scalarHandle.Data();
 
     using ResType = typename TOutputHandle::DataType;
     using ElementType = typename ResType::ElementType;
@@ -54,24 +53,23 @@ class EvalGroup
     evalItem.m_resHandle.SetData(std::move(out));
   }
 };
-}  // namespace NSTrivialTensor
+} // namespace NSTrivialTensor
 
-template <typename TScalar, size_t uDim>
-class TrivialTensor {
- public:
+template <typename TScalar, size_t uDim> class TrivialTensor {
+public:
   using CategoryTag = CategoryTags::Tensor<uDim>;
   using ElementType = typename TScalar::ElementType;
   using DeviceType = typename TScalar::DeviceType;
 
- public:
+public:
   template <typename... TParams>
-  explicit TrivialTensor(TScalar p_scalar, TParams&&... params)
+  explicit TrivialTensor(TScalar p_scalar, TParams &&...params)
       : m_shape(std::forward<TParams>(params)...),
         m_scalar(std::move(p_scalar)) {}
 
-  const auto& Shape() const noexcept { return m_shape; }
+  const auto &Shape() const noexcept { return m_shape; }
 
-  bool operator==(const TrivialTensor& val) const {
+  bool operator==(const TrivialTensor &val) const {
     return (m_shape == val.m_shape) && (m_scalar == val.m_scalar);
   }
 
@@ -96,15 +94,15 @@ class TrivialTensor {
     return m_evalBuf.ConstHandle();
   }
 
-  const auto& Scalar() const { return m_scalar; }
+  const auto &Scalar() const { return m_scalar; }
 
- private:
+private:
   MetaNN::Shape<uDim> m_shape;
   TScalar m_scalar;
   EvalBuffer<Tensor<ElementType, DeviceType, uDim>> m_evalBuf;
 };
 
 template <typename TScalar, typename... TShapeParams>
-TrivialTensor(TScalar, TShapeParams&&...)
+TrivialTensor(TScalar, TShapeParams &&...)
     -> TrivialTensor<TScalar, sizeof...(TShapeParams)>;
-}  // namespace MetaNN
+} // namespace MetaNN

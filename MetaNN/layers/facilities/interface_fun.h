@@ -3,12 +3,12 @@
 #include <type_traits>
 namespace MetaNN {
 template <typename TLayer, typename TIn>
-auto LayerFeedForward(TLayer& layer, TIn&& p_in) {
+auto LayerFeedForward(TLayer &layer, TIn &&p_in) {
   return layer.FeedForward(std::forward<TIn>(p_in));
 }
 
 template <typename TLayer, typename TGrad>
-auto LayerFeedBackward(TLayer& layer, TGrad&& p_grad) {
+auto LayerFeedBackward(TLayer &layer, TGrad &&p_grad) {
   return layer.FeedBackward(std::forward<TGrad>(p_grad));
 }
 
@@ -21,8 +21,8 @@ template <typename L, typename TInitializer, typename TBuffer>
 std::false_type InitTest(...);
 
 template <typename L, typename TGradCollector>
-std::true_type GradCollectTest(
-    decltype(&L::template GradCollect<TGradCollector>));
+std::true_type
+GradCollectTest(decltype(&L::template GradCollect<TGradCollector>));
 
 template <typename L, typename TGradCollector>
 std::false_type GradCollectTest(...);
@@ -30,41 +30,38 @@ std::false_type GradCollectTest(...);
 template <typename L, typename TSave>
 std::true_type SaveWeightsTest(decltype(&L::template SaveWeights<TSave>));
 
-template <typename L, typename TSave>
-std::false_type SaveWeightsTest(...);
+template <typename L, typename TSave> std::false_type SaveWeightsTest(...);
 
 template <typename L>
 std::true_type NeutralInvariantTest(decltype(&L::NeutralInvariant));
 
-template <typename L>
-std::false_type NeutralInvariantTest(...);
-}  // namespace NSLayerInterface
+template <typename L> std::false_type NeutralInvariantTest(...);
+} // namespace NSLayerInterface
 
 template <typename TLayer, typename TInitializer, typename TBuffer>
-void LayerInit(TLayer& layer, TInitializer& initializer, TBuffer& loadBuffer) {
+void LayerInit(TLayer &layer, TInitializer &initializer, TBuffer &loadBuffer) {
   if constexpr (decltype(NSLayerInterface::InitTest<TLayer, TInitializer,
                                                     TBuffer>(nullptr))::value)
     layer.template Init<TInitializer, TBuffer>(initializer, loadBuffer);
 }
 
 template <typename TLayer, typename TGradCollector>
-void LayerGradCollect(TLayer& layer, TGradCollector& gc) {
+void LayerGradCollect(TLayer &layer, TGradCollector &gc) {
   if constexpr (decltype(NSLayerInterface::GradCollectTest<
                          TLayer, TGradCollector>(nullptr))::value)
     layer.GradCollect(gc);
 }
 
 template <typename TLayer, typename TSave>
-void LayerSaveWeights(const TLayer& layer, TSave& saver) {
+void LayerSaveWeights(const TLayer &layer, TSave &saver) {
   if constexpr (decltype(NSLayerInterface::SaveWeightsTest<TLayer, TSave>(
                     nullptr))::value)
     layer.SaveWeights(saver);
 }
 
-template <typename TLayer>
-void LayerNeutralInvariant(TLayer& layer) {
+template <typename TLayer> void LayerNeutralInvariant(TLayer &layer) {
   if constexpr (decltype(NSLayerInterface::NeutralInvariantTest<TLayer>(
                     nullptr))::value)
     layer.NeutralInvariant();
 }
-}  // namespace MetaNN
+} // namespace MetaNN

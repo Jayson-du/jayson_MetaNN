@@ -10,10 +10,11 @@
 
 namespace MetaNN::LayerTraits {
 template <typename TWeight, typename TGradStack, typename TGradCollector>
-void ParamGradCollect(const std::string& name, const TWeight& weight,
-                      TGradStack& gradStack, TGradCollector& col) {
+void ParamGradCollect(const std::string &name, const TWeight &weight,
+                      TGradStack &gradStack, TGradCollector &col) {
   size_t stackSize = gradStack.size();
-  if (stackSize == 0) return;
+  if (stackSize == 0)
+    return;
 
   if (stackSize == 1) {
     auto g = gradStack.top();
@@ -35,7 +36,7 @@ void ParamGradCollect(const std::string& name, const TWeight& weight,
 }
 
 template <typename TTypeMap, typename TKey, typename TCont>
-auto PickItemFromCont(TCont&& cont) {
+auto PickItemFromCont(TCont &&cont) {
   auto itemOri = std::forward<TCont>(cont).template Get<TKey>();
   static_assert(!std::is_same_v<decltype(itemOri), NullParameter>);
 
@@ -77,8 +78,7 @@ struct CreateVarTypeDict_<TVarTypeDictOutter, TVarTypeDictInner, TCur,
   using type = typename CreateVarTypeDict_<NewOutter, NewInner, TKVs...>::type;
 };
 
-template <typename TVarTypeDict, typename TKeySet>
-struct VarTypeDict2IOMap_;
+template <typename TVarTypeDict, typename TKeySet> struct VarTypeDict2IOMap_;
 
 template <typename TVarTypeDict, typename... TKeys>
 struct VarTypeDict2IOMap_<TVarTypeDict, VarTypeDict<TKeys...>> {
@@ -98,7 +98,7 @@ struct LayerInMapForwardTransfer_<TLayer, LayerInMap<TKVs...>> {
   using KeySet = typename TForwardRes::Keys;
   using type = typename VarTypeDict2IOMap_<TForwardRes, KeySet>::type;
 };
-}  // namespace NSLayerInMapTrasfer
+} // namespace NSLayerInMapTrasfer
 
 template <typename TLayer>
 using LayerOutputItemTypes =
@@ -109,8 +109,7 @@ template <typename TStoreType, bool store>
 using LayerInternalBuf =
     std::conditional_t<store, std::stack<TStoreType>, NullParameter>;
 
-template <typename TData, typename TInput>
-auto Collapse(TInput&& p_input) {
+template <typename TData, typename TInput> auto Collapse(TInput &&p_input) {
   using AimCategory = DataCategory<TData>;
   if constexpr (IsValidCategoryTag<AimCategory>) {
     constexpr size_t AimDim = AimCategory::DimNum;
@@ -128,30 +127,24 @@ auto Collapse(TInput&& p_input) {
 }
 
 namespace NSShapeChecker {
-template <typename TShape, bool bTrigger>
-class ShapeChecker_ {
- public:
-  template <typename TData>
-  void PushDataShape(const TData&) {}
+template <typename TShape, bool bTrigger> class ShapeChecker_ {
+public:
+  template <typename TData> void PushDataShape(const TData &) {}
 
-  template <typename TData>
-  void CheckDataShape(const TData&) {}
+  template <typename TData> void CheckDataShape(const TData &) {}
 
   void AssertEmpty() const {}
 
   void Pop() {}
 };
 
-template <typename TShape>
-class ShapeChecker_<TShape, true> {
- public:
-  template <typename TData>
-  void PushDataShape(const TData& data) {
+template <typename TShape> class ShapeChecker_<TShape, true> {
+public:
+  template <typename TData> void PushDataShape(const TData &data) {
     m_buffer.push(data.Shape());
   }
 
-  template <typename TData>
-  void CheckDataShape(const TData& data) {
+  template <typename TData> void CheckDataShape(const TData &data) {
     if (m_buffer.empty()) {
       throw std::runtime_error("ShapeStack is empty, cannot check shape.");
     }
@@ -173,45 +166,41 @@ class ShapeChecker_<TShape, true> {
     m_buffer.pop();
   }
 
- private:
+private:
   std::stack<TShape> m_buffer;
 };
 
-template <typename TData, bool bTrigger>
-struct DataToShape_ {
+template <typename TData, bool bTrigger> struct DataToShape_ {
   using type = ShapeChecker_<void, false>;
 };
 
 #ifdef METANN_CHECKSHAPE
-template <typename TData>
-struct DataToShape_<TData, true> {
+template <typename TData> struct DataToShape_<TData, true> {
   using type = ShapeChecker_<ShapeType<TData>, true>;
 };
 #endif
-}  // namespace NSShapeChecker
+} // namespace NSShapeChecker
 
 template <typename TData, bool bTrigger>
 using ShapeChecker = typename NSShapeChecker::DataToShape_<
     TData, bTrigger && (IsValidCategoryTag<TData>)>::type;
 
-template <typename T>
-void PopoutFromStackHelper(std::stack<T>& stack) {
+template <typename T> void PopoutFromStackHelper(std::stack<T> &stack) {
   stack.pop();
 }
 
 template <typename TShape, bool bTrigger>
 void PopoutFromStackHelper(
-    NSShapeChecker::ShapeChecker_<TShape, bTrigger>& stack) {
+    NSShapeChecker::ShapeChecker_<TShape, bTrigger> &stack) {
   stack.Pop();
 }
 
 template <typename... TDataStacks>
-void PopoutFromStack(TDataStacks&&... stacks) {
+void PopoutFromStack(TDataStacks &&...stacks) {
   (PopoutFromStackHelper(std::forward<TDataStacks>(stacks)), ...);
 }
 
-template <typename T>
-void CheckStackEmptyHelper(const std::stack<T>& stack) {
+template <typename T> void CheckStackEmptyHelper(const std::stack<T> &stack) {
   if (!stack.empty()) {
     throw std::runtime_error("Stack is not empty.");
   }
@@ -219,12 +208,12 @@ void CheckStackEmptyHelper(const std::stack<T>& stack) {
 
 template <typename TShape, bool bTrigger>
 void CheckStackEmptyHelper(
-    const NSShapeChecker::ShapeChecker_<TShape, bTrigger>& stack) {
+    const NSShapeChecker::ShapeChecker_<TShape, bTrigger> &stack) {
   stack.AssertEmpty();
 }
 
 template <typename... TDataStacks>
-void CheckStackEmpty(const TDataStacks&... stacks) {
+void CheckStackEmpty(const TDataStacks &...stacks) {
   (CheckStackEmptyHelper(stacks), ...);
 }
-}  // namespace MetaNN::LayerTraits
+} // namespace MetaNN::LayerTraits

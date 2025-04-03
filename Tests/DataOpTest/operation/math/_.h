@@ -64,4 +64,4 @@ void test() {
   test_tanh();
   test_tanh_grad();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math

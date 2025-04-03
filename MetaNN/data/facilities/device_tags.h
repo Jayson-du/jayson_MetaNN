@@ -5,4 +5,4 @@ namespace MetaNN {
 namespace DeviceTags {
 struct CPU;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

@@ -26,4 +26,4 @@ inline void test() {
   test_dynamic();
   test_scalable_tensor();
 }
-}  // namespace Test::Data
+} // namespace Test::Data

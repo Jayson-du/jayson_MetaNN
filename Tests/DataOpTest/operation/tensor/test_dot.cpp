@@ -102,7 +102,7 @@ void test_dot_case4() {
   assert(res(4) == 3674);
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Tensor {
 void test_dot() {
@@ -111,4 +111,4 @@ void test_dot() {
   test_dot_case3();
   test_dot_case4();
 }
-}  // namespace Test::Operation::Tensor
+} // namespace Test::Operation::Tensor

@@ -6,19 +6,17 @@ namespace MetaNN::Set {
 // HasKey
 // =================================================================================
 namespace NSHasKey {
-template <typename TCon>
-struct map_;
+template <typename TCon> struct map_;
 
 template <template <typename...> typename TCon, typename... TItem>
 struct map_<TCon<TItem...>> : Helper::KVBinder<TItem, Helper::Int_<true>>... {
   using Helper::KVBinder<TItem, Helper::Int_<true>>::apply...;
   static Helper::Int_<false> apply(...);
 };
-}  // namespace NSHasKey
-template <typename TCon, typename TKey>
-struct HasKey_ {
+} // namespace NSHasKey
+template <typename TCon, typename TKey> struct HasKey_ {
   constexpr static bool value =
-      decltype(NSHasKey::map_<TCon>::apply((TKey*)nullptr))::value;
+      decltype(NSHasKey::map_<TCon>::apply((TKey *)nullptr))::value;
 };
 
 template <typename TCon, typename TKey>
@@ -32,8 +30,7 @@ struct Insert_ : Sequential::PushBack_<TCon, TKey> {
   static_assert(!HasKey<TCon, TKey>);
 };
 
-template <typename TCon, typename TKey>
-struct Insert_<TCon, TKey, true> {
+template <typename TCon, typename TKey> struct Insert_<TCon, TKey, true> {
   using type =
       typename std::conditional_t<HasKey<TCon, TKey>, Identity_<TCon>,
                                   Sequential::PushBack_<TCon, TKey>>::type;
@@ -46,8 +43,7 @@ using Insert = typename Insert_<TCon, TKey, bMute>::type;
 // Erase
 // ==================================================================================
 namespace NSErase {
-template <typename TCon, typename TKey, typename... TItems>
-struct Helper_ {
+template <typename TCon, typename TKey, typename... TItems> struct Helper_ {
   using type = TCon;
 };
 
@@ -62,10 +58,9 @@ template <template <typename...> typename TCon, typename... TParams,
 struct Helper_<TCon<TParams...>, TKey, TKey, TItems...> {
   using type = TCon<TParams..., TItems...>;
 };
-}  // namespace NSErase
+} // namespace NSErase
 
-template <typename TCon, typename TKey>
-struct Erase_;
+template <typename TCon, typename TKey> struct Erase_;
 
 template <template <typename...> typename TCon, typename TKey,
           typename... TItems>
@@ -79,15 +74,13 @@ using Erase = typename Erase_<TCon, TKey>::type;
 // Create From Items
 // ======================================================================
 namespace NSCreateFromItems {
-template <template <typename> typename Picker, bool bMute>
-struct Creator {
-  template <typename TState, typename TInput>
-  struct apply {
+template <template <typename> typename Picker, bool bMute> struct Creator {
+  template <typename TState, typename TInput> struct apply {
     using TItem = typename Picker<TInput>::type;
     using type = Set::Insert<TState, TItem, bMute>;
   };
 };
-}  // namespace NSCreateFromItems
+} // namespace NSCreateFromItems
 
 template <typename TItemCont, template <typename> typename Picker, bool bMute,
           template <typename...> typename TOutCont = std::tuple>
@@ -103,8 +96,7 @@ using CreateFromItems =
     typename CreateFromItems_<TItemCont, Picker, bMute, TOutCont>::type;
 
 // Equals ======================================================================
-template <typename TFirstSet, typename TSecondSet>
-struct IsEqual_;
+template <typename TFirstSet, typename TSecondSet> struct IsEqual_;
 
 template <template <typename...> class Cont1,
           template <typename...> class Cont2, typename... Params1,
@@ -117,4 +109,4 @@ struct IsEqual_<Cont1<Params1...>, Cont2<Params2...>> {
 
 template <typename TFirstSet, typename TSecondSet>
 constexpr bool IsEqual = IsEqual_<TFirstSet, TSecondSet>::value;
-}  // namespace MetaNN::Set
+} // namespace MetaNN::Set

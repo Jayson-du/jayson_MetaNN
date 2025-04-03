@@ -76,7 +76,7 @@ void test_permute_case3() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Tensor {
 void test_permute() {
@@ -84,4 +84,4 @@ void test_permute() {
   test_permute_case2();
   test_permute_case3();
 }
-}  // namespace Test::Operation::Tensor
+} // namespace Test::Operation::Tensor

@@ -8,12 +8,11 @@
 #include <type_traits>
 
 namespace MetaNN {
-template <typename TPolicyCont = PolicyContainer<>>
-class UniformFiller {
+template <typename TPolicyCont = PolicyContainer<>> class UniformFiller {
   using TRandomEngine =
       typename PolicySelect<InitPolicy, TPolicyCont>::RandEngine;
 
- public:
+public:
   UniformFiller(double min, double max, unsigned seed = std::random_device{}())
       : m_engine(seed), m_min(min), m_max(max) {
     if (min >= max) {
@@ -21,8 +20,7 @@ class UniformFiller {
     }
   }
 
-  template <typename TData>
-  void Fill(TData& data) {
+  template <typename TData> void Fill(TData &data) {
     using ElementType = typename TData::ElementType;
     using DistType =
         std::conditional_t<std::is_integral<ElementType>::value,
@@ -33,9 +31,9 @@ class UniformFiller {
     NSInitializer::FillWithDist(data, dist, m_engine);
   }
 
- private:
+private:
   TRandomEngine m_engine;
   double m_min;
   double m_max;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

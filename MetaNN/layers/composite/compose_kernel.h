@@ -47,12 +47,10 @@ struct InstantiatedSublayer {
   using LayerType = TLayerType;
 };
 
-template <typename... T>
-struct ClauseSeq;
+template <typename... T> struct ClauseSeq;
 
 /// ======================== Separate clauses ========================
-template <typename... TClauses>
-struct SeparateClauses_ {
+template <typename... TClauses> struct SeparateClauses_ {
   template <typename TS, typename TI, typename TO, typename TIt, typename... T>
   struct imp {
     static_assert(sizeof...(T) == 0);
@@ -153,8 +151,7 @@ template <typename TSublayerClauses>
 using SublayerNameSet =
     Sequential::Fold<ClauseSeq<>, TSublayerClauses, SublayerNameSet_>;
 
-template <typename TSublayer>
-struct SublayerNamePicker_ {
+template <typename TSublayer> struct SublayerNamePicker_ {
   using type = typename TSublayer::LayerName;
 };
 
@@ -229,7 +226,7 @@ using OutputLayerSet_ =
 template <typename TInternalClauses>
 using OutputLayerSet =
     Sequential::Fold<ClauseSeq<>, TInternalClauses, OutputLayerSet_>;
-}  // namespace ClauseRefine
+} // namespace ClauseRefine
 
 /// ========= Internal Tag Should In Sublayer
 /// ==========================================
@@ -257,9 +254,10 @@ template <typename TOutputClauses, typename TSublayerNameSet>
 constexpr bool OutputTagInSubLayer = false;
 
 template <typename... TOutputTags, typename TSublayerNameSet>
-constexpr bool OutputTagInSubLayer<ClauseSeq<TOutputTags...>,
-                                   TSublayerNameSet> =
-    (Set::HasKey<TSublayerNameSet, typename TOutputTags::OutLayerName> && ...);
+constexpr bool
+    OutputTagInSubLayer<ClauseSeq<TOutputTags...>, TSublayerNameSet> =
+        (Set::HasKey<TSublayerNameSet, typename TOutputTags::OutLayerName> &&
+         ...);
 
 /// ========= Sublayers Tags Sould Exist in Other Sets
 /// =================================
@@ -269,11 +267,12 @@ constexpr bool SublayerTagInOtherArrays = false;
 
 template <typename... TSublayerElems, typename TInterLayerSet,
           typename TInLayerSet, typename TOutLayerSet>
-constexpr bool SublayerTagInOtherArrays<
-    ClauseSeq<TSublayerElems...>, TInterLayerSet, TInLayerSet, TOutLayerSet> =
-    ((Set::HasKey<TInterLayerSet, TSublayerElems> ||
-      Set::HasKey<TInLayerSet, TSublayerElems> ||
-      Set::HasKey<TOutLayerSet, TSublayerElems>)&&...);
+constexpr bool
+    SublayerTagInOtherArrays<ClauseSeq<TSublayerElems...>, TInterLayerSet,
+                             TInLayerSet, TOutLayerSet> =
+        ((Set::HasKey<TInterLayerSet, TSublayerElems> ||
+          Set::HasKey<TInLayerSet, TSublayerElems> ||
+          Set::HasKey<TOutLayerSet, TSublayerElems>)&&...);
 
 /// ========= Topological Ordering Implementation
 /// ======================================
@@ -360,7 +359,7 @@ struct MainLoop<TOrderedSublayers, TUnorderedSublayers, ClauseSeq<TIC, TI...>> {
       Sequential::Fold<TUnorderedSublayers, PostTags, Set::Erase_>;
   using type = typename MainLoop<NewOrdered, NewUnordered, NewInter>::type;
 };
-}  // namespace NSTPO
+} // namespace NSTPO
 
 template <typename TSublayerClause, typename TInterClause>
 struct TopologicalOrdering_;
@@ -378,10 +377,8 @@ struct TopologicalOrdering_<ClauseSeq<TSublayers...>, TInterClause> {
 
 namespace NSSI {
 // Assign policy
-template <typename TPolicy>
-struct GetSublayerPolicy_ {
-  template <typename TSublayerName>
-  struct apply {
+template <typename TPolicy> struct GetSublayerPolicy_ {
+  template <typename TSublayerName> struct apply {
     using type = Helper::KVBinder<TSublayerName,
                                   SubPolicyPicker<TPolicy, TSublayerName>>;
   };
@@ -409,15 +406,12 @@ struct FbSetByInConnection_<TInputPolicyCont, SublayerNameSeq,
                                     TInCont<TItems...>>::type;
 };
 
-template <typename TInternalConnect>
-struct PickInLayerFromInternalConnect_ {
+template <typename TInternalConnect> struct PickInLayerFromInternalConnect_ {
   using type = typename TInternalConnect::InLayer;
 };
 
-template <typename TUpdateLayerSet>
-struct UpdatePolicyThroughInterMapHelper_ {
-  template <typename TSublayerPolicy>
-  struct apply {
+template <typename TUpdateLayerSet> struct UpdatePolicyThroughInterMapHelper_ {
+  template <typename TSublayerPolicy> struct apply {
     using LayerName = typename TSublayerPolicy::KeyType;
     using OriPolicy = typename TSublayerPolicy::ValueType;
     constexpr static bool ShouldUpdate =
@@ -620,8 +614,7 @@ struct NontrivialInst_ {
 
 template <typename TSublayerMap, typename SublayerPolicyFinal>
 struct TrivialInstHelper_ {
-  template <typename TCurLayer>
-  struct apply {
+  template <typename TCurLayer> struct apply {
     using SublayerInfo = Map::Find<TSublayerMap, TCurLayer>;
     using SublayerPolicy = Map::Find<SublayerPolicyFinal, TCurLayer>;
     using type =
@@ -638,7 +631,7 @@ struct TrivialInst_ {
                          SublayerPolicyFinal>::template apply,
       std::tuple>;
 };
-}  // namespace NSSI
+} // namespace NSSI
 
 template <typename TInputs, typename TPolicies, typename OrderedSublayers,
           typename TSublayerClauses, typename InConnects,
@@ -677,10 +670,9 @@ struct SublayerInstantiation_ {
                             InConnects, InterConnects,
                             SublayerPolicyFinal>>::type;
 };
-}  // namespace NSComposeKernel
+} // namespace NSComposeKernel
 
-template <typename... TComposeClauses>
-struct ComposeTopology {
+template <typename... TComposeClauses> struct ComposeTopology {
   /// ========== Separate Results ========================================
   using Sublayers = typename NSComposeKernel::SeparateClauses_<
       TComposeClauses...>::SublayerRes;
@@ -741,13 +733,11 @@ struct ComposeTopology {
 };
 
 namespace NSComposeKernel {
-template <typename TType>
-struct AddSharedPtrWrapper_ {
+template <typename TType> struct AddSharedPtrWrapper_ {
   using type = std::shared_ptr<TType>;
 };
 
-template <typename TLayerInsts>
-struct IsComposeLayerUpdate_;
+template <typename TLayerInsts> struct IsComposeLayerUpdate_;
 
 template <typename... TLayerInst>
 struct IsComposeLayerUpdate_<std::tuple<TLayerInst...>> {
@@ -759,14 +749,13 @@ struct SublayerArrayMaker {
   static_assert(Sequential::Size<TSublayerNameTuple> ==
                 Sequential::Size<TSublayerTuple>);
 
- public:
+public:
   using SublayerArray =
       Sequential::Transform<TSublayerTuple,
                             NSComposeKernel::AddSharedPtrWrapper_, std::tuple>;
 
- private:
-  template <size_t N>
-  void FillGap() {
+private:
+  template <size_t N> void FillGap() {
     if constexpr (N == Sequential::Size<TSublayerTuple>) {
       return;
     } else {
@@ -784,9 +773,9 @@ struct SublayerArrayMaker {
     }
   }
 
- public:
+public:
   template <typename TLayerName, typename... TParams>
-  auto Set(TParams&&... params) {
+  auto Set(TParams &&...params) {
     constexpr static size_t Pos =
         Sequential::Order<TSublayerNameTuple, TLayerName>;
 
@@ -801,57 +790,56 @@ struct SublayerArrayMaker {
     return m_tuple;
   }
 
- private:
+private:
   SublayerArray m_tuple;
 };
 
 template <size_t N, typename TInitializer, typename TBuffer,
           typename TSublayers>
-void Init(TInitializer& initializer, TBuffer& loadBuffer,
-          TSublayers& sublayers) {
+void Init(TInitializer &initializer, TBuffer &loadBuffer,
+          TSublayers &sublayers) {
   if constexpr (N != Sequential::Size<TSublayers>) {
-    auto& layer = std::get<N>(sublayers);
+    auto &layer = std::get<N>(sublayers);
     LayerInit(*layer, initializer, loadBuffer);
     Init<N + 1>(initializer, loadBuffer, sublayers);
   }
 }
 
 template <size_t N, typename TSave, typename TSublayers>
-void SaveWeights(TSave& saver, const TSublayers& sublayers) {
+void SaveWeights(TSave &saver, const TSublayers &sublayers) {
   if constexpr (N != Sequential::Size<TSublayers>) {
-    auto& layer = std::get<N>(sublayers);
+    auto &layer = std::get<N>(sublayers);
     LayerSaveWeights(*layer, saver);
     SaveWeights<N + 1>(saver, sublayers);
   }
 }
 
 template <size_t N, typename TGradCollector, typename TSublayers>
-void GradCollect(TGradCollector& collector, TSublayers& sublayers) {
+void GradCollect(TGradCollector &collector, TSublayers &sublayers) {
   if constexpr (N != Sequential::Size<TSublayers>) {
-    auto& layer = std::get<N>(sublayers);
+    auto &layer = std::get<N>(sublayers);
     LayerGradCollect(*layer, collector);
     GradCollect<N + 1>(collector, sublayers);
   }
 }
 
 template <size_t N, typename TSublayers>
-void NeutralInvariant(TSublayers& sublayers) {
+void NeutralInvariant(TSublayers &sublayers) {
   if constexpr (N != Sequential::Size<TSublayers>) {
-    auto& layer = std::get<N>(sublayers);
+    auto &layer = std::get<N>(sublayers);
     LayerNeutralInvariant(*layer);
     NeutralInvariant<N + 1>(sublayers);
   }
 }
 
-template <typename TSublayers>
-struct InternalResult;
+template <typename TSublayers> struct InternalResult;
 
 template <typename... TSublayers>
 struct InternalResult<NSComposeKernel::ClauseSeq<TSublayers...>>
     : public VarTypeDict<TSublayers...> {};
 
 template <size_t N, typename TLayerNames, typename TLayerInst, typename TInput>
-auto CreateInputInternalBuf(TInput&& m_input) {
+auto CreateInputInternalBuf(TInput &&m_input) {
   if constexpr (N == Sequential::Size<TLayerInst>) {
     return std::forward<TInput>(m_input);
   } else {
@@ -866,7 +854,7 @@ auto CreateInputInternalBuf(TInput&& m_input) {
 }
 
 template <size_t N, typename TLayerNames, typename TLayerInst, typename TOutput>
-auto CreateOutputInternalBuf(TOutput&& m_output) {
+auto CreateOutputInternalBuf(TOutput &&m_output) {
   if constexpr (N == Sequential::Size<TLayerInst>) {
     return std::forward<TOutput>(m_output);
   } else {
@@ -881,7 +869,7 @@ auto CreateOutputInternalBuf(TOutput&& m_output) {
 }
 
 template <size_t N, typename TInputClauses, typename TIn, typename TInternal>
-auto FillInput(const TIn& p_in, TInternal&& p_internal) {
+auto FillInput(const TIn &p_in, TInternal &&p_internal) {
   if constexpr (N == Sequential::Size<TInputClauses>) {
     return std::move(p_internal);
   } else {
@@ -900,7 +888,7 @@ auto FillInput(const TIn& p_in, TInternal&& p_internal) {
 }
 
 template <size_t N, typename TMap, typename TForwardRes, typename TAim>
-auto ForwardFillInternal(const TForwardRes& input, TAim&& p_aim) {
+auto ForwardFillInternal(const TForwardRes &input, TAim &&p_aim) {
   if constexpr (Sequential::Size<TMap> == 0) {
     return std::move(p_aim);
   } else {
@@ -925,7 +913,7 @@ auto ForwardFillInternal(const TForwardRes& input, TAim&& p_aim) {
 
 template <size_t N, typename TLayerInfo, typename TFMap, typename TSublayers,
           typename TInput, typename TOutput>
-auto FeedForward(TSublayers&& sublayers, TInput&& p_input, TOutput&& m_output) {
+auto FeedForward(TSublayers &&sublayers, TInput &&p_input, TOutput &&m_output) {
   if constexpr (N == Sequential::Size<TLayerInfo>) {
     return std::move(m_output);
   } else {
@@ -946,7 +934,7 @@ auto FeedForward(TSublayers&& sublayers, TInput&& p_input, TOutput&& m_output) {
 }
 
 template <size_t N, typename TOutputClauses, typename TIn, typename TAim>
-auto FillOutput(const TIn& p_in, TAim&& p_aim) {
+auto FillOutput(const TIn &p_in, TAim &&p_aim) {
   if constexpr (N == Sequential::Size<TOutputClauses>) {
     return std::move(p_aim);
   } else {
@@ -963,7 +951,7 @@ auto FillOutput(const TIn& p_in, TAim&& p_aim) {
 
 template <size_t N, typename TOutputClauses, typename TInGrad,
           typename TInternal>
-auto FillInputGrad(const TInGrad& p_inGrad, TInternal&& p_internal) {
+auto FillInputGrad(const TInGrad &p_inGrad, TInternal &&p_internal) {
   if constexpr (N == Sequential::Size<TOutputClauses>) {
     return std::move(p_internal);
   } else {
@@ -981,7 +969,7 @@ auto FillInputGrad(const TInGrad& p_inGrad, TInternal&& p_internal) {
       return FillInputGrad<N + 1, TOutputClauses>(p_inGrad,
                                                   std::move(newInternal));
     } else {
-      const auto& prevInfo = dest.template Get<typename TCur::OutLayerPort>();
+      const auto &prevInfo = dest.template Get<typename TCur::OutLayerPort>();
       auto fillRes = std::move(dest).template Set<typename TCur::OutLayerPort>(
           prevInfo + source);
       auto newInternal =
@@ -994,7 +982,7 @@ auto FillInputGrad(const TInGrad& p_inGrad, TInternal&& p_internal) {
 }
 
 template <size_t N, typename TMap, typename TBackwardRes, typename TAim>
-auto BackwardFillInternal(const TBackwardRes& input, TAim&& p_aim) {
+auto BackwardFillInternal(const TBackwardRes &input, TAim &&p_aim) {
   if constexpr (Sequential::Size<TMap> == 0) {
     return std::move(p_aim);
   } else {
@@ -1019,8 +1007,8 @@ auto BackwardFillInternal(const TBackwardRes& input, TAim&& p_aim) {
                                                    std::forward<TAim>(p_aim));
         }
       } else {
-        const auto& value = input.template Get<typename TCur::InPort>();
-        const auto& prevInfo =
+        const auto &value = input.template Get<typename TCur::InPort>();
+        const auto &prevInfo =
             std::move(des).template Get<typename TCur::OutPort>();
         auto newDes = std::move(des).template Set<typename TCur::OutPort>(
             prevInfo + value);
@@ -1034,8 +1022,8 @@ auto BackwardFillInternal(const TBackwardRes& input, TAim&& p_aim) {
 
 template <size_t N, typename TLayerInfo, typename TBMap, typename TSublayers,
           typename TInputGrad, typename TOutput>
-auto FeedBackward(TSublayers&& sublayers, TInputGrad&& p_input,
-                  TOutput&& m_output) {
+auto FeedBackward(TSublayers &&sublayers, TInputGrad &&p_input,
+                  TOutput &&m_output) {
   if constexpr (N == 0) {
     return std::move(m_output);
   } else {
@@ -1057,7 +1045,7 @@ auto FeedBackward(TSublayers&& sublayers, TInputGrad&& p_input,
 }
 
 template <size_t N, typename TInputClauses, typename TInGrad, typename TAim>
-auto FillOutputGrad(const TInGrad& p_in, TAim&& p_aim) {
+auto FillOutputGrad(const TInGrad &p_in, TAim &&p_aim) {
   if constexpr (N == Sequential::Size<TInputClauses>) {
     return std::move(p_aim);
   } else {
@@ -1072,7 +1060,7 @@ auto FillOutputGrad(const TInGrad& p_in, TAim&& p_aim) {
           std::move(source));
       return FillOutputGrad<N + 1, TInputClauses>(p_in, std::move(newAim));
     } else {
-      const auto& prevInfo =
+      const auto &prevInfo =
           std::move(p_aim).template Get<typename TCur::InPort>();
       auto newAim = std::move(p_aim).template Set<typename TCur::InPort>(
           prevInfo + source);
@@ -1080,7 +1068,7 @@ auto FillOutputGrad(const TInGrad& p_in, TAim&& p_aim) {
     }
   }
 }
-};  // namespace NSComposeKernel
+}; // namespace NSComposeKernel
 
 template <typename TInputPortSet, typename TOutputPortSet, typename TInputMap,
           typename TPolicyCont, typename TKernelTopo>
@@ -1089,7 +1077,7 @@ class ComposeKernel {
                 "Parameter is not a policy container.");
   using PlainPolicies = PlainPolicy<TPolicyCont>;
 
- public:
+public:
   using InputPortSet = TInputPortSet;
   using OutputPortSet = TOutputPortSet;
   using InputMap =
@@ -1098,7 +1086,7 @@ class ComposeKernel {
                                   Identity_<TInputMap>>::type;
   static_assert(CheckInputMapAvailable_<InputMap, InputPortSet>::value);
 
- private:
+private:
   using TOrderedSublayerSeq = typename TKernelTopo::TopologicalOrdering;
   using TSublayerInstCont =
       typename TKernelTopo::template Instances<InputMap, TPolicyCont>;
@@ -1106,7 +1094,7 @@ class ComposeKernel {
       TOrderedSublayerSeq, TSublayerInstCont>::SublayerArray;
   using InternalResult = NSComposeKernel::InternalResult<TOrderedSublayerSeq>;
 
- public:
+public:
   template <typename TSublayerName>
   using SublayerType = typename Sequential::At<
       TSublayerInstCont, Sequential::Order<TOrderedSublayerSeq, TSublayerName>>;
@@ -1121,22 +1109,20 @@ class ComposeKernel {
                                                TSublayerInstCont>();
   }
 
- public:
+public:
   ComposeKernel(SublayerArray p_sublayers)
       : sublayers(std::move(p_sublayers)) {}
 
   template <typename TInitializer, typename TBuffer>
-  void Init(TInitializer& initializer, TBuffer& loadBuffer) {
+  void Init(TInitializer &initializer, TBuffer &loadBuffer) {
     NSComposeKernel::Init<0>(initializer, loadBuffer, sublayers);
   }
 
-  template <typename TSave>
-  void SaveWeights(TSave& saver) const {
+  template <typename TSave> void SaveWeights(TSave &saver) const {
     NSComposeKernel::SaveWeights<0>(saver, sublayers);
   }
 
-  template <typename TGradCollector>
-  void GradCollect(TGradCollector& col) {
+  template <typename TGradCollector> void GradCollect(TGradCollector &col) {
     NSComposeKernel::GradCollect<0>(col, sublayers);
   }
 
@@ -1144,8 +1130,7 @@ class ComposeKernel {
     NSComposeKernel::NeutralInvariant<0>(sublayers);
   }
 
-  template <typename TIn>
-  auto FeedForward(TIn&& p_in) {
+  template <typename TIn> auto FeedForward(TIn &&p_in) {
     auto inInternal = NSComposeKernel::CreateInputInternalBuf<
         0, TOrderedSublayerSeq, TSublayerInstCont>(InternalResult::Create());
     auto outInternal = NSComposeKernel::CreateOutputInternalBuf<
@@ -1162,8 +1147,7 @@ class ComposeKernel {
         outputs, LayerOutputCont<ComposeKernel>());
   }
 
-  template <typename TGrad>
-  auto FeedBackward(const TGrad& p_grad) {
+  template <typename TGrad> auto FeedBackward(const TGrad &p_grad) {
     if constexpr ((!IsFeedbackOutput) && (!IsUpdate)) {
       return LayerInputCont<ComposeKernel>();
     } else {
@@ -1192,7 +1176,7 @@ class ComposeKernel {
     }
   }
 
- private:
+private:
   SublayerArray sublayers;
 };
-}  // namespace MetaNN
+} // namespace MetaNN

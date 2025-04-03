@@ -12,32 +12,28 @@ struct Tile;
 
 namespace MetaNN {
 namespace OperTile {
-template <typename TIndexes, typename TDimArray>
-struct DimArrToBitHelper_;
+template <typename TIndexes, typename TDimArray> struct DimArrToBitHelper_;
 
 template <typename TDimArray, size_t... I>
 struct DimArrToBitHelper_<std::index_sequence<I...>, TDimArray> {
   using type = PDimBitArrayIs<ValueSequential::Contains<TDimArray, I>...>;
 };
 
-template <size_t AimDim, typename TPolicy>
-struct DimArrToBit_ {
+template <size_t AimDim, typename TPolicy> struct DimArrToBit_ {
   using DimArray =
       PickPolicyOjbect<TPolicy, DimPolicy, DimPolicy::DimArrayValueCate>;
   using type = typename DimArrToBitHelper_<std::make_index_sequence<AimDim>,
                                            DimArray>::type;
 };
 
-template <typename TIndexes, size_t TrueDimBound>
-struct DefaultToBitHelper_;
+template <typename TIndexes, size_t TrueDimBound> struct DefaultToBitHelper_;
 
 template <size_t TrueDimBound, size_t... I>
 struct DefaultToBitHelper_<std::index_sequence<I...>, TrueDimBound> {
   using type = PDimBitArrayIs<(I < TrueDimBound)...>;
 };
 
-template <size_t AimDim, size_t OriDim>
-struct DefaultToBit_ {
+template <size_t AimDim, size_t OriDim> struct DefaultToBit_ {
   using type = typename DefaultToBitHelper_<std::make_index_sequence<AimDim>,
                                             AimDim - OriDim>::type;
 };
@@ -53,8 +49,8 @@ constexpr bool CheckBound(std::array<size_t, uDim> dimArray) {
 }
 
 template <size_t uAimDim, size_t uOriDim>
-auto GetMuteShape(const std::array<bool, uAimDim>& dimBitArray,
-                  const Shape<uOriDim>& shape) {
+auto GetMuteShape(const std::array<bool, uAimDim> &dimBitArray,
+                  const Shape<uOriDim> &shape) {
   Shape<uAimDim> resShape;
 
   size_t oriPos = 0;
@@ -76,19 +72,20 @@ auto GetMuteShape(const std::array<bool, uAimDim>& dimBitArray,
 }
 
 template <size_t uDim>
-bool IsShapeCompatible(const Shape<uDim>& outShape,
-                       const Shape<uDim>& inShape) {
+bool IsShapeCompatible(const Shape<uDim> &outShape,
+                       const Shape<uDim> &inShape) {
   for (size_t i = 0; i < uDim; ++i) {
-    if (outShape[i] % inShape[i] != 0) return false;
+    if (outShape[i] % inShape[i] != 0)
+      return false;
   }
   return true;
 }
-}  // namespace OperTile
+} // namespace OperTile
 
 namespace OperTile::NSCaseGen {
 template <typename TInputHandle, typename TOutputHandle, typename TPolicies>
 class EvalItem : public BaseEvalItem {
- public:
+public:
   using CategoryTag = CategoryTagFromHandle<TOutputHandle>;
 
   EvalItem(TInputHandle oriHandle, TOutputHandle outputHandle,
@@ -96,8 +93,7 @@ class EvalItem : public BaseEvalItem {
       : BaseEvalItem(TypeID<EvalItem>(), {oriHandle.DataPtr()},
                      outputHandle.DataPtr()),
         m_inputHandle(std::move(oriHandle)),
-        m_outputHandle(std::move(outputHandle)),
-        m_outShape(std::move(shape)) {}
+        m_outputHandle(std::move(outputHandle)), m_outShape(std::move(shape)) {}
 
   const TInputHandle m_inputHandle;
   TOutputHandle m_outputHandle;
@@ -112,8 +108,8 @@ class EvalGroup : public TrivialEvalGroup<
   constexpr static auto dimBits =
       PolicySelect<DimPolicy, TPolicies>::DimBitArray;
 
- protected:
-  virtual void EvalInternalLogic(EvalItemType& evalItem) final override {
+protected:
+  virtual void EvalInternalLogic(EvalItemType &evalItem) final override {
     if (evalItem.m_outShape.Count() == 0) {
       using ResType = typename TOutputHandle::DataType;
       ResType out(evalItem.m_outShape);
@@ -121,7 +117,7 @@ class EvalGroup : public TrivialEvalGroup<
       return;
     }
     if constexpr (IsRegular(dimBits)) {
-      const auto& in = evalItem.m_inputHandle.Data();
+      const auto &in = evalItem.m_inputHandle.Data();
       if (IsBroadcastMatch(in.Shape(), evalItem.m_outShape)) {
         EvalRegular(evalItem);
       } else {
@@ -132,21 +128,23 @@ class EvalGroup : public TrivialEvalGroup<
     }
   }
 
- private:
+private:
   constexpr static bool IsRegular(std::array<bool, AimDim> dimBits) {
     size_t i = 0;
     for (; i < AimDim; ++i) {
-      if (dimBits[i] == 0) break;
+      if (dimBits[i] == 0)
+        break;
     }
 
     for (; i < AimDim; ++i) {
-      if (dimBits[i] == 1) return false;
+      if (dimBits[i] == 1)
+        return false;
     }
     return true;
   }
 
-  void EvalRegular(EvalItemType& evalItem) {
-    const auto& in = evalItem.m_inputHandle.Data();
+  void EvalRegular(EvalItemType &evalItem) {
+    const auto &in = evalItem.m_inputHandle.Data();
 
     using ResType = typename TOutputHandle::DataType;
     using ElementType = typename ResType::ElementType;
@@ -157,9 +155,9 @@ class EvalGroup : public TrivialEvalGroup<
         "Currently only CPU is supported");
 
     auto low_in = LowerAccess(in);
-    const ElementType* mem_in = low_in.RawMemory();
+    const ElementType *mem_in = low_in.RawMemory();
     auto low_out = LowerAccess(out);
-    ElementType* mem_out = low_out.MutableRawMemory();
+    ElementType *mem_out = low_out.MutableRawMemory();
 
     const size_t aimCount = evalItem.m_outShape.Count();
     const size_t oriCount = in.Shape().Count();
@@ -172,9 +170,9 @@ class EvalGroup : public TrivialEvalGroup<
     evalItem.m_outputHandle.SetData(std::move(out));
   }
 
-  void EvalGen(EvalItemType& evalItem) {
-    const auto& in = evalItem.m_inputHandle.Data();
-    const auto& muteShape = OperTile::GetMuteShape(dimBits, in.Shape());
+  void EvalGen(EvalItemType &evalItem) {
+    const auto &in = evalItem.m_inputHandle.Data();
+    const auto &muteShape = OperTile::GetMuteShape(dimBits, in.Shape());
     static_assert(RemConstRef<decltype(muteShape)>::DimNum == AimDim);
 
     using ResType = typename TOutputHandle::DataType;
@@ -186,9 +184,9 @@ class EvalGroup : public TrivialEvalGroup<
         "Currently only CPU is supported");
 
     auto low_in = LowerAccess(in);
-    const ElementType* mem_in = low_in.RawMemory();
+    const ElementType *mem_in = low_in.RawMemory();
     auto low_out = LowerAccess(out);
-    ElementType* mem_out = low_out.MutableRawMemory();
+    ElementType *mem_out = low_out.MutableRawMemory();
     mem_out[0] = mem_in[0];
 
     const size_t count = evalItem.m_outShape.Count();
@@ -197,17 +195,17 @@ class EvalGroup : public TrivialEvalGroup<
 
     for (size_t i = 1; i < count; ++i) {
       evalItem.m_outShape.ShiftIndex(oriPos);
-      for (size_t j = 0; j < AimDim; ++j) projPos[j] = oriPos[j] % muteShape[j];
+      for (size_t j = 0; j < AimDim; ++j)
+        projPos[j] = oriPos[j] % muteShape[j];
       size_t index = muteShape.IndexToOffset(projPos);
       mem_out[i] = mem_in[index];
     }
     evalItem.m_outputHandle.SetData(std::move(out));
   }
 };
-}  // namespace OperTile::NSCaseGen
+} // namespace OperTile::NSCaseGen
 
-template <>
-struct OperSeq_<OpTags::Tile> {
+template <> struct OperSeq_<OpTags::Tile> {
   using type = OperCalAlgoChain<TailCalculator<
       OperTile::NSCaseGen::EvalItem, OperTile::NSCaseGen::EvalGroup,
       PolicyContainer<PPassPolicy, PPassShape>>>;
@@ -222,34 +220,34 @@ struct OperCategory_<OpTags::Tile, TPolicy, TOp> {
 
 template <typename TElem, typename TCate>
 class OperAuxParams<OpTags::Tile, TElem, TCate> {
- public:
+public:
   OperAuxParams(Shape<TCate::DimNum> aimShape) : m_shape(std::move(aimShape)) {}
 
-  const auto& GetShape() const { return m_shape; }
-  bool operator==(const OperAuxParams& val) const {
+  const auto &GetShape() const { return m_shape; }
+  bool operator==(const OperAuxParams &val) const {
     return m_shape == val.m_shape;
   }
 
- private:
+private:
   Shape<TCate::DimNum> m_shape;
 };
 
 template <typename TCate, typename TPolicy>
 class OperShapeInfo<OpTags::Tile, TCate, TPolicy> {
- public:
+public:
   template <typename TOperAuxParams, typename TOp>
-  OperShapeInfo(const TOperAuxParams& param, const TOp& op)
+  OperShapeInfo(const TOperAuxParams &param, const TOp &op)
       : m_shape(param.GetShape()) {}
 
-  const auto& Shape() const { return m_shape; }
+  const auto &Shape() const { return m_shape; }
 
- private:
+private:
   MetaNN::Shape<TCate::DimNum> m_shape;
 };
 
 template <typename TPolicy = PolicyContainer<>, typename TP, size_t AimDim,
-          std::enable_if_t<IsValidOper<OpTags::Tile, TP>>* = nullptr>
-auto Tile(TP&& oper, Shape<AimDim> aimShape) {
+          std::enable_if_t<IsValidOper<OpTags::Tile, TP>> * = nullptr>
+auto Tile(TP &&oper, Shape<AimDim> aimShape) {
   static_assert(DataCategory<TP>::DimNum <= AimDim);
 
   constexpr bool HasDimArray =
@@ -275,4 +273,4 @@ auto Tile(TP&& oper, Shape<AimDim> aimShape) {
                     CategoryTags::Tensor<AimDim>>(std::move(aimShape)),
       std::forward<TP>(oper));
 }
-}  // namespace MetaNN
+} // namespace MetaNN

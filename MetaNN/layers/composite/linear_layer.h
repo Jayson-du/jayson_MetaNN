@@ -26,7 +26,7 @@ using Topology = ComposeTopology<
 template <typename TInputMap, typename TPolicies>
 using Base = ComposeKernel<LayerPortSet<LayerInput>, LayerPortSet<LayerOutput>,
                            TInputMap, TPolicies, Topology>;
-}  // namespace NSLinearLayer
+} // namespace NSLinearLayer
 
 template <typename TInputs, typename TPolicies>
 class LinearLayer : public NSLinearLayer::Base<TInputs, TPolicies> {
@@ -40,8 +40,8 @@ class LinearLayer : public NSLinearLayer::Base<TInputs, TPolicies> {
   using BiasParamShapeType =
       RemConstRef<decltype(std::declval<BiasParamType>().Shape())>;
 
- public:
-  LinearLayer(const std::string& p_name, WeightParamShapeType weightShape,
+public:
+  LinearLayer(const std::string &p_name, WeightParamShapeType weightShape,
               BiasParamShapeType biasShape)
       : TBase(TBase::CreateSublayers()
                   .template Set<WeightParamSublayer>(p_name + "/weight",
@@ -51,4 +51,4 @@ class LinearLayer : public NSLinearLayer::Base<TInputs, TPolicies> {
                   .template Set<AddSublayer>(p_name + "/add")
                   .template Set<DotSublayer>(p_name + "/dot")) {}
 };
-}  // namespace MetaNN
+} // namespace MetaNN

@@ -64,11 +64,11 @@ void test_bias_vector_case2() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Data {
 void test_bias_vector() {
   test_bias_vector_case1();
   test_bias_vector_case2();
 }
-}  // namespace Test::Data
+} // namespace Test::Data

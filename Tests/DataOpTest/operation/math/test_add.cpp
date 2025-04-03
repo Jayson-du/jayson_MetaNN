@@ -109,7 +109,7 @@ void test_add_case4() {
   }
   cout << "done" << endl;
 }
-}  // namespace
+} // namespace
 
 namespace Test::Operation::Math {
 void test_add() {
@@ -118,4 +118,4 @@ void test_add() {
   test_add_case3();
   test_add_case4();
 }
-}  // namespace Test::Operation::Math
+} // namespace Test::Operation::Math

@@ -13,13 +13,13 @@
 namespace MetaNN::OpTags {
 struct NLLLoss;
 struct NLLLossGrad;
-}  // namespace MetaNN::OpTags
+} // namespace MetaNN::OpTags
 
 namespace MetaNN {
 namespace OperNLLLoss::NSCaseGen {
 template <typename TTruthHandle, typename TPredHandle, typename TOutputHandle>
 class EvalItem : public BaseEvalItem {
- public:
+public:
   using CategoryTag = CategoryTagFromHandle<TOutputHandle>;
 
   EvalItem(TTruthHandle truthHandle, TPredHandle predHandle,
@@ -41,10 +41,10 @@ class EvalGroup : public TrivialEvalGroup<
                       EvalItem<TTruthHandle, TPredHandle, TOutputHandle>> {
   using EvalItemType = EvalItem<TTruthHandle, TPredHandle, TOutputHandle>;
 
- protected:
-  virtual void EvalInternalLogic(EvalItemType& evalItem) final override {
-    const auto& truth = evalItem.m_truthHandle.Data();
-    const auto& pred = evalItem.m_predHandle.Data();
+protected:
+  virtual void EvalInternalLogic(EvalItemType &evalItem) final override {
+    const auto &truth = evalItem.m_truthHandle.Data();
+    const auto &pred = evalItem.m_predHandle.Data();
 
     const size_t count = truth.Shape().Count();
     assert(count == pred.Shape().Count());
@@ -54,10 +54,10 @@ class EvalGroup : public TrivialEvalGroup<
     ResType out;
 
     auto low_pred = LowerAccess(pred);
-    ElementType* mem_pred = low_pred.MutableRawMemory();
+    ElementType *mem_pred = low_pred.MutableRawMemory();
 
     auto low_truth = LowerAccess(truth);
-    ElementType* mem_truth = low_truth.MutableRawMemory();
+    ElementType *mem_truth = low_truth.MutableRawMemory();
 
     static_assert(
         std::is_same_v<DeviceTypeFromHandle<TOutputHandle>, DeviceTags::CPU>,
@@ -74,7 +74,7 @@ class EvalGroup : public TrivialEvalGroup<
     evalItem.m_outputHandle.SetData(std::move(out));
   }
 };
-}  // namespace OperNLLLoss::NSCaseGen
+} // namespace OperNLLLoss::NSCaseGen
 
 template <typename TPolicies, typename TTruth, typename TPred>
 struct OperCategory_<OpTags::NLLLoss, TPolicies, TTruth, TPred>
@@ -83,12 +83,11 @@ struct OperCategory_<OpTags::NLLLoss, TPolicies, TTruth, TPred>
 template <typename TPolicies>
 class OperShapeInfo<OpTags::NLLLoss, CategoryTags::Tensor<0>, TPolicies>
     : public GenLossOperShapeInfo {
- public:
+public:
   using GenLossOperShapeInfo::GenLossOperShapeInfo;
 };
 
-template <>
-struct OperSeq_<OpTags::NLLLoss> {
+template <> struct OperSeq_<OpTags::NLLLoss> {
   using type =
       OperCalAlgoChain<TailCalculator<OperNLLLoss::NSCaseGen::EvalItem,
                                       OperNLLLoss::NSCaseGen::EvalGroup>>;
@@ -96,22 +95,22 @@ struct OperSeq_<OpTags::NLLLoss> {
 
 template <
     typename TTruth, typename TPred,
-    std::enable_if_t<IsValidOper<OpTags::NLLLoss, TTruth, TPred>>* = nullptr>
-auto NLLLoss(TTruth&& p_truth, TPred&& p_pred) {
+    std::enable_if_t<IsValidOper<OpTags::NLLLoss, TTruth, TPred>> * = nullptr>
+auto NLLLoss(TTruth &&p_truth, TPred &&p_pred) {
   static_assert(std::is_same_v<DataCategory<TTruth>, DataCategory<TPred>>);
   using ResType =
       Operation<OpTags::NLLLoss,
                 OperandContainer<RemConstRef<TTruth>, RemConstRef<TPred>>>;
   return ResType(std::forward<TTruth>(p_truth), std::forward<TPred>(p_pred));
 }
-}  // namespace MetaNN
+} // namespace MetaNN
 
 namespace MetaNN {
 namespace OperNLLLossGrad::NSCaseGen {
 template <typename TGradHandle, typename TTruthHandle, typename TPredHandle,
           typename TOutputHandle>
 class EvalItem : public BaseEvalItem {
- public:
+public:
   using CategoryTag = CategoryTagFromHandle<TOutputHandle>;
 
   EvalItem(TGradHandle gradHandle, TTruthHandle truthHandle,
@@ -139,11 +138,11 @@ class EvalGroup
   using EvalItemType =
       EvalItem<TGradHandle, TTruthHandle, TPredHandle, TOutputHandle>;
 
- protected:
-  virtual void EvalInternalLogic(EvalItemType& evalItem) final override {
-    const auto& grad = evalItem.m_gradHandle.Data();
-    const auto& truth = evalItem.m_truthHandle.Data();
-    const auto& pred = evalItem.m_predHandle.Data();
+protected:
+  virtual void EvalInternalLogic(EvalItemType &evalItem) final override {
+    const auto &grad = evalItem.m_gradHandle.Data();
+    const auto &truth = evalItem.m_truthHandle.Data();
+    const auto &pred = evalItem.m_predHandle.Data();
     assert(truth.Shape() == pred.Shape());
 
     using ResType = typename TOutputHandle::DataType;
@@ -154,11 +153,11 @@ class EvalGroup
 
     const ElementType neg_grad = -grad.Value();
     auto low_pred = LowerAccess(pred);
-    const ElementType* mem_pred = low_pred.RawMemory();
+    const ElementType *mem_pred = low_pred.RawMemory();
     auto low_truth = LowerAccess(truth);
-    const ElementType* mem_truth = low_truth.RawMemory();
+    const ElementType *mem_truth = low_truth.RawMemory();
     auto low_out = LowerAccess(out);
-    ElementType* mem_out = low_out.MutableRawMemory();
+    ElementType *mem_out = low_out.MutableRawMemory();
 
     static_assert(
         std::is_same_v<DeviceTypeFromHandle<TOutputHandle>, DeviceTags::CPU>,
@@ -177,14 +176,13 @@ class EvalGroup
     evalItem.m_outputHandle.SetData(std::move(out));
   }
 };
-}  // namespace OperNLLLossGrad::NSCaseGen
+} // namespace OperNLLLossGrad::NSCaseGen
 
 template <typename TPolicies, typename TGrad, typename TWeight, typename TInput>
 struct OperCategory_<OpTags::NLLLossGrad, TPolicies, TGrad, TWeight, TInput>
     : public PickCommonCategory_<TWeight, TInput> {};
 
-template <>
-struct OperSeq_<OpTags::NLLLossGrad> {
+template <> struct OperSeq_<OpTags::NLLLossGrad> {
   using type =
       OperCalAlgoChain<TailCalculator<OperNLLLossGrad::NSCaseGen::EvalItem,
                                       OperNLLLossGrad::NSCaseGen::EvalGroup>>;
@@ -193,8 +191,8 @@ struct OperSeq_<OpTags::NLLLossGrad> {
 // interface
 template <typename TGrad, typename TTruth, typename TPred,
           std::enable_if_t<IsValidOper<OpTags::NLLLossGrad, TGrad, TTruth,
-                                       TPred>>* = nullptr>
-auto NLLLossGrad(TGrad&& p_grad, TTruth&& p_truth, TPred&& p_pred) {
+                                       TPred>> * = nullptr>
+auto NLLLossGrad(TGrad &&p_grad, TTruth &&p_truth, TPred &&p_pred) {
   static_assert(IsScalar<TGrad>);
   static_assert(std::is_same_v<DataCategory<TPred>, DataCategory<TTruth>>);
 
@@ -205,4 +203,4 @@ auto NLLLossGrad(TGrad&& p_grad, TTruth&& p_truth, TPred&& p_pred) {
   return ResType(std::forward<TGrad>(p_grad), std::forward<TTruth>(p_truth),
                  std::forward<TPred>(p_pred));
 }
-}  // namespace MetaNN
+} // namespace MetaNN
