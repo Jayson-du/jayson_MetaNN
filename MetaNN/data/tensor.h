@@ -16,7 +16,9 @@ template <typename TShape, typename TCurIndex, typename TNextParam,
           typename... TRemainParam>
 auto OffsetAndVal(const TShape &shape, size_t &gap, TCurIndex curIdx,
                   TNextParam nextParam, TRemainParam... remPara) {
+  // DimNum: 维度数
   constexpr size_t uDimNum = TShape::DimNum;
+  //
   constexpr size_t indexPos = uDimNum - sizeof...(TRemainParam) - 1;
   if (static_cast<size_t>(curIdx) >= shape[indexPos])
     throw std::runtime_error("Invalid dimension index.");

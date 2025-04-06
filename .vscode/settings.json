@@ -6,6 +6,7 @@
     "*.inc": "cpp",
     "*.td": "tablegen",
     "type_traits": "cpp",
-    "cstddef": "cpp"
+    "cstddef": "cpp",
+    "*.tcc": "cpp"
   }
 }

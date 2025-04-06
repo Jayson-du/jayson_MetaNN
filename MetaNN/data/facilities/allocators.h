@@ -10,6 +10,7 @@
 namespace MetaNN {
 template <typename TDevice> struct Allocator;
 
+// CPU设配内存分配器
 template <> struct Allocator<DeviceTags::CPU> {
 private:
   struct AllocHelper {
