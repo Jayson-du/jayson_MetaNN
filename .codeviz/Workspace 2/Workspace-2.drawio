@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <mxfile host="codeviz.app" modified="2025-10-25T15:12:43.844Z" agent="CodeViz Exporter" version="14.6.5" type="device">
+          <diagram id="codeviz-diagram" name="System Diagram">
+            <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+              <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="data_management_boundary" value="" style="html=1;whiteSpace=wrap;container=1;fillColor=#dae8fc;strokeColor=#6c8ebf;dashed=1;fillOpacity=20;strokeWidth=2;containerType=none;recursiveResize=0;movable=1;resizable=1;autosize=0;dropTarget=0" vertex="1" parent="metann_library_boundary">
+                  <mxGeometry x="258.0500000000001" y="758" width="923" height="269" as="geometry"/>
+                </mxCell>
+                <mxCell id="data_management_boundary_label" value="Data Management" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;labelBackgroundColor=white;spacing=5" vertex="1" parent="metann_library_boundary">
+                  <mxGeometry x="266.0500000000001" y="766" width="847" height="24" as="geometry"/>
+                </mxCell>
+<mxCell id="evaluation_engine_boundary" value="" style="html=1;whiteSpace=wrap;container=1;fillColor=#dae8fc;strokeColor=#6c8ebf;dashed=1;fillOpacity=20;strokeWidth=2;containerType=none;recursiveResize=0;movable=1;resizable=1;autosize=0;dropTarget=0" vertex="1" parent="metann_library_boundary">
+                  <mxGeometry x="610.9833333333333" y="-39" width="770" height="269" as="geometry"/>
+                </mxCell>
+                <mxCell id="evaluation_engine_boundary_label" value="Evaluation Engine" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;labelBackgroundColor=white;spacing=5" vertex="1" parent="metann_library_boundary">
+                  <mxGeometry x="618.9833333333333" y="-31" width="694" height="24" as="geometry"/>
+                </mxCell>
+<mxCell id="core_facilities_boundary" value="" style="html=1;whiteSpace=wrap;container=1;fillColor=#dae8fc;strokeColor=#6c8ebf;dashed=1;fillOpacity=20;strokeWidth=2;containerType=none;recursiveResize=0;movable=1;resizable=1;autosize=0;dropTarget=0" vertex="1" parent="metann_library_boundary">
+                  <mxGeometry x="226.68333333333345" y="1027" width="657" height="209" as="geometry"/>
+                </mxCell>
+                <mxCell id="core_facilities_boundary_label" value="Core Facilities" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;labelBackgroundColor=white;spacing=5" vertex="1" parent="metann_library_boundary">
+                  <mxGeometry x="234.68333333333345" y="1035" width="581" height="24" as="geometry"/>
+                </mxCell>
+<mxCell id="nn_layers_boundary" value="" style="html=1;whiteSpace=wrap;container=1;fillColor=#dae8fc;strokeColor=#6c8ebf;dashed=1;fillOpacity=20;strokeWidth=2;containerType=none;recursiveResize=0;movable=1;resizable=1;autosize=0;dropTarget=0" vertex="1" parent="metann_library_boundary">
+                  <mxGeometry x="185.51666666666677" y="230" width="472" height="269" as="geometry"/>
+                </mxCell>
+                <mxCell id="nn_layers_boundary_label" value="Neural Network Layers" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;labelBackgroundColor=white;spacing=5" vertex="1" parent="metann_library_boundary">
+                  <mxGeometry x="193.51666666666677" y="238" width="396" height="24" as="geometry"/>
+                </mxCell>
+<mxCell id="model_management_boundary" value="" style="html=1;whiteSpace=wrap;container=1;fillColor=#dae8fc;strokeColor=#6c8ebf;dashed=1;fillOpacity=20;strokeWidth=2;containerType=none;recursiveResize=0;movable=1;resizable=1;autosize=0;dropTarget=0" vertex="1" parent="metann_library_boundary">
+                  <mxGeometry x="50.266666666666765" y="-39" width="350" height="269" as="geometry"/>
+                </mxCell>
+                <mxCell id="model_management_boundary_label" value="Model Management" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;labelBackgroundColor=white;spacing=5" vertex="1" parent="metann_library_boundary">
+                  <mxGeometry x="58.266666666666765" y="-31" width="274" height="24" as="geometry"/>
+                </mxCell>
+<mxCell id="operations_boundary" value="" style="html=1;whiteSpace=wrap;container=1;fillColor=#dae8fc;strokeColor=#6c8ebf;dashed=1;fillOpacity=20;strokeWidth=2;containerType=none;recursiveResize=0;movable=1;resizable=1;autosize=0;dropTarget=0" vertex="1" parent="metann_library_boundary">
+                  <mxGeometry x="461.1500000000001" y="499" width="898" height="269" as="geometry"/>
+                </mxCell>
+                <mxCell id="operations_boundary_label" value="Operations" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;labelBackgroundColor=white;spacing=5" vertex="1" parent="metann_library_boundary">
+                  <mxGeometry x="469.1500000000001" y="507" width="822" height="24" as="geometry"/>
+                </mxCell>
+<mxCell id="policies_boundary" value="" style="html=1;whiteSpace=wrap;container=1;fillColor=#dae8fc;strokeColor=#6c8ebf;dashed=1;fillOpacity=20;strokeWidth=2;containerType=none;recursiveResize=0;movable=1;resizable=1;autosize=0;dropTarget=0" vertex="1" parent="metann_library_boundary">
+                  <mxGeometry x="178.05000000000007" y="499" width="216" height="269" as="geometry"/>
+                </mxCell>
+                <mxCell id="policies_boundary_label" value="Policies" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;labelBackgroundColor=white;spacing=5" vertex="1" parent="metann_library_boundary">
+                  <mxGeometry x="186.05000000000007" y="507" width="140" height="24" as="geometry"/>
+                </mxCell>
+<mxCell id="metann_library_boundary" value="" style="html=1;whiteSpace=wrap;container=1;fillColor=#dae8fc;strokeColor=#6c8ebf;dashed=1;fillOpacity=20;strokeWidth=2;containerType=none;recursiveResize=0;movable=1;resizable=1;autosize=0;dropTarget=0" vertex="1" parent="base-diagram-group">
+                  <mxGeometry x="32" y="94" width="1533" height="1360" as="geometry"/>
+                </mxCell>
+                <mxCell id="metann_library_boundary_label" value="MetaNN Library" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;labelBackgroundColor=white;spacing=5" vertex="1" parent="base-diagram-group">
+                  <mxGeometry x="40" y="102" width="1457" height="24" as="geometry"/>
+                </mxCell>
+<mxCell id="base-diagram-group" value="" style="html=1;whiteSpace=wrap;container=1;fillColor=#dae8fc;strokeColor=#6c8ebf;dashed=1;fillOpacity=20;strokeWidth=2;containerType=none;recursiveResize=0;movable=1;resizable=1;autosize=0;dropTarget=0" vertex="1" parent="1">
+                  <mxGeometry x="12" y="12" width="1573" height="1567" as="geometry"/>
+                </mxCell>
+                <mxCell id="base-diagram-group_label" value="Base Diagram" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;labelBackgroundColor=white;spacing=5" vertex="1" parent="1">
+                  <mxGeometry x="20" y="20" width="1497" height="24" as="geometry"/>
+                </mxCell>
+                <mxCell id="developer" value="Developer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="base-diagram-group">
+                      <mxGeometry x="238.29648900169212" y="63.84010152284264" width="75" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="build_system" value="Build System (CMake)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="base-diagram-group">
+                      <mxGeometry x="483.01666666666677" y="60" width="140" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="testing_framework" value="Testing Framework" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="base-diagram-group">
+                      <mxGeometry x="340.01666666666677" y="60" width="123" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="operating_system" value="Operating System (Linux)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="base-diagram-group">
+                      <mxGeometry x="55.016666666666765" y="1486" width="160" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="external_libraries" value="External C++ Libraries" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="base-diagram-group">
+                      <mxGeometry x="235.01666666666677" y="1486" width="142" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="tensor_data" value="Tensor Data Structures" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="data_management_boundary">
+                      <mxGeometry x="370" y="107" width="145" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="scalable_tensor" value="Scalable Tensor" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="data_management_boundary">
+                      <mxGeometry x="147" y="107" width="104" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="bias_vector" value="Bias Vector" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="data_management_boundary">
+                      <mxGeometry x="271" y="107" width="79" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="dynamic_data" value="Dynamic Data" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="data_management_boundary">
+                      <mxGeometry x="535" y="107" width="96" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="zero_tensor" value="Zero Tensor" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="data_management_boundary">
+                      <mxGeometry x="760" y="107" width="83" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="trivial_tensor" value="Trivial Tensor" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="data_management_boundary">
+                      <mxGeometry x="651" y="107" width="89" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="batch_sequence" value="Batch Sequence" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="data_management_boundary">
+                      <mxGeometry x="20" y="107" width="107" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="data_copy_comp" value="Data Copy" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="data_management_boundary">
+                      <mxGeometry x="404.5" y="188" width="76" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="eval_plan" value="Evaluation Plan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="evaluation_engine_boundary">
+                      <mxGeometry x="319" y="107" width="103" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="eval_handle" value="Evaluation Handle" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="evaluation_engine_boundary">
+                      <mxGeometry x="20" y="107" width="119" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="eval_dispatcher" value="Evaluation Dispatcher" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="evaluation_engine_boundary">
+                      <mxGeometry x="159" y="107" width="140" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="eval_group" value="Evaluation Group" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="evaluation_engine_boundary">
+                      <mxGeometry x="442" y="107" width="115" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="eval_item" value="Evaluation Item" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="evaluation_engine_boundary">
+                      <mxGeometry x="318" y="188" width="105" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="eval_buffer" value="Evaluation Buffer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="evaluation_engine_boundary">
+                      <mxGeometry x="577" y="107" width="113" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="facilities_traits" value="Traits" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="core_facilities_boundary">
+                      <mxGeometry x="131" y="107" width="46" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="type_id" value="Type ID" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="core_facilities_boundary">
+                      <mxGeometry x="197" y="107" width="59" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="var_type_dict" value="Var Type Dict" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="core_facilities_boundary">
+                      <mxGeometry x="20" y="107" width="91" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="null_param" value="Null Parameter" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="core_facilities_boundary">
+                      <mxGeometry x="276" y="107" width="101" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="cont_metafuns" value="Compile-time Metafunctions" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="core_facilities_boundary">
+                      <mxGeometry x="397" y="107" width="180" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="composite_layers" value="Composite Layers" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="nn_layers_boundary">
+                      <mxGeometry x="275" y="107" width="117" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="recurrent_layers" value="Recurrent Layers" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="nn_layers_boundary">
+                      <mxGeometry x="20" y="107" width="111" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="layer_facilities" value="Layer Facilities" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="nn_layers_boundary">
+                      <mxGeometry x="284.5" y="188" width="98" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="principal_layers" value="Principal Layers" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="nn_layers_boundary">
+                      <mxGeometry x="151" y="107" width="104" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="weight_buffer" value="Weight Buffer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="model_management_boundary">
+                      <mxGeometry x="20" y="107" width="95" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="param_initializer" value="Parameter Initializers" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="model_management_boundary">
+                      <mxGeometry x="135" y="107" width="135" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="weight_container" value="Weight Container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="model_management_boundary">
+                      <mxGeometry x="144.5" y="188" width="116" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="conv_op" value="Convolution Operation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="operations_boundary">
+                      <mxGeometry x="20" y="107" width="147" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="math_ops" value="Mathematical Operations" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="operations_boundary">
+                      <mxGeometry x="381" y="107" width="161" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="nn_ops" value="Neural Network Operations" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="operations_boundary">
+                      <mxGeometry x="187" y="107" width="174" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="other_ops" value="Other Operations" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="operations_boundary">
+                      <mxGeometry x="562" y="107" width="116" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="tensor_ops" value="Tensor Operations" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="operations_boundary">
+                      <mxGeometry x="698" y="107" width="120" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="operation_facilities" value="Operation Facilities" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="operations_boundary">
+                      <mxGeometry x="399" y="188" width="125" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="policy_container" value="Policy Container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="policies_boundary">
+                      <mxGeometry x="24" y="107" width="108" height="41" as="geometry"/>
+                    </mxCell>
+<mxCell id="policy_operations" value="Policy Operations" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="policies_boundary">
+                      <mxGeometry x="20" y="188" width="116" height="41" as="geometry"/>
+                    </mxCell>
+                <mxCell id="edge-e-developer-nn_layers_boundary" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="developer" target="nn_layers_boundary">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-developer-nn_layers_boundary_label" value="Uses | C++ API" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-developer-nn_layers_boundary">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-nn_layers_boundary-operations_boundary" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="nn_layers_boundary" target="operations_boundary">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-nn_layers_boundary-operations_boundary_label" value="Uses | Performs computations" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-nn_layers_boundary-operations_boundary">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-nn_layers_boundary-data_management_boundary" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="nn_layers_boundary" target="data_management_boundary">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-nn_layers_boundary-data_management_boundary_label" value="Uses | Manipulates tensor data" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-nn_layers_boundary-data_management_boundary">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-nn_layers_boundary-core_facilities_boundary" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="nn_layers_boundary" target="core_facilities_boundary">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-nn_layers_boundary-core_facilities_boundary_label" value="Uses | Utilizes core utilities" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-nn_layers_boundary-core_facilities_boundary">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-nn_layers_boundary-policies_boundary" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="nn_layers_boundary" target="policies_boundary">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-nn_layers_boundary-policies_boundary_label" value="Influenced by | Applies configurable behaviors" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-nn_layers_boundary-policies_boundary">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-model_management_boundary-nn_layers_boundary" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="model_management_boundary" target="nn_layers_boundary">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-model_management_boundary-nn_layers_boundary_label" value="Manages | Initializes and updates layer weights" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-model_management_boundary-nn_layers_boundary">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-model_management_boundary-data_management_boundary" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="model_management_boundary" target="data_management_boundary">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-model_management_boundary-data_management_boundary_label" value="Uses | Stores and retrieves weights" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-model_management_boundary-data_management_boundary">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-model_management_boundary-core_facilities_boundary" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="model_management_boundary" target="core_facilities_boundary">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-model_management_boundary-core_facilities_boundary_label" value="Uses | Utilizes core utilities" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-model_management_boundary-core_facilities_boundary">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-evaluation_engine_boundary-nn_layers_boundary" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="evaluation_engine_boundary" target="nn_layers_boundary">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-evaluation_engine_boundary-nn_layers_boundary_label" value="Evaluates | Executes layer computations" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-evaluation_engine_boundary-nn_layers_boundary">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-evaluation_engine_boundary-operations_boundary" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="evaluation_engine_boundary" target="operations_boundary">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-evaluation_engine_boundary-operations_boundary_label" value="Executes | Runs defined operations" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-evaluation_engine_boundary-operations_boundary">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-evaluation_engine_boundary-data_management_boundary" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="evaluation_engine_boundary" target="data_management_boundary">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-evaluation_engine_boundary-data_management_boundary_label" value="Manages | Handles data flow during evaluation" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-evaluation_engine_boundary-data_management_boundary">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-evaluation_engine_boundary-core_facilities_boundary" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="evaluation_engine_boundary" target="core_facilities_boundary">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-evaluation_engine_boundary-core_facilities_boundary_label" value="Uses | Utilizes core utilities" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-evaluation_engine_boundary-core_facilities_boundary">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-operations_boundary-data_management_boundary" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="operations_boundary" target="data_management_boundary">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-operations_boundary-data_management_boundary_label" value="Operates on | Processes tensor data" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-operations_boundary-data_management_boundary">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-operations_boundary-core_facilities_boundary" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="operations_boundary" target="core_facilities_boundary">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-operations_boundary-core_facilities_boundary_label" value="Uses | Utilizes core utilities" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-operations_boundary-core_facilities_boundary">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-data_management_boundary-core_facilities_boundary" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="data_management_boundary" target="core_facilities_boundary">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-data_management_boundary-core_facilities_boundary_label" value="Uses | Utilizes core utilities" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-data_management_boundary-core_facilities_boundary">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-composite_layers-layer_facilities" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="composite_layers" target="layer_facilities">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-composite_layers-layer_facilities_label" value="Uses | For layer construction" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-composite_layers-layer_facilities">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-eval_plan-eval_item" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="eval_plan" target="eval_item">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-eval_plan-eval_item_label" value="Comprises | Individual evaluation steps" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-eval_plan-eval_item">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-tensor_data-data_copy_comp" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="tensor_data" target="data_copy_comp">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-tensor_data-data_copy_comp_label" value="Used by | For data transfer" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-tensor_data-data_copy_comp">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-param_initializer-weight_container" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="param_initializer" target="weight_container">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-param_initializer-weight_container_label" value="Initializes | Model weights" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-param_initializer-weight_container">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-math_ops-operation_facilities" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="math_ops" target="operation_facilities">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-math_ops-operation_facilities_label" value="Uses | For operation setup" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-math_ops-operation_facilities">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-policy_container-policy_operations" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="policy_container" target="policy_operations">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-policy_container-policy_operations_label" value="Manages | Policy application" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-policy_container-policy_operations">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-build_system-metann_library_boundary" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="build_system" target="metann_library_boundary">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-build_system-metann_library_boundary_label" value="Builds | CMake configuration" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-build_system-metann_library_boundary">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-testing_framework-metann_library_boundary" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="testing_framework" target="metann_library_boundary">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-testing_framework-metann_library_boundary_label" value="Tests | Test cases" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-testing_framework-metann_library_boundary">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-metann_library_boundary-operating_system" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="metann_library_boundary" target="operating_system">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-metann_library_boundary-operating_system_label" value="Runs on | System calls" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-metann_library_boundary-operating_system">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+<mxCell id="edge-e-metann_library_boundary-external_libraries" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#808080;strokeWidth=2;jumpStyle=arc;jumpSize=10;spacing=15;labelBackgroundColor=white;labelBorderColor=none" edge="1" parent="1" source="metann_library_boundary" target="external_libraries">
+                    <mxGeometry relative="1" as="geometry"/>
+                  </mxCell>
+                  <mxCell id="edge-e-metann_library_boundary-external_libraries_label" value="Depends on | Linked libraries" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge-e-metann_library_boundary-external_libraries">
+                    <mxGeometry x="-0.2" y="10" relative="1" as="geometry">
+                      <mxPoint as="offset"/>
+                    </mxGeometry>
+                  </mxCell>
+              </root>
+            </mxGraphModel>
+          </diagram>
+        </mxfile>

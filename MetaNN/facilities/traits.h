@@ -3,18 +3,23 @@
 #include <cstddef>
 #include <iterator>
 #include <type_traits>
-
+#include <utility>
 namespace MetaNN {
-template <typename T> struct Identity_ { using type = T; };
+template <typename T>
+struct Identity_ {
+  using type = T;
+};
 
 // Or
-template <bool cur, typename TNext> constexpr static bool OrValue = true;
+template <bool cur, typename TNext>
+constexpr static bool OrValue = true;
 
 template <typename TNext>
 constexpr static bool OrValue<false, TNext> = TNext::value;
 
 // And
-template <bool cur, typename TNext> constexpr static bool AndValue = false;
+template <bool cur, typename TNext>
+constexpr static bool AndValue = false;
 
 template <typename TNext>
 constexpr static bool AndValue<true, TNext> = TNext::value;
@@ -22,9 +27,11 @@ constexpr static bool AndValue<true, TNext> = TNext::value;
 template <typename T>
 using RemConstRef = std::remove_cv_t<std::remove_reference_t<T>>;
 
-template <typename... T> constexpr static bool DependencyFalse = false;
+template <typename... T>
+constexpr static bool DependencyFalse = false;
 
-template <typename TBooleanCont, typename TFunCont> struct CompileTimeSwitch_;
+template <typename TBooleanCont, typename TFunCont>
+struct CompileTimeSwitch_;
 
 template <bool curBool, bool... TBools, template <typename...> class TFunCont,
           typename curFunc, typename... TFuncs>
@@ -46,4 +53,4 @@ struct CompileTimeSwitch_<std::integer_sequence<bool>, TFunCont<curFunc>> {
 template <typename TBooleanCont, typename TFunCont>
 using CompileTimeSwitch =
     typename CompileTimeSwitch_<TBooleanCont, TFunCont>::type;
-} // namespace MetaNN
+}  // namespace MetaNN

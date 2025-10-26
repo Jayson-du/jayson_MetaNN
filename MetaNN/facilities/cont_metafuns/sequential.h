@@ -1,5 +1,6 @@
 #pragma once
 #include <MetaNN/facilities/cont_metafuns/helpers.h>
+#include <cstddef>
 
 namespace MetaNN::Sequential
 {
@@ -56,7 +57,7 @@ struct impl<Helper::IndexSequence<ignore...>>
 
 template <typename TCon, int N>
 struct At_;
-    
+
 template <template <typename...> typename TCon, typename... TParams, int N>
 struct At_<TCon<TParams...>, N>
 {
@@ -254,7 +255,7 @@ struct Fold_<TInitState, TCont<TParams...>, F>
 {
     template <typename S, typename I>
     using FF = typename F<S, I>::type;
-    
+
     using type = typename NSFold::imp_<TInitState, FF, TParams...>::type;
 };
 
